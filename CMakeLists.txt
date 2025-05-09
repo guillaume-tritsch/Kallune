@@ -1,46 +1,55 @@
-cmake_minimum_required(VERSION 3.24)
+cmake_minimum_required(VERSION 3.15)
+project(SpriteEngine)
 
-cmake_path(GET CMAKE_CURRENT_SOURCE_DIR FILENAME FolderName)   
-string(REPLACE " " "_" FolderName ${FolderName})
+set(CMAKE_CXX_STANDARD 17)
 
-project(${FolderName}_Project)
+# Add external dependencies
+add_subdirectory(external/glad)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
+# GLFW - assumes it's added via FetchContent or ExternalProject and ends up in build/_deps/glfw-src
+add_subdirectory(${CMAKE_BINARY_DIR}/_deps/glfw-src ${CMAKE_BINARY_DIR}/_deps/glfw-build)
 
-if (MSVC)
-    add_compile_options(/W3)
-else()
-    add_compile_options(-Wall -Wextra -Wpedantic -pedantic-errors)
-endif()
+# Source files
+file(GLOB_RECURSE SRC_FILES
+    src/*.cpp
+)
 
-file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS "src/*.cpp")
-file(GLOB_RECURSE SRC_MAIN_FILES CONFIGURE_DEPENDS "src/main*.cpp")
+add_executable(main ${SRC_FILES})
 
-# # Filter out main files
-# list(FILTER SRC_FILES EXCLUDE REGEX "src/main_.*.cpp")
+# Include directories
+target_include_directories(main PRIVATE
+    external/glad/include
+    ${CMAKE_BINARY_DIR}/_deps/glfw-src/include
+    src
+)
 
-# Remove main files from SRC_FILES
-foreach(SRC_MAIN_FILE ${SRC_MAIN_FILES})
-    list(REMOVE_ITEM SRC_FILES ${SRC_MAIN_FILE})
+include(FetchContent)
+
+FetchContent_Declare(
+  stb
+  URL https://github.com/nothings/stb/archive/refs/heads/master.zip
+)
+
+FetchContent_MakeAvailable(stb)
+
+target_include_directories(main PRIVATE ${stb_SOURCE_DIR})
+
+# Link libraries
+target_link_libraries(main PRIVATE
+    glad
+    glfw
+)
+
+# Optionally copy shaders next to binary
+file(GLOB SHADERS src/shaders/*)
+foreach(shader IN LISTS SHADERS)
+    add_custom_command(TARGET main POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${shader}
+        $<TARGET_FILE_DIR:main>
+    )
 endforeach()
 
-message(STATUS "SRC_FILES: ")
-foreach(SRC_FILE ${SRC_FILES})
-    message(STATUS "    ${SRC_FILE}")
-endforeach()
-
-message(STATUS "SRC_MAIN_FILES: ")
-foreach(SRC_MAIN_FILE ${SRC_MAIN_FILES})
-    message(STATUS "    ${SRC_MAIN_FILE}")
-endforeach()
-
-foreach(SRC_MAIN_FILE ${SRC_MAIN_FILES})
-    get_filename_component(SRC_MAIN_FILE_NAME ${SRC_MAIN_FILE} NAME)
-    string(REPLACE ".cpp" "" SRC_MAIN_FILE_NAME ${SRC_MAIN_FILE_NAME})
-    string(REPLACE "main_" "" SRC_MAIN_FILE_NAME ${SRC_MAIN_FILE_NAME})
-
-    message(STATUS "Creating executable: ${SRC_MAIN_FILE_NAME}")
-    add_executable(${SRC_MAIN_FILE_NAME} ${SRC_MAIN_FILE} ${SRC_FILES})
-    target_compile_features(${SRC_MAIN_FILE_NAME} PUBLIC cxx_std_20)
-    target_include_directories(${SRC_MAIN_FILE_NAME} PUBLIC "src/")
-endforeach()
+add_custom_command(TARGET main POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:main>/assets)
