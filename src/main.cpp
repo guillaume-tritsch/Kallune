@@ -1,65 +1,60 @@
-#include <vector>
-#include <algorithm>
-#include <cmath>
 #include <iostream>
-#include <vector>
-#include <cstdlib>
-#include <algorithm>
-#include <numeric>
-#include <string>
+#include "./CellularAutomaton/cellularAutomaton.h"
+#include "./DiamondSquare/diamondSquare.h"
+#include <iomanip> // pour std::setw et std::setprecision
 
 using namespace std;
 
-enum class Insect {
-    ClassicBee,
-    Ladybug,
-    Butterfly,
-    Dragonfly,
-    Ant,
-    Grasshopper,
-    Beetle,
-    Wasp,
-    Caterpillar,
-    Spider,
-    GuimielBee
-};
+void printMap(CellularAutomaton &automaton)
+{
+    vector<vector<int>> *map = automaton.getMap();
+    unsigned int width = automaton.getWidth();
+    unsigned int height = automaton.getHeight();
 
-
-size_t folding_string_hash(std::string const& s, size_t max) {
-    size_t hash = 0;
-    for (char c : s) {
-        hash += static_cast<size_t>(c);
+    for (unsigned int y = 0; y < height; ++y)
+    {
+        for (unsigned int x = 0; x < width; ++x)
+        {
+            switch ((*map)[x][y])
+            {
+            case 0:
+                cout << '.';
+                break;
+            case 1:
+                cout << '#';
+                break;
+            default:
+                cout << '?';
+                break;
+            }
+        }
+        cout << '\n';
     }
-    return hash % max;
 }
 
-size_t folding_string_ordered_hash(std::string const& s, size_t max) {
-    size_t hash = 0;
-    size_t pos = 1;
-    for (char c : s) {
-        hash += static_cast<size_t>(c) * pos;
-        ++pos;
+void print_matrix(const std::vector<std::vector<float>>& matrix) {
+    for (const auto& row : matrix) {
+        for (float value : row) {
+            std::cout << std::setw(8) << std::fixed << std::setprecision(2) << value << " ";
+        }
+        std::cout << '\n';
     }
-    return hash % max;
-}
-
-size_t polynomial_rolling_hash(const std::string& s, size_t p, size_t m) {
-    size_t hash = 0;
-    size_t power = 1;
-    
-    for (char c : s) {
-        hash = (hash + (static_cast<size_t>(c) * power) % m) % m;
-        power = (power * p) % m;
-    }
-    
-    return hash;
 }
 
 int main()
 {
-    string str = "Test";
+    // DiamondSquareMap e(12);
+    // cout << "EEEEEE" << endl;
+    // e.generate();
+    // print_matrix(e.value);
 
-    cout << polynomial_rolling_hash(str, 4, 6) << endl;
+    // std::cout << std::endl << std::endl << e.size << std::endl;
+    unsigned int width = 200;
+    unsigned int height = 100;
+
+    CellularAutomaton automaton(width, height);
+    automaton.generate(60, 6, 2, 4, 4);
+    printMap(automaton);
 
     return 0;
 }
