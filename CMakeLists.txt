@@ -1,55 +1,22 @@
-cmake_minimum_required(VERSION 3.15)
-project(SpriteEngine)
+cmake_minimum_required(VERSION 3.20)
+project(Phantom)
 
-set(CMAKE_CXX_STANDARD 17)
+file(GLOB_RECURSE MY_SOURCES CONFIGURE_DEPENDS src/*)
+add_executable(${PROJECT_NAME} ${MY_SOURCES})
+target_include_directories(${PROJECT_NAME} PRIVATE src/)
 
-# Add external dependencies
-add_subdirectory(external/glad)
+# Set the folder where the executable will be created
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
 
-# GLFW - assumes it's added via FetchContent or ExternalProject and ends up in build/_deps/glfw-src
-add_subdirectory(${CMAKE_BINARY_DIR}/_deps/glfw-src ${CMAKE_BINARY_DIR}/_deps/glfw-build)
+# Librairies
 
-# Source files
-file(GLOB_RECURSE SRC_FILES
-    src/*.cpp
-)
+# ---Add glbasimac---
+add_subdirectory(lib/glbasimac)
+target_link_libraries(${PROJECT_NAME} PRIVATE glbasimac)
 
-add_executable(main ${SRC_FILES})
+include(CmakeUtils/files_and_folders.cmake)
+Cool__target_copy_folder(${PROJECT_NAME} "assets")
 
-# Include directories
-target_include_directories(main PRIVATE
-    external/glad/include
-    ${CMAKE_BINARY_DIR}/_deps/glfw-src/include
-    src
-)
-
-include(FetchContent)
-
-FetchContent_Declare(
-  stb
-  URL https://github.com/nothings/stb/archive/refs/heads/master.zip
-)
-
-FetchContent_MakeAvailable(stb)
-
-target_include_directories(main PRIVATE ${stb_SOURCE_DIR})
-
-# Link libraries
-target_link_libraries(main PRIVATE
-    glad
-    glfw
-)
-
-# Optionally copy shaders next to binary
-file(GLOB SHADERS src/shaders/*)
-foreach(shader IN LISTS SHADERS)
-    add_custom_command(TARGET main POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${shader}
-        $<TARGET_FILE_DIR:main>
-    )
-endforeach()
-
-add_custom_command(TARGET main POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:main>/assets)
+# Include stb_image.h
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/lib)
