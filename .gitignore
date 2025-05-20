@@ -14,4 +14,3 @@ CTestTestfile.cmake
 _deps
 CMakeUserPresets.json
 .DS_Store
-CmakeUtils
