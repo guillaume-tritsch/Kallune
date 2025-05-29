@@ -13,6 +13,8 @@
 int WINDOW_WIDTH = 800;
 int WINDOW_HEIGHT = 800;
 
+bool hasWindowBeenFixed=false;
+
 using namespace glbasimac;
 
 /* Minimal time wanted between two images */
@@ -29,18 +31,25 @@ static const float GL_VIEW_SIZE = 6.0f;
 
 void onWindowResized(GLFWwindow *, int width, int height)
 {
-    // aspectRatio = width / (float)height;
-    // myEngine.set3DProjection(90.0, aspectRatio, Z_NEAR, Z_FAR);
+    std::cout << "Window resized to " << width << "x" << height << std::endl;
     aspectRatio = width / (float)height;
-	glViewport(0, 0, width, height);
-	if (aspectRatio > 1.0)
-	{
-		myEngine.set2DProjection(-GL_VIEW_SIZE * aspectRatio / 2., GL_VIEW_SIZE * aspectRatio / 2., -GL_VIEW_SIZE / 2., GL_VIEW_SIZE / 2.);
-	}
-	else
-	{
-		myEngine.set2DProjection(-GL_VIEW_SIZE / 2., GL_VIEW_SIZE / 2., -GL_VIEW_SIZE / (2. * aspectRatio), GL_VIEW_SIZE / (2. * aspectRatio));
-	}
+    glViewport(0, 0, width, height);
+
+    float viewWidth = GL_VIEW_SIZE;
+    float viewHeight = GL_VIEW_SIZE;
+
+    if (aspectRatio > 1.0f) {
+        viewWidth = GL_VIEW_SIZE * aspectRatio;
+    } else {
+        viewHeight = GL_VIEW_SIZE / aspectRatio;
+    }
+
+    myEngine.set2DProjection(
+        -viewWidth / 2.0f, viewWidth / 2.0f,
+        -viewHeight / 2.0f, viewHeight / 2.0f
+    );
+
+    hasWindowBeenFixed = false;
 };
 
 
@@ -126,22 +135,16 @@ int main()
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        /* Fix camera position */
-        // myEngine.mvMatrixStack.loadIdentity();
-        // Vector3D pos_camera = Vector3D(dist_zoom * cos(deg2rad(angle_theta)) * cos(deg2rad(angle_phy)),
-        //                                dist_zoom * sin(deg2rad(angle_theta)) * cos(deg2rad(angle_phy)),
-        //                                dist_zoom * sin(deg2rad(angle_phy)));
-
-        // Vector3D viewed_point = Vector3D(0.0f, 0.0f, 0.0f);
-        // Vector3D up_vector = Vector3D(0.0f, 0.0f, 1.0f);
-        // Matrix4D view_matrix = Matrix4D::lookAt(pos_camera, viewed_point, up_vector);
-        // myEngine.setViewMatrix(view_matrix);
-        // myEngine.updateMvMatrix();
-
         drawScene();
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
+
+        /* macOS specific fix */
+        if(!hasWindowBeenFixed){
+            hasWindowBeenFixed=true;
+            glfwSetWindowPos(window,0,0);
+        }
 
         /* Poll for and process events */
         glfwPollEvents();

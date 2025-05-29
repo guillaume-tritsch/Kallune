@@ -25,8 +25,11 @@ namespace glbasimac {
 		width = w;
 		height = h;
 		channels = n_chan;
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
 		if (channels == 3) glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,width,height,0,GL_RGB,GL_UNSIGNED_BYTE,pixels);
 		if (channels == 4) glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,width,height,0,GL_RGBA,GL_UNSIGNED_BYTE,pixels);
+		// glGenerateMipmap(GL_TEXTURE_2D);
+		std::cout<<"Texture created with id "<<id_in_GL<<" and size "<<width<<"x"<<height<<" with "<<channels<<" channels"<<std::endl;
 	}
 
 	void GLBI_Texture::detachTexture() {

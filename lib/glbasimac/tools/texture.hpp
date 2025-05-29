@@ -246,7 +246,8 @@ namespace STP3D {
 			STP3D::setError("[Texture : initTexture] NULL initialization of texture is impossible");
 		}
 		glBindTexture(GL_TEXTURE_2D,0);
-		//cout<<"Fin initialisation Texture : "<<*this<<std::endl;
+		glGenerateMipmap(GL_TEXTURE_2D);
+		cout<<" ICI LA FEHSZJLFKHESDKFHDSJKFDSHFKJH "<<*this<<std::endl;
 	}
 
 	inline void Texture2D::setTextureWraping(GLenum param_s,GLenum param_t) {
