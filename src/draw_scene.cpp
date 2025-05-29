@@ -12,8 +12,8 @@ Sprite* tile001 {};
 
 void initScene()
 {
-	tile000 = new Sprite("tileset/tile_000.png", 1.0f, 1.0f);
-	tile001 = new Sprite("tileset/tile_054.png", 1.0f, 1.0f);
+	tile000 = new Sprite("tileset/tile_000.png", 0.2f, 0.2f);
+	tile001 = new Sprite("tileset/tile_020.png", 0.2f, 0.2f);
 
 	std::vector<float> origin = {0.0f, 0.0f};
 	std::vector<float> originColor = {1.0f, 0.0f, 0.0f};
@@ -42,7 +42,7 @@ void drawScene()
 		tile000->draw();
 	myEngine.mvMatrixStack.popMatrix();
 	myEngine.mvMatrixStack.pushMatrix();
-		myEngine.mvMatrixStack.addTranslation(Vector3D(1.0f, 1.0f, 1.0f));
+		myEngine.mvMatrixStack.addTranslation(Vector3D(0.2f, 0.2f, 0.2f));
 		myEngine.updateMvMatrix();
 		tile001->draw();
 	myEngine.mvMatrixStack.popMatrix();

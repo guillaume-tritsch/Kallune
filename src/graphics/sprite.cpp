@@ -9,11 +9,11 @@ Sprite::Sprite(const std::string& filename, float sizex, float sizez) {
     
     texture = new glbasimac::GLBI_Texture();
 	texture->createTexture();
+    texture->attachTexture();
+	texture->loadImage(x, y, n, imageData);
     std::cout << "Texture ID for " << filename << " : " << texture->id_in_GL << std::endl;
 	texture->setParameters(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	texture->setParameters(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	texture->setParameters(GL_PIXEL_MODE_BIT, GL_RGBA);
-	texture->loadImage(x, y, n, imageData);
 	
 	mesh = new StandardMesh(4, GL_TRIANGLE_STRIP);
 	float coord[8] = {-sizex, -sizez,
