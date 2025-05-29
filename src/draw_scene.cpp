@@ -7,9 +7,23 @@
 
 GLBI_Engine myEngine;
 
-GLBI_Set_Of_Points originPoint;
-
 std::vector<Sprite *> tileset;
+const int MAP_WIDTH = 10;
+const int MAP_HEIGHT = 10;
+
+int map[MAP_HEIGHT][MAP_WIDTH];
+
+void generateMap()
+{
+	std::srand(std::time(nullptr));
+	for (int y = 0; y < MAP_HEIGHT; ++y)
+	{
+		for (int x = 0; x < MAP_WIDTH; ++x)
+		{
+			map[y][x] = rand() % 2;
+		}
+	}
+}
 
 void initScene()
 {
@@ -20,35 +34,42 @@ void initScene()
 		tileset.push_back(new Sprite(ss.str(), 0.2f, 0.2f));
 	}
 
-	std::vector<float> origin = {0.0f, 0.0f};
-	std::vector<float> originColor = {1.0f, 0.0f, 0.0f};
-	originPoint.initSet(origin, originColor);
-	originPoint.changeNature(GL_POINTS);
+	generateMap();
 }
 
 void drawScene()
 {
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
-
-	originPoint.drawSet();
+	glDisable(GL_DEPTH_TEST);
+	glDepthMask(GL_FALSE);
+	// glDepthFunc(GL_LEQUAL);
 
 	myEngine.activateTexturing(true);
+	// float z_index = 0.0f;
+	for (int layer = MAP_WIDTH + MAP_HEIGHT - 2; layer >= 0; --layer)
+	{
+		int start_x = std::max(0, layer - MAP_HEIGHT + 1);
+		int end_x = std::min(MAP_WIDTH - 1, layer);
 
-	glPointSize(10.0f);
-	myEngine.setFlatColor(1.0f, 1.0f, 1.0f);
-	glLineWidth(2.0f);
+		for (int x = start_x; x <= end_x; ++x)
+		{
+			int y = layer - x;
+			if (y < 0 || y >= MAP_HEIGHT)
+				continue;
 
-	// draw quad
-	myEngine.mvMatrixStack.pushMatrix();
-	myEngine.mvMatrixStack.addTranslation(Vector3D(0.0f, 0.0f, 0.0f));
-	myEngine.updateMvMatrix();
-	tileset[0]->draw();
-	myEngine.mvMatrixStack.popMatrix();
-	myEngine.mvMatrixStack.pushMatrix();
-	myEngine.mvMatrixStack.addTranslation(Vector3D(0.2f, 0.2f, 0.2f));
-	myEngine.updateMvMatrix();
-	tileset[113]->draw();
-	myEngine.mvMatrixStack.popMatrix();
+			int tileType = (map[y][x] == 0) ? 0 : 11;
+
+			float iso_x = (x - y) * 0.22f;
+			float iso_y = (x + y) * 0.115f;
+
+			myEngine.mvMatrixStack.pushMatrix();
+			myEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y, 0.0f));
+			myEngine.updateMvMatrix();
+
+			tileset[tileType]->draw();
+
+			myEngine.mvMatrixStack.popMatrix();
+		}
+	}
 }
