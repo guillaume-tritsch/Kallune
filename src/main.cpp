@@ -1,7 +1,9 @@
 #include <iostream>
 #include "./CellularAutomaton/cellularAutomaton.h"
 #include "./DiamondSquare/diamondSquare.h"
-#include <iomanip> // pour std::setw et std::setprecision
+#include <iomanip>
+#include <glm/vec2.hpp>
+#include <glm/gtc/noise.hpp>
 
 using namespace std;
 
@@ -24,7 +26,7 @@ void printMap(CellularAutomaton &automaton)
                 cout << '#';
                 break;
             default:
-                cout << '?';
+                cout << (*map)[x][y] ;
                 break;
             }
         }
@@ -49,8 +51,8 @@ int main()
     // print_matrix(e.value);
 
     // std::cout << std::endl << std::endl << e.size << std::endl;
-    unsigned int width = 200;
-    unsigned int height = 100;
+    unsigned int width = 100;
+    unsigned int height = 50;
 
     CellularAutomaton automaton(width, height);
     automaton.generate(60, 6, 2, 4, 4);

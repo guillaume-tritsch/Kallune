@@ -27,6 +27,6 @@ private:
 
     void printMap();
     void step();
-    int countNeighbors(int x, int y, int dist);
+    int countNeighbors(int x, int y, int dist, vector<int> valueToSearch);
 
 };
