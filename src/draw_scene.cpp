@@ -2,23 +2,21 @@
 #include <tuple>
 #include <stb_image.h>
 #include "graphics/sprite.hpp"
+#include "graphics/animatedSprite.hpp"
 
 GLBI_Engine myEngine;
 
-GLBI_Set_Of_Points originPoint;
-
-Sprite* tile000 {};
-Sprite* tile001 {};
+AnimatedSprite* badger {};
+AnimatedSprite* boar {};
+AnimatedSprite* stag {};
+AnimatedSprite* wolf {};
 
 void initScene()
 {
-	tile000 = new Sprite("tileset/tile_000.png", 0.2f, 0.2f);
-	tile001 = new Sprite("tileset/tile_020.png", 0.2f, 0.2f);
-
-	std::vector<float> origin = {0.0f, 0.0f};
-	std::vector<float> originColor = {1.0f, 0.0f, 0.0f};
-	originPoint.initSet(origin, originColor);
-	originPoint.changeNature(GL_POINTS);
+	badger = new AnimatedSprite("critters/badger/critter_badger_SE_walk.png", 0.7f, 0.7f, 9, 1, 30);
+	boar = new AnimatedSprite("critters/boar/boar_SE_run_sheet.png", 0.6f, 0.4f, 2, 2, 20);
+	stag = new AnimatedSprite("critters/stag/critter_stag_SE_walk.png", 0.7f, 0.7f, 11, 1, 30);
+	wolf = new AnimatedSprite("critters/wolf/wolf-run.png", 1.0f, 1.0f, 8, 4, 30);
 }
 
 void drawScene()
@@ -27,23 +25,37 @@ void drawScene()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 
-	originPoint.drawSet();
-
 	myEngine.activateTexturing(true);
-
-	glPointSize(10.0f);
-	myEngine.setFlatColor(1.0f, 1.0f, 1.0f);
-	glLineWidth(2.0f);
 	
-	// draw quad
+	// badger
 	myEngine.mvMatrixStack.pushMatrix();
-		myEngine.mvMatrixStack.addTranslation(Vector3D(0.0f, 0.0f, 0.0f));
+		myEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, -1.5f, 0.0f));
 		myEngine.updateMvMatrix();
-		tile000->draw();
+		badger->update(1.0f / 60.0f);
+		badger->draw();
 	myEngine.mvMatrixStack.popMatrix();
+
+	// boar
 	myEngine.mvMatrixStack.pushMatrix();
-		myEngine.mvMatrixStack.addTranslation(Vector3D(0.2f, 0.2f, 0.2f));
+		myEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, -1.5f, 0.0f));
 		myEngine.updateMvMatrix();
-		tile001->draw();
+		boar->update(1.0f / 60.0f);
+		boar->draw();
+	myEngine.mvMatrixStack.popMatrix();
+
+	// stag
+	myEngine.mvMatrixStack.pushMatrix();
+		myEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, 1.5f, 0.0f));
+		myEngine.updateMvMatrix();
+		stag->update(1.0f / 60.0f);
+		stag->draw();
+	myEngine.mvMatrixStack.popMatrix();
+
+	// wolf
+	myEngine.mvMatrixStack.pushMatrix();
+		myEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, 1.5f, 0.0f));
+		myEngine.updateMvMatrix();
+		wolf->update(1.0f / 60.0f);
+		wolf->draw();
 	myEngine.mvMatrixStack.popMatrix();
 }

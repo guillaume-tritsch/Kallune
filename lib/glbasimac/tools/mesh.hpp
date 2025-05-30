@@ -140,7 +140,7 @@ private:
 	}
 
 	inline void StandardMesh::addOneBuffer(unsigned int id_attribute,unsigned int one_elt_size,
-	                                       float* data,std::string semantic,bool copy) {
+										   float* data,std::string semantic,bool copy) {
 		if (copy) {
 			float* tab = new float[one_elt_size*nb_elts];
 			memcpy(tab,data,one_elt_size*nb_elts*sizeof(float));
