@@ -16,8 +16,8 @@ class Sprite {
         void draw();
         StandardMesh* getMesh();
         glbasimac::GLBI_Texture* getTexture();
-
-    private:
+    
+    protected:
         StandardMesh* mesh;
         glbasimac::GLBI_Texture* texture {};
 };

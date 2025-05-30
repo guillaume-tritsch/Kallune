@@ -28,7 +28,6 @@ Sprite::Sprite(const std::string& filename, float sizex, float sizez) {
 		1.0f, 0.0f   // Top-right
 	};
 	mesh->addOneBuffer(0,2,coord,"coordinates",true);
-	// rect->addOneBuffer(1,3,normals,"normals",true);
 	mesh->addOneBuffer(2,2,uvs_rect,"uvs",true);
 
 	mesh->createVAO();
