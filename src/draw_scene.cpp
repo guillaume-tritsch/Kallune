@@ -67,7 +67,22 @@ void drawScene()
 			myEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y, 0.0f));
 			myEngine.updateMvMatrix();
 
-			tileset[tileType]->draw();
+			if (tileType == 0)
+			{
+				// Tuile de base
+				tileset[tileType]->draw();
+
+				// Tuile empilée au-dessus
+				myEngine.mvMatrixStack.pushMatrix();
+				myEngine.mvMatrixStack.addTranslation(Vector3D(0.0f, 0.115f, 0.0f)); // montée d'une "hauteur"
+				myEngine.updateMvMatrix();
+				tileset[tileType]->draw();
+				myEngine.mvMatrixStack.popMatrix();
+			}
+			else
+			{
+				tileset[tileType]->draw();
+			}
 
 			myEngine.mvMatrixStack.popMatrix();
 		}
