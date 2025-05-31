@@ -11,15 +11,10 @@ using namespace glbasimac;
 /* OpenGL Engine */
 extern GLBI_Engine myEngine;
 
-void initScene();
+class GameScene {
+    public:
+        GameScene();
+        ~GameScene() = default;
 
-void drawFrame();
-
-void drawBase();
-
-void drawArm();
-
-void drawPan();
-
-void drawScene();
-
+        void draw();
+};
