@@ -3,6 +3,9 @@
 #include "interactions/interactions.hpp"
 #include "utils/scene.hpp"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 Scene currentScene {Scene::Menu};
 
 void setScene(Scene newScene) {

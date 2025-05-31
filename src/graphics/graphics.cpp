@@ -1,16 +1,13 @@
 #define GLFW_INCLUDE_NONE
-#include "graphics/scenes/game_scene.hpp"
 #include "tools/matrix_stack.hpp"
 #include <iostream>
 #include <cmath>
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
 #include "graphics.hpp"
 
 /* Window size */
 
-int WINDOW_WIDTH = 800;
-int WINDOW_HEIGHT = 800;
+int WINDOW_WIDTH = 1080;
+int WINDOW_HEIGHT = 720;
 
 using namespace glbasimac;
 
@@ -100,6 +97,8 @@ Graphics::Graphics()
     // Make the window's context current
     glfwMakeContextCurrent(window);
 
+    glfwSetWindowAspectRatio(window, 16, 9);
+
     // Intialize glad (loads the OpenGL functions)
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -115,6 +114,9 @@ Graphics::Graphics()
     onWindowResized(window, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     glfwSetKeyCallback(window, key_callback);
+
+    game_scene = new GameScene();
+    menu_scene = new MenuScene();
 }
 
 void Graphics::render(Scene currentScene) {
@@ -129,10 +131,10 @@ void Graphics::render(Scene currentScene) {
 
         switch(currentScene) {
             case Scene::Menu:
-                // menu_scene::drawScene();
+                menu_scene->draw();
                 break;
             case Scene::Playing:
-                game_scene.draw();
+                game_scene->draw();
                 break;
             case Scene::GameOver:
                 // gameover_scene::drawScene();

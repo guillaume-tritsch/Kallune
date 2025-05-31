@@ -1,9 +1,11 @@
 #pragma once
+
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "utils/scene.hpp"
-#include "../logic/game.hpp"
-#include "./scenes/game_scene.hpp"
+#include "logic/game.hpp"
+#include "graphics/scenes/game_scene.hpp"
+#include "graphics/scenes/menu_scene.hpp"
 
 class Graphics {
 public:
@@ -26,5 +28,6 @@ public:
 
 private:
     GLFWwindow *window {};
-    GameScene game_scene {GameScene()};
+    GameScene *game_scene {};
+    MenuScene *menu_scene {};
 };
