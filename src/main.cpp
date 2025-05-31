@@ -1,4 +1,3 @@
-#include "GLFW/glfw3.h"
 #include "logic/game.hpp"
 #include "graphics/graphics.hpp"
 #include "interactions/interactions.hpp"
@@ -21,7 +20,7 @@ int main() {
         graphics.render(currentScene);
     }
 
-    glfwTerminate();
+    graphics.close();
 
     return 0;
 }

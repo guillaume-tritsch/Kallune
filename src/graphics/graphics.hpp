@@ -1,4 +1,6 @@
 #pragma once
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
 #include "utils/scene.hpp"
 #include "../logic/game.hpp"
 #include "./scenes/game_scene.hpp"

@@ -1,6 +1,4 @@
 #define GLFW_INCLUDE_NONE
-#include "GLFW/glfw3.h"
-#include "glad/glad.h"
 #include "graphics/scenes/game_scene.hpp"
 #include "tools/matrix_stack.hpp"
 #include <iostream>
@@ -156,6 +154,10 @@ void Graphics::render(Scene currentScene) {
             glfwWaitEventsTimeout(FRAMERATE_IN_SECONDS - elapsedTime);
             elapsedTime = glfwGetTime() - startTime;
         }
+}
+
+void Graphics::update(Game game) {
+
 }
 
 bool Graphics::shouldClose() {
