@@ -1,7 +1,7 @@
 #include "menu_scene.hpp"
 
 MenuScene::MenuScene() {
-    background = new AnimatedSprite("menu/shorter-animation.png", 1.0f, 1.0f, 54, 1, 15);
+    background = new AnimatedSprite("menu/background-sprite.png", 6.0f, 6.0f, 7, 8, 15);
 }
 
 void MenuScene::draw() {
