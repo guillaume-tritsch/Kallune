@@ -12,6 +12,7 @@ using namespace glbasimac;
 
 /* OpenGL Engine */
 extern GLBI_Engine myEngine;
+extern double mouseX, mouseY;
 
 class MenuScene {
     public:
@@ -22,4 +23,5 @@ class MenuScene {
 
     private:
         AnimatedSprite *background {};
+        Sprite *cursorSprite {};
 };

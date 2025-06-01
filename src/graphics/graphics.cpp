@@ -9,6 +9,8 @@
 int WINDOW_WIDTH = 1080;
 int WINDOW_HEIGHT = 720;
 
+double mouseX, mouseY;
+
 using namespace glbasimac;
 
 /* Minimal time wanted between two images */
@@ -122,6 +124,9 @@ Graphics::Graphics()
 void Graphics::render(Scene currentScene) {
     /* Get time (in second) at loop beginning */
         double startTime = glfwGetTime();
+
+        /*get the mouse position*/
+        glfwGetCursorPos(window, &mouseX, &mouseY);
 
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

@@ -19,8 +19,6 @@ AnimatedSprite *boar{};
 AnimatedSprite *stag{};
 AnimatedSprite *wolf{};
 
-Sprite *cursorSprite = {};
-
 void generateMap()
 {
 	std::srand(std::time(nullptr));
@@ -45,8 +43,6 @@ GameScene::GameScene() {
 	boar = new AnimatedSprite("critters/boar/boar_SE_run_sheet.png", 0.6f, 0.4f, 2, 2, 20);
 	stag = new AnimatedSprite("critters/stag/critter_stag_SE_walk.png", 0.7f, 0.7f, 11, 1, 30);
 	wolf = new AnimatedSprite("critters/wolf/wolf-run.png", 1.0f, 1.0f, 8, 4, 30);
-
-	cursorSprite = new Sprite("cursors/crusor.png", 0.1f, 0.1f);
 
 	generateMap();
 }
@@ -122,13 +118,4 @@ void GameScene::draw()
 	myEngine.mvMatrixStack.popMatrix();
 	myEngine.mvMatrixStack.popMatrix();
 
-	// Draw the cursor
-
-	myEngine.mvMatrixStack.pushMatrix();
-	myEngine.mvMatrixStack.addTranslation(Vector3D(worldX, worldY, 0.0f));
-	myEngine.updateMvMatrix();
-
-	cursorSprite->draw();
-
-	myEngine.mvMatrixStack.popMatrix();
 }
