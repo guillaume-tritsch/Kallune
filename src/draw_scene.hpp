@@ -10,6 +10,12 @@ using namespace glbasimac;
 
 /* OpenGL Engine */
 extern GLBI_Engine myEngine;
+extern double mouseX, mouseY;
+extern double worldX, worldY;
+
+extern int WINDOW_WIDTH, WINDOW_HEIGHT;
+extern float viewWidth, viewHeight;
+
 
 void initScene();
 

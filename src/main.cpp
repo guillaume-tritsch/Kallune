@@ -12,8 +12,13 @@
 
 int WINDOW_WIDTH = 800;
 int WINDOW_HEIGHT = 800;
+double mouseX, mouseY;
+double worldX, worldY;
 
-bool hasWindowBeenFixed=false;
+float viewWidth;
+float viewHeight;
+
+bool hasWindowBeenFixed = false;
 
 using namespace glbasimac;
 
@@ -38,20 +43,21 @@ void onWindowResized(GLFWwindow *, int width, int height)
     float viewWidth = GL_VIEW_SIZE;
     float viewHeight = GL_VIEW_SIZE;
 
-    if (aspectRatio > 1.0f) {
+    if (aspectRatio > 1.0f)
+    {
         viewWidth = GL_VIEW_SIZE * aspectRatio;
-    } else {
+    }
+    else
+    {
         viewHeight = GL_VIEW_SIZE / aspectRatio;
     }
 
     myEngine.set2DProjection(
         -viewWidth / 2.0f, viewWidth / 2.0f,
-        -viewHeight / 2.0f, viewHeight / 2.0f
-    );
+        -viewHeight / 2.0f, viewHeight / 2.0f);
 
     hasWindowBeenFixed = false;
 };
-
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
@@ -70,19 +76,19 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 
 int main()
 {
+
     // Set error callback
-    glfwSetErrorCallback( []( int, const char* desc )
-    {
+    glfwSetErrorCallback([](int, const char *desc)
+                         {
         std::cerr << "GLFW Error: " << desc << "\n";
-        std::exit( EXIT_FAILURE );
-    } );
+        std::exit( EXIT_FAILURE ); });
 
     // Initialize the library
     if (!glfwInit())
     {
         return -1;
     }
-    
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -104,6 +110,9 @@ int main()
 
     // Make the window's context current
     glfwMakeContextCurrent(window);
+
+    // hide the mouse cursor
+    // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
     // Intialize glad (loads the OpenGL functions)
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -134,6 +143,13 @@ int main()
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glfwGetCursorPos(window, &mouseX, &mouseY);
+        viewWidth = GL_VIEW_SIZE * (aspectRatio > 1.0f ? aspectRatio : 1.0f);
+        viewHeight = GL_VIEW_SIZE / (aspectRatio < 1.0f ? aspectRatio : 1.0f);
+
+        // Conversion pixel écran → coordonnées monde OpenGL
+        float worldX = ((float)mouseX / WINDOW_WIDTH) * viewWidth - viewWidth / 2.0f;
+        float worldY = ((WINDOW_HEIGHT - (float)mouseY) / WINDOW_HEIGHT) * viewHeight - viewHeight / 2.0f;
 
         drawScene();
 
@@ -141,9 +157,10 @@ int main()
         glfwSwapBuffers(window);
 
         /* macOS specific fix */
-        if(!hasWindowBeenFixed){
-            hasWindowBeenFixed=true;
-            glfwSetWindowPos(window,0,0);
+        if (!hasWindowBeenFixed)
+        {
+            hasWindowBeenFixed = true;
+            glfwSetWindowPos(window, 0, 0);
         }
 
         /* Poll for and process events */
@@ -163,8 +180,7 @@ int main()
     return 0;
 }
 
-
-// MAP GENERATION 
+// MAP GENERATION
 
 // void printMap(CellularAutomaton &automaton)
 // {

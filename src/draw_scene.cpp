@@ -14,10 +14,12 @@ const int MAP_HEIGHT = 10;
 
 int map[MAP_HEIGHT][MAP_WIDTH];
 
-AnimatedSprite* badger {};
-AnimatedSprite* boar {};
-AnimatedSprite* stag {};
-AnimatedSprite* wolf {};
+AnimatedSprite *badger{};
+AnimatedSprite *boar{};
+AnimatedSprite *stag{};
+AnimatedSprite *wolf{};
+
+Sprite *cursorSprite = {};
 
 void generateMap()
 {
@@ -45,6 +47,8 @@ void initScene()
 	stag = new AnimatedSprite("critters/stag/critter_stag_SE_walk.png", 0.7f, 0.7f, 11, 1, 30);
 	wolf = new AnimatedSprite("critters/wolf/wolf-run.png", 1.0f, 1.0f, 8, 4, 30);
 
+	cursorSprite = new Sprite("cursors/crusor.png", 0.1f, 0.1f);
+
 	generateMap();
 }
 
@@ -69,7 +73,7 @@ void drawScene()
 			if (y < 0 || y >= MAP_HEIGHT)
 				continue;
 
-			int tileType = (map[y][x] == 0) ? 0 : 11;
+			int tileType = (map[y][x] == 0) ? 21 : 11;
 
 			float iso_x = (x - y) * 0.22f;
 			float iso_y = (x + y) * 0.115f;
@@ -99,39 +103,48 @@ void drawScene()
 		}
 	}
 
+	myEngine.mvMatrixStack.pushMatrix();
+	myEngine.mvMatrixStack.addHomothety(Vector3D(0.4f, 0.4f, 0.4f));
+	// badger
+	myEngine.mvMatrixStack.pushMatrix();
+	myEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, -1.5f, 0.0f));
+	myEngine.updateMvMatrix();
+	badger->update(1.0f / 60.0f);
+	badger->draw();
+	myEngine.mvMatrixStack.popMatrix();
+
+	// boar
+	myEngine.mvMatrixStack.pushMatrix();
+	myEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, -1.5f, 0.0f));
+	myEngine.updateMvMatrix();
+	boar->update(1.0f / 60.0f);
+	boar->draw();
+	myEngine.mvMatrixStack.popMatrix();
+
+	// stag
+	myEngine.mvMatrixStack.pushMatrix();
+	myEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, 1.5f, 0.0f));
+	myEngine.updateMvMatrix();
+	stag->update(1.0f / 60.0f);
+	stag->draw();
+	myEngine.mvMatrixStack.popMatrix();
+
+	// wolf
+	myEngine.mvMatrixStack.pushMatrix();
+	myEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, 1.5f, 0.0f));
+	myEngine.updateMvMatrix();
+	wolf->update(1.0f / 60.0f);
+	wolf->draw();
+	myEngine.mvMatrixStack.popMatrix();
+	myEngine.mvMatrixStack.popMatrix();
+
+	// Draw the cursor
 
 	myEngine.mvMatrixStack.pushMatrix();
-		myEngine.mvMatrixStack.addHomothety(Vector3D(0.4f, 0.4f, 0.4f));
-		// badger
-		myEngine.mvMatrixStack.pushMatrix();
-			myEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, -1.5f, 0.0f));
-			myEngine.updateMvMatrix();
-			badger->update(1.0f / 60.0f);
-			badger->draw();
-		myEngine.mvMatrixStack.popMatrix();
+	myEngine.mvMatrixStack.addTranslation(Vector3D(worldX, worldY, 0.0f));
+	myEngine.updateMvMatrix();
 
-		// boar
-		myEngine.mvMatrixStack.pushMatrix();
-			myEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, -1.5f, 0.0f));
-			myEngine.updateMvMatrix();
-			boar->update(1.0f / 60.0f);
-			boar->draw();
-		myEngine.mvMatrixStack.popMatrix();
+	cursorSprite->draw();
 
-		// stag
-		myEngine.mvMatrixStack.pushMatrix();
-			myEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, 1.5f, 0.0f));
-			myEngine.updateMvMatrix();
-			stag->update(1.0f / 60.0f);
-			stag->draw();
-		myEngine.mvMatrixStack.popMatrix();
-
-		// wolf
-		myEngine.mvMatrixStack.pushMatrix();
-			myEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, 1.5f, 0.0f));
-			myEngine.updateMvMatrix();
-			wolf->update(1.0f / 60.0f);
-			wolf->draw();
-		myEngine.mvMatrixStack.popMatrix();
 	myEngine.mvMatrixStack.popMatrix();
 }
