@@ -4,9 +4,8 @@
 #include "glbasimac/glbi_convex_2D_shape.hpp"
 #include "glbasimac/glbi_texture.hpp"
 #include "tools/basic_mesh.hpp"
-#include <stb_image.h>
 #include <string>
-
+#include <stb_image.h>
 
 class Sprite {
     public:

@@ -17,15 +17,10 @@ extern int WINDOW_WIDTH, WINDOW_HEIGHT;
 extern float viewWidth, viewHeight;
 
 
-void initScene();
+class GameScene {
+    public:
+        GameScene();
+        ~GameScene() = default;
 
-void drawFrame();
-
-void drawBase();
-
-void drawArm();
-
-void drawPan();
-
-void drawScene();
-
+        void draw();
+};

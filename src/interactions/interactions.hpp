@@ -1,0 +1,4 @@
+class Interactions {
+public:
+    Interactions();
+};

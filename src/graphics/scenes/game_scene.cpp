@@ -1,8 +1,8 @@
-#include "draw_scene.hpp"
+#include "game_scene.hpp"
 #include <tuple>
 #include <stb_image.h>
-#include "graphics/sprite.hpp"
-#include "graphics/animatedSprite.hpp"
+#include "../elements/sprite.hpp"
+#include "../elements/animatedSprite.hpp"
 #include <iomanip>
 #include <sstream>
 
@@ -33,8 +33,7 @@ void generateMap()
 	}
 }
 
-void initScene()
-{
+GameScene::GameScene() {
 	for (int i = 0; i < 114; ++i)
 	{
 		std::ostringstream ss;
@@ -52,7 +51,7 @@ void initScene()
 	generateMap();
 }
 
-void drawScene()
+void GameScene::draw()
 {
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -73,31 +72,20 @@ void drawScene()
 			if (y < 0 || y >= MAP_HEIGHT)
 				continue;
 
+<<<<<<< HEAD:src/draw_scene.cpp
 			int tileType = (map[y][x] == 0) ? 21 : 11;
+=======
+			int tileType = (map[y][x] == 0) ? 5 : 22;
+>>>>>>> 64e39608d889874fb350056b54e5912b46648de7:src/graphics/scenes/game_scene.cpp
 
 			float iso_x = (x - y) * 0.22f;
 			float iso_y = (x + y) * 0.115f;
 
 			myEngine.mvMatrixStack.pushMatrix();
-			myEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y - 1.0f, 0.0f));
+			myEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y - 1.1f, 0.0f));
 			myEngine.updateMvMatrix();
 
-			if (tileType == 0)
-			{
-				// Tuile de base
-				tileset[tileType]->draw();
-
-				// Tuile empilée au-dessus
-				myEngine.mvMatrixStack.pushMatrix();
-				myEngine.mvMatrixStack.addTranslation(Vector3D(0.0f, 0.115f, 0.0f)); // montée d'une "hauteur"
-				myEngine.updateMvMatrix();
-				tileset[tileType]->draw();
-				myEngine.mvMatrixStack.popMatrix();
-			}
-			else
-			{
-				tileset[tileType]->draw();
-			}
+			tileset[tileType]->draw();
 
 			myEngine.mvMatrixStack.popMatrix();
 		}
