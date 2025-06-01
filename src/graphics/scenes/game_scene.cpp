@@ -72,11 +72,7 @@ void GameScene::draw()
 			if (y < 0 || y >= MAP_HEIGHT)
 				continue;
 
-<<<<<<< HEAD:src/draw_scene.cpp
-			int tileType = (map[y][x] == 0) ? 21 : 11;
-=======
 			int tileType = (map[y][x] == 0) ? 5 : 22;
->>>>>>> 64e39608d889874fb350056b54e5912b46648de7:src/graphics/scenes/game_scene.cpp
 
 			float iso_x = (x - y) * 0.22f;
 			float iso_y = (x + y) * 0.115f;
