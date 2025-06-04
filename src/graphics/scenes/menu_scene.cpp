@@ -1,8 +1,10 @@
 #include "menu_scene.hpp"
 
-MenuScene::MenuScene() {
+MenuScene::MenuScene()
+{
     background = new AnimatedSprite("menu/background-sprite.png", 6.0f, 6.0f, 7, 8, 15);
     cursorSprite = new Sprite("cursors/crusor.png", 0.1f, 0.1f);
+    cursorAnimatedSprite = new AnimatedSprite("cursors/animated_cursor.png", 0.1f, 0.1f, 3, 1, 15);
 }
 
 void MenuScene::draw()
@@ -27,11 +29,23 @@ void MenuScene::draw()
     background->draw();
     myEngine.mvMatrixStack.popMatrix();
 
-    myEngine.mvMatrixStack.pushMatrix();
-    myEngine.mvMatrixStack.addTranslation(Vector3D(mouseX / 100, mouseY / 100, 0.0f));
-    myEngine.updateMvMatrix();
+    // Draw the cursor at the end
+    if (cursorClicked)
+    {
+        cursorAnimatedSprite->update(1.0f / 60.0f);
+        myEngine.mvMatrixStack.pushMatrix();
+        myEngine.mvMatrixStack.addTranslation(Vector3D(x_world, y_world, 0.0f));
+        myEngine.updateMvMatrix();
+        cursorAnimatedSprite->draw();
+        myEngine.mvMatrixStack.popMatrix();
+    }
+    else
+    {
+        myEngine.mvMatrixStack.pushMatrix();
+        myEngine.mvMatrixStack.addTranslation(Vector3D(x_world, y_world, 0.0f));
+        myEngine.updateMvMatrix();
+        cursorSprite->draw();
+        myEngine.mvMatrixStack.popMatrix();
+    }
 
-    cursorSprite->draw();
-
-    myEngine.mvMatrixStack.popMatrix();
 }

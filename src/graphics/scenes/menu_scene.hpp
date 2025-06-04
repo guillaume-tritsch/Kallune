@@ -13,15 +13,21 @@ using namespace glbasimac;
 /* OpenGL Engine */
 extern GLBI_Engine myEngine;
 extern double mouseX, mouseY;
+extern double x_world;
+extern double y_world;
+extern bool cursorClicked;
+extern double cursorClickTime;
 
-class MenuScene {
-    public:
-        MenuScene();
-        ~MenuScene() = default;
+class MenuScene
+{
+public:
+    MenuScene();
+    ~MenuScene() = default;
 
-        void draw();
+    void draw();
 
-    private:
-        AnimatedSprite *background {};
-        Sprite *cursorSprite {};
+private:
+    AnimatedSprite *background{};
+    Sprite *cursorSprite{};
+    AnimatedSprite *cursorAnimatedSprite{};
 };

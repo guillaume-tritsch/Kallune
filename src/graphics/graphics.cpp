@@ -9,7 +9,14 @@
 int WINDOW_WIDTH = 1080;
 int WINDOW_HEIGHT = 720;
 
+
+//cursor settings
+bool cursorClicked = false;
+double cursorClickTime = 0.0;
+const double CURSOR_ANIMATION_DURATION = 0.5;
+
 double mouseX, mouseY;
+double x_world, y_world;
 
 using namespace glbasimac;
 
@@ -25,27 +32,36 @@ void onError(int error, const char *description)
 
 static const float GL_VIEW_SIZE = 6.0f;
 
+float viewWidth = GL_VIEW_SIZE;
+float viewHeight = GL_VIEW_SIZE;
+
+
+
 void onWindowResized(GLFWwindow *, int width, int height)
 {
     std::cout << "Window resized to " << width << "x" << height << std::endl;
+    
+    WINDOW_WIDTH = width;
+    WINDOW_HEIGHT = height;
+    
     aspectRatio = width / (float)height;
     glViewport(0, 0, width, height);
 
-    float viewWidth = GL_VIEW_SIZE;
-    float viewHeight = GL_VIEW_SIZE;
-
-    if (aspectRatio > 1.0f) {
+    if (aspectRatio > 1.0f)
+    {
         viewWidth = GL_VIEW_SIZE * aspectRatio;
-    } else {
+        viewHeight = GL_VIEW_SIZE;
+    }
+    else
+    {
+        viewWidth = GL_VIEW_SIZE;
         viewHeight = GL_VIEW_SIZE / aspectRatio;
     }
 
     myEngine.set2DProjection(
         -viewWidth / 2.0f, viewWidth / 2.0f,
-        -viewHeight / 2.0f, viewHeight / 2.0f
-    );
-};
-
+        -viewHeight / 2.0f, viewHeight / 2.0f);
+}
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
@@ -62,21 +78,34 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     }
 }
 
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+    {
+        cursorClicked = true;
+    }
+    else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+    {
+        cursorClicked = false;
+        cursorClickTime = glfwGetTime();
+    }
+}
+
+
 Graphics::Graphics()
 {
     // Set error callback
-    glfwSetErrorCallback( []( int, const char* desc )
-    {
+    glfwSetErrorCallback([](int, const char *desc)
+                         {
         std::cerr << "GLFW Error: " << desc << "\n";
-        std::exit( EXIT_FAILURE );
-    } );
+        std::exit( EXIT_FAILURE ); });
 
     // Initialize the library
     if (!glfwInit())
     {
         throw std::runtime_error("Failed to initialize GLFW");
     }
-    
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -95,11 +124,13 @@ Graphics::Graphics()
 
     // -- Callbacks --
     glfwSetWindowSizeCallback(window, onWindowResized);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
+
 
     // Make the window's context current
     glfwMakeContextCurrent(window);
 
-    glfwSetWindowAspectRatio(window, 16, 9);
+    // glfwSetWindowAspectRatio(window, 16, 9);
 
     // Intialize glad (loads the OpenGL functions)
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -121,56 +152,66 @@ Graphics::Graphics()
     menu_scene = new MenuScene();
 }
 
-void Graphics::render(Scene currentScene) {
+void Graphics::render(Scene currentScene)
+{
     /* Get time (in second) at loop beginning */
-        double startTime = glfwGetTime();
+    double startTime = glfwGetTime();
 
-        /*get the mouse position*/
-        glfwGetCursorPos(window, &mouseX, &mouseY);
+    /*Get the mouse position*/
+    glfwGetCursorPos(window, &mouseX, &mouseY);
 
-        /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    x_world = (mouseX / WINDOW_WIDTH) * viewWidth - viewWidth / 2.0f;
+    y_world = (1.0 - mouseY / WINDOW_HEIGHT) * viewHeight - viewHeight / 2.0f;
 
-        switch(currentScene) {
-            case Scene::Menu:
-                menu_scene->draw();
-                break;
-            case Scene::Playing:
-                game_scene->draw();
-                break;
-            case Scene::GameOver:
-                // gameover_scene::drawScene();
-                break;
-                
-        }
+    // Hide the cursor
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window);
 
-        /* Poll for and process events */
-        glfwPollEvents();
+    /* Render here */
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        /* Elapsed time computation from loop begining */
-        double elapsedTime = glfwGetTime() - startTime;
-        /* If to few time is spend vs our wanted FPS, we wait */
-        while (elapsedTime < FRAMERATE_IN_SECONDS)
-        {
-            glfwWaitEventsTimeout(FRAMERATE_IN_SECONDS - elapsedTime);
-            elapsedTime = glfwGetTime() - startTime;
-        }
+    switch (currentScene)
+    {
+    case Scene::Menu:
+        menu_scene->draw();
+        break;
+    case Scene::Playing:
+        game_scene->draw();
+        break;
+    case Scene::GameOver:
+        // gameover_scene::drawScene();
+        break;
+    }
+
+    /* Swap front and back buffers */
+    glfwSwapBuffers(window);
+
+    /* Poll for and process events */
+    glfwPollEvents();
+
+    /* Elapsed time computation from loop begining */
+    double elapsedTime = glfwGetTime() - startTime;
+    /* If to few time is spend vs our wanted FPS, we wait */
+    while (elapsedTime < FRAMERATE_IN_SECONDS)
+    {
+        glfwWaitEventsTimeout(FRAMERATE_IN_SECONDS - elapsedTime);
+        elapsedTime = glfwGetTime() - startTime;
+    }
 }
 
-void Graphics::update(Game game) {
-
+void Graphics::update(Game game)
+{
 }
 
-bool Graphics::shouldClose() {
+bool Graphics::shouldClose()
+{
     return glfwWindowShouldClose(window);
 }
 
-void Graphics::close() {
+void Graphics::close()
+{
     glfwTerminate();
 }
