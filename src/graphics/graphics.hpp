@@ -6,6 +6,8 @@
 #include "logic/game.hpp"
 #include "graphics/scenes/game_scene.hpp"
 #include "graphics/scenes/menu_scene.hpp"
+#include "graphics/scenes/menu_scene.hpp"
+#include "graphics/scenes/end_scene.hpp"
 
 class Graphics {
 public:
@@ -30,4 +32,5 @@ private:
     GLFWwindow *window {};
     GameScene *game_scene {};
     MenuScene *menu_scene {};
+    EndScene *end_scene {};
 };

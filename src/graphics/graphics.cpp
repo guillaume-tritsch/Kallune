@@ -150,6 +150,7 @@ Graphics::Graphics()
 
     game_scene = new GameScene();
     menu_scene = new MenuScene();
+    end_scene = new EndScene();
 }
 
 void Graphics::render(Scene currentScene)
@@ -182,7 +183,7 @@ void Graphics::render(Scene currentScene)
         game_scene->draw();
         break;
     case Scene::GameOver:
-        // gameover_scene::drawScene();
+        end_scene->draw();
         break;
     }
 

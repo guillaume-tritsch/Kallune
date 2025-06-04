@@ -6,7 +6,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-Scene currentScene {Scene::Menu};
+Scene currentScene {Scene::GameOver};
 
 void setScene(Scene newScene) {
     currentScene = newScene;
