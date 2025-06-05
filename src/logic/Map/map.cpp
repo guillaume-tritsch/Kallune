@@ -45,3 +45,11 @@ bool Map::isWalkable(int tileX, int tileY)
     float speed = getSpeed(map[tileX][tileY]);
     return speed > 0.0f;
 }
+
+void Map::removeFlower(int tileX, int tileY) {
+        if (tileX < 0 || tileY < 0 || tileX >= width || tileY >= height)
+            return;
+        if (map[tileX][tileY] == MapType::FLOWER) {
+            map[tileX][tileY] = MapType::GRASS; 
+        }
+    }

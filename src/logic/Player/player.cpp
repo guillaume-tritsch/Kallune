@@ -1,8 +1,9 @@
 #include "player.hpp"
 #include <cmath>
+#include <logic/Map/map.hpp>
 
-Player::Player(float startX, float startY)
-    : x(startX), y(startY), speed(2.5f), tileSize(1.0f), alive(true)
+Player::Player(float startX, float startY, Map map)
+    : map(std::move(map)), x(startX), y(startY), speed(2.5f), tileSize(1.0f), alive(true), score(0)
 {
 }
 
@@ -15,6 +16,18 @@ void Player::move(float dirX, float dirY, float deltaTime)
         
         x += dirX * speed * deltaTime;
         y += dirY * speed * deltaTime;
+    }
+
+    int tileX = getTileX();
+    int tileY = getTileY();
+    if (tileX < 0 || tileY < 0) {
+        return;
+    }
+    if (tileX >= 0 && tileY >= 0) {
+        if (map.getMap()[tileX][tileY] == MapType::FLOWER) { 
+            addScore(1);
+            map.removeFlower(tileX, tileY);
+        }
     }
 }
 
@@ -57,4 +70,14 @@ bool Player::isAlive() const
 float Player::getSpeed() const
 {
     return speed;
+}
+
+int Player::getScore() const
+{
+    return score;
+}
+
+void Player::addScore(int points)
+{
+    score += points;
 }

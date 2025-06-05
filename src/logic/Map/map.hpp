@@ -11,17 +11,14 @@ class Map
 public:
     Map();
 
-    // Retourne une copie de la carte des vitesses
     vector<vector<float>> getSpeedMap() const;
 
-    // Donne la vitesse correspondant au type de case
     float getSpeed(MapType type) const;
 
-    // Accesseurs pour la taille
     int getWidth() const { return width; }
     int getHeight() const { return height; }
 
-    // Accès à la map (en lecture seule)
+    void removeFlower(int tileX, int tileY);
     const vector<vector<MapType>>& getMap() const { return map; }
     bool isWalkable(int tileX, int tileY);
 private:

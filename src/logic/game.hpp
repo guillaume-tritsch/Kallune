@@ -37,6 +37,8 @@ public:
     float getPlayerX() const;
     float getPlayerY() const;
 
+    int getScore() const { return player.getScore(); }
+
     std::vector<EntityInfo> getEntitiesInfo() const;
     std::set<std::pair<int, int>> occupiedTiles;
 

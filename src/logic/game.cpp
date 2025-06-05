@@ -7,7 +7,7 @@
 
 
 Game::Game()
-    : map(), flowField(map.getWidth(), map.getHeight()), player(50.0f, 50.0f)
+    : map(), flowField(map.getWidth(), map.getHeight()), player(50.0f, 50.0f, map)
 {
 
     std::srand(static_cast<unsigned>(std::time(nullptr)));
@@ -45,7 +45,6 @@ void Game::handlePlayerMovement(const InputState& inputState, float deltaTime)
         dirX += 1.0f;
     }
 
-    // Pas de mouvement
     if (dirX == 0.0f && dirY == 0.0f)
         return;
 
@@ -55,12 +54,10 @@ void Game::handlePlayerMovement(const InputState& inputState, float deltaTime)
     int tileX = static_cast<int>(nextX);
     int tileY = static_cast<int>(nextY);
 
-    // Collision simple : bloquer si la case est non marchable
     if (map.isWalkable(tileX, tileY)) {
         player.move(dirX, dirY, deltaTime);
     }
 }
-
 
 void Game::update(float deltaTime, InputState inputState)
 {
