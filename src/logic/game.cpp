@@ -35,14 +35,14 @@ float Game::getPlayerY() const {
 
 std::vector<Game::EntityInfo> Game::getEntitiesInfo() const {
     std::vector<EntityInfo> infos;
-    for (const auto& e : entities) {
-        infos.push_back(EntityInfo{
-            e->getX(),
-            e->getY(),
-            e->isAlive(),
-            e->isAgressive()
-        });
-    }
+    // for (const auto& e : entities) {
+    //     infos.push_back(EntityInfo{
+    //         e->getX(),
+    //         e->getY(),
+    //         e->isAlive(),
+    //         e->isAgressive()
+    //     });
+    // }
     return infos;
 }
 
@@ -64,17 +64,17 @@ void Game::generateEntities(int countWolf, int countBoar, int countDeer) {
     for (int i = 0; i < countWolf; ++i) {
         auto wolf = std::make_unique<Wolf>(0, 0, &player, &flowField);
         placeEntityRandomly(wolf.get());
-        entities.push_back(std::move(wolf));
+        // entities.push_back(std::move(wolf));
     }
     for (int i = 0; i < countBoar; ++i) {
         auto boar = std::make_unique<Boar>(0, 0, &player, &flowField);
         placeEntityRandomly(boar.get());
-        entities.push_back(std::move(boar));
+        // entities.push_back(std::move(boar));
     }
     for (int i = 0; i < countDeer; ++i) {
         auto deer = std::make_unique<Deer>(0, 0, &player, &flowField);
         placeEntityRandomly(deer.get());
-        entities.push_back(std::move(deer));
+        // entities.push_back(std::move(deer));
     }
 }
 
@@ -114,8 +114,8 @@ void Game::updateFlowField() {
 }
 
 void Game::updateEntities(float deltaTime) {
-    for (auto& entity : entities) {
-        entity->decideBehavior(player);
-        entity->update(deltaTime);
-    }
+    // for (auto& entity : entities) {
+    //     entity->decideBehavior(player);
+    //     entity->update(deltaTime);
+    // }
 }
