@@ -8,8 +8,15 @@ MenuScene::MenuScene()
 
     // BUTTONS
     playButton = new Sprite("menu/play-button.png", 3.31f, 0.99f);
+    playButtonHover = new Sprite("menu/play-button-hover.png", 3.31f, 0.99f);
     settingsButton = new Sprite("menu/settings-button.png", 1.55f, 0.99f);
+    settingsButtonHover = new Sprite("menu/settings-button-hover.png", 1.55f, 0.99f);
     exitButton = new Sprite("menu/exit-button.png", 1.55f, 0.99f);
+    exitButtonHover = new Sprite("menu/exit-button-hover.png", 1.55f, 0.99f);
+}
+
+void MenuScene::update(InputState inputState) {
+    state.update(inputState);
 }
 
 void MenuScene::draw(double deltaTime)
@@ -41,18 +48,39 @@ void MenuScene::draw(double deltaTime)
     GameEngine.mvMatrixStack.pushMatrix();
         GameEngine.mvMatrixStack.addTranslation(Vector3D(-8.0f + 3.31f / 2 + 0.8f, -0.5f, 0.0f));
         GameEngine.updateMvMatrix();
-        playButton->draw();
+        switch(state.playButton) {
+            case ButtonState::HOVER:
+                playButtonHover->draw();
+                break;
+            default:
+                playButton->draw();
+                break;
+        }
     GameEngine.mvMatrixStack.popMatrix();
 
     GameEngine.mvMatrixStack.pushMatrix();
         GameEngine.mvMatrixStack.addTranslation(Vector3D(-8.0f + 1.55f / 2 + 0.8f, -1.75f, 0.0f));
         GameEngine.updateMvMatrix();
-        settingsButton->draw();
+        switch(state.settingsButton) {
+            case ButtonState::HOVER:
+                settingsButtonHover->draw();
+                break;
+            default:
+                settingsButton->draw();
+                break;
+        }
     GameEngine.mvMatrixStack.popMatrix();
 
     GameEngine.mvMatrixStack.pushMatrix();
         GameEngine.mvMatrixStack.addTranslation(Vector3D(-8.0f + 1.55f + 1.8f, -1.75f, 0.0f));
         GameEngine.updateMvMatrix();
-        exitButton->draw();
+        switch(state.exitButton) {
+            case ButtonState::HOVER:
+                exitButtonHover->draw();
+                break;
+            default:
+                exitButton->draw();
+                break;
+        }
     GameEngine.mvMatrixStack.popMatrix();
 }

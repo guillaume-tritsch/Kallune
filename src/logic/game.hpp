@@ -7,7 +7,7 @@
 #include "Entity/Entities/boar.hpp"
 #include "Entity/Entities/deer.hpp"
 #include "Entity/Entities/wolf.hpp"
-#include "input/input.hpp"
+#include "utils/state.hpp"
 
 #include <vector>
 #include <memory>
@@ -26,7 +26,7 @@ public:
     Game();
     ~Game();
 
-    void update(float deltaTime, Input input);
+    void update(float deltaTime, InputState input);
 
     float getPlayerX() const;
     float getPlayerY() const;

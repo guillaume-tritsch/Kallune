@@ -13,7 +13,7 @@ Game::Game()
     generateEntities(5, 3, 4);
 }
 
-void Game::update(float deltaTime, Input input)
+void Game::update(float deltaTime, InputState inputState)
 {
     updateFlowField();
 
@@ -42,6 +42,7 @@ std::vector<EntityInfo> Game::getEntitiesInfo() const
             e->isAggressive()
         });
     }
+
 
     return infos;
 }
@@ -129,9 +130,9 @@ void Game::updateFlowField()
 
 void Game::updateEntities(float deltaTime)
 {
-    for (auto &entity : entities)
-    {
-        entity->decideBehavior(player);
-        entity->update(deltaTime);
-    }
+    // for (auto &entity : entities)
+    // {
+    //     entity->decideBehavior(player);
+    //     entity->update(deltaTime);
+    // }
 }

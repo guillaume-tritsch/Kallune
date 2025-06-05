@@ -1,6 +1,6 @@
 
 #include "input/input.hpp"
-// #include "logic/game.hpp"
+#include "logic/game.hpp"
 #include "graphics/graphics.hpp"
 #include "utils/scene.hpp"
 
@@ -8,10 +8,6 @@
 #include "stb_image.h"
 
 Scene currentScene {Scene::Menu};
-
-void setScene(Scene newScene) {
-    currentScene = newScene;
-}
 
 int main() {
     Game            game {Game()};
@@ -27,10 +23,13 @@ int main() {
         double deltaTime = currentFrameTime - lastFrameTime;
         lastFrameTime = currentFrameTime;
 
-        input.update();
-        game.update(deltaTime, input);
-        graphics.update(game);
-        graphics.render(deltaTime, currentScene, input);
+        input.update(currentScene);
+
+        // add a gui class ?
+
+        game.update(deltaTime, input.state);
+        graphics.update(game, input.state);
+        graphics.render(deltaTime, currentScene, input.state);
     }
 
     graphics.close();

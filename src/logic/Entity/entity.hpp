@@ -24,13 +24,13 @@ public:
     int getTileX() const;
     int getTileY() const;
 
-    bool isAlive() const;        // ✅ Ajouté
-    bool isAggressive() const;    // true pour loup / sanglier
-    bool isCoward() const;       // true pour cerf
+    bool isAlive() const;
+    bool isAggressive() const;
+    bool isCoward() const;
 
-    void takeDamage(float dmg);  // ✅ Utile pour combat/attaque
-void setPlayer(const Player* p);
-void setPosition(float newX, float newY);
+    void takeDamage(float dmg); 
+    void setPlayer(const Player* p);
+    void setPosition(float newX, float newY);
 protected:
     float x, y;
     float speed = 1.5f;
