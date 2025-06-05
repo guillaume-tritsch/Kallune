@@ -14,17 +14,16 @@ using namespace std;
 class EntitiesGenerator
 {
 public:
-    EntitiesGenerator(FlowField* flowField, Player* player);
+    EntitiesGenerator(FlowField *flowField, Player *player);
+    ~EntitiesGenerator();
 
     void update(float deltaTime);
     void spawnWolf(int x, int y);
     void spawnBoar(int x, int y);
     void spawnDeer(int x, int y);
-const std::vector<std::unique_ptr<Entity>>& getEntities() const;
-
+    const std::vector<Entity *> &getEntities() const;
 private:
-std::vector<std::unique_ptr<Entity>> entities;
-    FlowField* flowField;
-    Player* player;
-
+    std::vector<Entity *> entities;
+    FlowField *flowField;
+    Player *player;
 };
