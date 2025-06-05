@@ -23,7 +23,7 @@ public:
 
     // Accès à la map (en lecture seule)
     const vector<vector<MapType>>& getMap() const { return map; }
-
+    bool isWalkable(int tileX, int tileY);
 private:
     vector<vector<MapType>> map;
     int width;

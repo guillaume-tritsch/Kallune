@@ -37,3 +37,11 @@ float Map::getSpeed(MapType type) const
         return 1.0f;
     }
 }
+
+bool Map::isWalkable(int tileX, int tileY)
+{
+    if (tileX < 0 || tileY < 0 || tileX >= width || tileY >= height)
+        return false;
+    float speed = getSpeed(map[tileX][tileY]);
+    return speed > 0.0f;
+}

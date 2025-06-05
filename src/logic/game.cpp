@@ -45,16 +45,20 @@ void Game::handlePlayerMovement(const InputState& inputState, float deltaTime)
         dirX += 1.0f;
     }
 
+    if (dirX == 0.0f && dirY == 0.0f)
+        return;
+
     float nextX = player.getX() + dirX * player.getSpeed() * deltaTime;
     float nextY = player.getY() + dirY * player.getSpeed() * deltaTime;
 
-    int nextTileX = static_cast<int>(nextX);
-    int nextTileY = static_cast<int>(nextY);
+    int tileX = static_cast<int>(nextX);
+    int tileY = static_cast<int>(nextY);
 
-    if (isWalkableTile(nextTileX, nextTileY)) {
+    if (map.isWalkable(tileX, tileY)) {
         player.move(dirX, dirY, deltaTime);
     }
 }
+
 
 
 void Game::update(float deltaTime, InputState inputState)
