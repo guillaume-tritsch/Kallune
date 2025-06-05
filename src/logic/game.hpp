@@ -12,6 +12,9 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
+#include <set>
+#include <utility>
+
 
 struct EntityInfo
 {
@@ -21,12 +24,11 @@ struct EntityInfo
     EntityType type;
 };
 
-
 class Game
 {
 public:
     Game();
-    ~Game();	
+    ~Game();
     Map map;
 
     void update(float deltaTime, InputState input);
@@ -35,6 +37,7 @@ public:
     float getPlayerY() const;
 
     std::vector<EntityInfo> getEntitiesInfo() const;
+    std::set<std::pair<int, int>> occupiedTiles;
 
     bool isKeyPressed(int keyCode) const;
 

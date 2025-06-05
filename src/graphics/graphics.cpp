@@ -185,9 +185,13 @@ void Graphics::update(Game game, InputState state, Router* router)
     case Scene::Settings:
         settings_scene->update(state, router);
         break;
-    
+
+    case Scene::Playing:
+        //game_scene->update(state, router, game);
+        break;
+
     default:
-        std::cerr << 'Euh y a un truc pas normal chef' << std::endl;
+        std::cerr << "Euh y a un truc pas normal chef" << std::endl;
         break;
     }
 }
