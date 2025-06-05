@@ -16,6 +16,9 @@ public:
 
     bool isAlive() const;
     void kill();
+
+    float getSpeed() const;
+    
 private:
     float x, y;               // position en unités
     float speed = 2.5f;       // vitesse en unités/seconde

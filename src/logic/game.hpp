@@ -46,6 +46,7 @@ private:
     Player player;
 
     std::vector<Entity *> entities;
+    void handlePlayerMovement(const InputState& inputState, float deltaTime);
 
     std::unordered_map<int, bool> keyStates;
 

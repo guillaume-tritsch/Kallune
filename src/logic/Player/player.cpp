@@ -53,3 +53,8 @@ bool Player::isAlive() const
 {
     return alive;
 }
+
+float Player::getSpeed() const
+{
+    return speed;
+}

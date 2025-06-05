@@ -27,8 +27,40 @@ Game::Game()
     generateEntities(5, 3, 4);
 }
 
+void Game::handlePlayerMovement(const InputState& inputState, float deltaTime)
+{
+    float dirX = 0.0f;
+    float dirY = 0.0f;
+
+    if (inputState.keyStates[GLFW_KEY_W] == GLFW_PRESS) {
+        dirY -= 1.0f;
+    }
+    if (inputState.keyStates[GLFW_KEY_S] == GLFW_PRESS) {
+        dirY += 1.0f;
+    }
+    if (inputState.keyStates[GLFW_KEY_A] == GLFW_PRESS) {
+        dirX -= 1.0f;
+    }
+    if (inputState.keyStates[GLFW_KEY_D] == GLFW_PRESS) {
+        dirX += 1.0f;
+    }
+
+    float nextX = player.getX() + dirX * player.getSpeed() * deltaTime;
+    float nextY = player.getY() + dirY * player.getSpeed() * deltaTime;
+
+    int nextTileX = static_cast<int>(nextX);
+    int nextTileY = static_cast<int>(nextY);
+
+    if (isWalkableTile(nextTileX, nextTileY)) {
+        player.move(dirX, dirY, deltaTime);
+    }
+}
+
+
 void Game::update(float deltaTime, InputState inputState)
 {
+    handlePlayerMovement(inputState, deltaTime); // ← Ajouté
+    
     updateFlowField();
 
     updateEntities(deltaTime);
