@@ -1,5 +1,7 @@
 #pragma once
 
+#include <logic/Map/map.hpp>
+
 class Player {
 public:
     Player(float startX, float startY, Map map);
