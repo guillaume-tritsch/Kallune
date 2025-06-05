@@ -46,12 +46,7 @@ int Player::getTileY() const
     return static_cast<int>(y / tileSize);
 }
 
-float Player::getHealth() const
-{
-    return health;
-}
-
 bool Player::isAlive() const
 {
-    return health > 0.0f;
+    return alive;
 }
