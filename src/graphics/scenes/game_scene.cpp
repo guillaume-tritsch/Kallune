@@ -71,6 +71,11 @@ void GameScene::draw(double deltaTime, Game game)
 			{
 				tileType = 66;
 			}
+			else if (carte[y][x] == MapType::FLOWER)
+			{
+				tileType = 4;
+			}
+
 			else if (carte[y][x] == MapType::WALL)
 			{
 				tileType = 2;
@@ -97,6 +102,16 @@ void GameScene::draw(double deltaTime, Game game)
 				GameEngine.updateMvMatrix();
 
 				tileset[tileType]->draw();
+
+				GameEngine.mvMatrixStack.popMatrix();
+			}
+			else if (carte[y][x] == MapType::FLOWER)
+			{
+				GameEngine.mvMatrixStack.pushMatrix();
+				GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y - 1.75f, 0.0f));
+				GameEngine.updateMvMatrix();
+
+				tileset[44]->draw();
 
 				GameEngine.mvMatrixStack.popMatrix();
 			}

@@ -82,6 +82,8 @@ Game::~Game()
         // delete entity;
     }
 }
+
+
 void Game::placeEntityRandomly(Entity *entity)
 {
     int w = map.getWidth();
@@ -103,6 +105,9 @@ void Game::placeEntityRandomly(Entity *entity)
     }
     entity->setPosition(w / 2.0f, h / 2.0f);
 }
+
+
+
 bool Game::isWalkableTile(int x, int y) const
 {
     if (x < 0 || y < 0 || x >= map.getWidth() || y >= map.getHeight())
