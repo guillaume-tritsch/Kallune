@@ -46,7 +46,9 @@ void GameScene::draw(double deltaTime, Game game)
 	glDepthMask(GL_FALSE);
 
 	GameEngine.mvMatrixStack.pushMatrix();
-	GameEngine.mvMatrixStack.addHomothety(Vector3D(0.2f, 0.2f, 0.2f));
+	std::cout << -game.getPlayerX() << "x" << -game.getPlayerY() << "y" << std::endl;
+	GameEngine.mvMatrixStack.addTranslation(Vector3D(-game.getPlayerX(), -game.getPlayerY(), 0.0f));
+	GameEngine.mvMatrixStack.addHomothety(Vector3D(0.5f, 0.5f, 0.5f));
 
 	// float z_index = 0.0f;
 	for (int layer = MAP_WIDTH + MAP_HEIGHT - 2; layer >= 0; --layer)
@@ -149,6 +151,12 @@ void GameScene::draw(double deltaTime, Game game)
 		}
 		GameEngine.mvMatrixStack.popMatrix();
 	}
+	GameEngine.mvMatrixStack.pushMatrix();
+	// GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, -1.5f, 0.0f));
+	GameEngine.updateMvMatrix();
+	badger->update(deltaTime);
+	badger->draw();
+	GameEngine.mvMatrixStack.popMatrix();
 
 	GameEngine.mvMatrixStack.popMatrix();
 	GameEngine.mvMatrixStack.popMatrix();
@@ -157,12 +165,6 @@ void GameScene::draw(double deltaTime, Game game)
 	// GameEngine.mvMatrixStack.addHomothety(Vector3D(0.4f, 0.4f, 0.4f));
 
 	// badger
-	// GameEngine.mvMatrixStack.pushMatrix();
-	// GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, -1.5f, 0.0f));
-	// GameEngine.updateMvMatrix();
-	// // badger->update(deltaTime);
-	// badger->draw();
-	// GameEngine.mvMatrixStack.popMatrix();
 
 	// // boar
 	// GameEngine.mvMatrixStack.pushMatrix();
