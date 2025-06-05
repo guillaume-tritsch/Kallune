@@ -1,8 +1,10 @@
 #include "deer.hpp"
+#include "utils/entityType.hpp"
 
 Deer::Deer(float startX, float startY) : Entity(startX, startY)
 {
     speed = 2.0f;
+    type = EntityType::DEER;
 }
 
 Deer::Deer(float startX, float startY, const Player *player, const FlowField *flowField)

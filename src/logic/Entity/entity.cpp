@@ -44,3 +44,7 @@ void Entity::setPosition(float newX, float newY) {
         x = newX;
         y = newY;
     }
+
+EntityType Entity::getType() const {
+    return type;
+}

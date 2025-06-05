@@ -1,4 +1,5 @@
 #include "wolf.hpp"
+#include "utils/entityType.hpp"
 
 Wolf::Wolf(float startX, float startY, const Player *player, const FlowField *flowField)
     : Entity(startX, startY)
@@ -6,6 +7,7 @@ Wolf::Wolf(float startX, float startY, const Player *player, const FlowField *fl
     this->player = player;
     this->flowField = flowField;
     speed = 2.5f;
+    type = EntityType::WOLF;
 }
 
 Wolf::Wolf(float startX, float startY) : Entity(startX, startY)

@@ -1,8 +1,10 @@
 #include "boar.hpp"
+#include "utils/entityType.hpp"
 
 Boar::Boar(float startX, float startY) : Entity(startX, startY)
 {
     speed = 1.2f; // Plus lent que le loup
+    type = EntityType::BOAR;
 }
 
 Boar::Boar(float startX, float startY, const Player *player, const FlowField *flowField)

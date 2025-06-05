@@ -8,7 +8,6 @@ Player::Player(float startX, float startY)
 
 void Player::move(float dirX, float dirY, float deltaTime)
 {
-    // Normaliser la direction pour éviter un déplacement plus rapide en diagonale
     float length = std::sqrt(dirX * dirX + dirY * dirY);
     if (length > 0.0f) {
         dirX /= length;

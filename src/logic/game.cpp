@@ -39,7 +39,8 @@ std::vector<EntityInfo> Game::getEntitiesInfo() const
             e->getX(),
             e->getY(),
             e->isAlive(),
-            e->isAggressive()
+            e->isAggressive(),
+            e->getType()
         });
     }
 
