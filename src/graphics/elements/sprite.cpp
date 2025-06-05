@@ -16,10 +16,10 @@ Sprite::Sprite(const std::string& filename, float sizex, float sizez) {
 	texture->setParameters(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	
 	mesh = new StandardMesh(4, GL_TRIANGLE_STRIP);
-	float coord[8] = {-sizex, -sizez,
-					  -sizex,  sizez,
-					   sizex, -sizez,
-					   sizex,  sizez};
+	float coord[8] = {-sizex/2, -sizez/2,
+					  -sizex/2,  sizez/2,
+					   sizex/2, -sizez/2,
+					   sizex/2,  sizez/2};
 
 	float uvs_rect[8] = {
 		0.0f, 1.0f,  // Bottom-left

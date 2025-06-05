@@ -11,7 +11,7 @@
 using namespace glbasimac;
 
 /* OpenGL Engine */
-extern GLBI_Engine myEngine;
+extern GLBI_Engine GameEngine;
 extern double mouseX, mouseY;
 extern double x_world;
 extern double y_world;
@@ -27,8 +27,6 @@ public:
     void draw();
 
 private:
-    Sprite *cursorSprite{};
-    AnimatedSprite *cursorAnimatedSprite{};
     Sprite *logoSprite{};
     Sprite *texteSprite{};
     Sprite *buttonSprite{};

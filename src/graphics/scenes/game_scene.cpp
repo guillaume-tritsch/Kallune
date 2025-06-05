@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <sstream>
 
-GLBI_Engine myEngine;
+GLBI_Engine GameEngine;
 
 std::vector<Sprite *> tileset;
 const int MAP_WIDTH = 10;
@@ -36,26 +36,25 @@ GameScene::GameScene() {
 	{
 		std::ostringstream ss;
 		ss << "tileset/tile_" << std::setw(3) << std::setfill('0') << i << ".png";
-		tileset.push_back(new Sprite(ss.str(), 0.2f, 0.2f));
+		tileset.push_back(new Sprite(ss.str(), 1.0f, 1.0f));
 	}
 
-	badger = new AnimatedSprite("critters/badger/critter_badger_SE_walk.png", 0.7f, 0.7f, 9, 1, 30);
-	boar = new AnimatedSprite("critters/boar/boar_SE_run_sheet.png", 0.6f, 0.4f, 2, 2, 20);
-	stag = new AnimatedSprite("critters/stag/critter_stag_SE_walk.png", 0.7f, 0.7f, 11, 1, 30);
-	wolf = new AnimatedSprite("critters/wolf/wolf-run.png", 1.0f, 1.0f, 8, 4, 30);
+	badger = new AnimatedSprite("critters/badger/critter_badger_SE_walk.png", 2.7f, 2.7f, 9, 1, 15);
+	boar = new AnimatedSprite("critters/boar/boar_SE_run_sheet.png", 3.0f, 2.3f, 2, 2, 10);
+	stag = new AnimatedSprite("critters/stag/critter_stag_SE_walk.png", 2.7f, 2.7f, 11, 1, 15);
+	wolf = new AnimatedSprite("critters/wolf/wolf-run.png", 4.0f, 4.0f, 8, 4, 15);
 
 	generateMap();
 }
 
-void GameScene::draw()
+void GameScene::draw(double deltaTime)
 {
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glDisable(GL_DEPTH_TEST);
-	glDepthMask(GL_FALSE);
-	// glDepthFunc(GL_LEQUAL);
 
-	myEngine.activateTexturing(true);
+    glDisable(GL_DEPTH_TEST);
+    glDepthMask(GL_FALSE);
+
 	// float z_index = 0.0f;
 	for (int layer = MAP_WIDTH + MAP_HEIGHT - 2; layer >= 0; --layer)
 	{
@@ -70,52 +69,53 @@ void GameScene::draw()
 
 			int tileType = (map[y][x] == 0) ? 5 : 22;
 
-			float iso_x = (x - y) * 0.22f;
-			float iso_y = (x + y) * 0.115f;
+			float iso_x = (x - y) * 0.50f;
+			float iso_y = (x + y) * 0.25f;
 
-			myEngine.mvMatrixStack.pushMatrix();
-			myEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y - 1.1f, 0.0f));
-			myEngine.updateMvMatrix();
+			GameEngine.mvMatrixStack.pushMatrix();
+			GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y - 2.0f, 0.0f));
+			GameEngine.updateMvMatrix();
 
 			tileset[tileType]->draw();
 
-			myEngine.mvMatrixStack.popMatrix();
+			GameEngine.mvMatrixStack.popMatrix();
 		}
 	}
 
-	myEngine.mvMatrixStack.pushMatrix();
-	myEngine.mvMatrixStack.addHomothety(Vector3D(0.4f, 0.4f, 0.4f));
+	GameEngine.mvMatrixStack.pushMatrix();
+	GameEngine.mvMatrixStack.addHomothety(Vector3D(0.4f, 0.4f, 0.4f));
+	
 	// badger
-	myEngine.mvMatrixStack.pushMatrix();
-	myEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, -1.5f, 0.0f));
-	myEngine.updateMvMatrix();
-	badger->update(1.0f / 60.0f);
+	GameEngine.mvMatrixStack.pushMatrix();
+	GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, -1.5f, 0.0f));
+	GameEngine.updateMvMatrix();
+	badger->update(deltaTime);
 	badger->draw();
-	myEngine.mvMatrixStack.popMatrix();
+	GameEngine.mvMatrixStack.popMatrix();
 
 	// boar
-	myEngine.mvMatrixStack.pushMatrix();
-	myEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, -1.5f, 0.0f));
-	myEngine.updateMvMatrix();
-	boar->update(1.0f / 60.0f);
+	GameEngine.mvMatrixStack.pushMatrix();
+	GameEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, -1.5f, 0.0f));
+	GameEngine.updateMvMatrix();
+	boar->update(deltaTime);
 	boar->draw();
-	myEngine.mvMatrixStack.popMatrix();
+	GameEngine.mvMatrixStack.popMatrix();
 
 	// stag
-	myEngine.mvMatrixStack.pushMatrix();
-	myEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, 1.5f, 0.0f));
-	myEngine.updateMvMatrix();
-	stag->update(1.0f / 60.0f);
+	GameEngine.mvMatrixStack.pushMatrix();
+	GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, 1.5f, 0.0f));
+	GameEngine.updateMvMatrix();
+	stag->update(deltaTime);
 	stag->draw();
-	myEngine.mvMatrixStack.popMatrix();
+	GameEngine.mvMatrixStack.popMatrix();
 
 	// wolf
-	myEngine.mvMatrixStack.pushMatrix();
-	myEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, 1.5f, 0.0f));
-	myEngine.updateMvMatrix();
-	wolf->update(1.0f / 60.0f);
+	GameEngine.mvMatrixStack.pushMatrix();
+	GameEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, 1.5f, 0.0f));
+	GameEngine.updateMvMatrix();
+	wolf->update(deltaTime);
 	wolf->draw();
-	myEngine.mvMatrixStack.popMatrix();
-	myEngine.mvMatrixStack.popMatrix();
+	GameEngine.mvMatrixStack.popMatrix();
+	GameEngine.mvMatrixStack.popMatrix();
 
 }

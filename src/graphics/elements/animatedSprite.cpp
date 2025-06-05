@@ -22,8 +22,8 @@ void AnimatedSprite::setFrame(int frameIndex) {
     float v1 = v0 + v_step;
 
     // Flip vertically if needed
-    v0 = 1.0f - v0 - v_step;
-    v1 = v0 + v_step;
+    // v0 = 1.0f - v0 - v_step;
+    // v1 = v0 + v_step;
 
     float uvs_rect[8] = {
         u0, v1, // Bottom-left

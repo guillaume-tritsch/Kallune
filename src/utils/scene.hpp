@@ -3,5 +3,5 @@
 enum Scene {
     Menu,
     Playing,
-    GameOver
+    End
 };

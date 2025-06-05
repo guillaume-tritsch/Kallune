@@ -1,9 +1,55 @@
 #pragma once
 
+#include "Map/map.hpp"
+#include "Flowfield/flowfield.hpp"
+#include "Player/player.hpp"
+#include "Entity/entity.hpp"
+#include "Entity/Entities/boar.hpp"
+#include "Entity/Entities/deer.hpp"
+#include "Entity/Entities/wolf.hpp"
+#include "input/input.hpp"
+
+#include <vector>
+#include <memory>
+#include <unordered_map>
+
 class Game {
 public:
     Game();
 
-    public:
-        void update();
+    void update(float deltaTime, Input input);
+
+    // Accès aux infos
+    float getPlayerX() const;
+    float getPlayerY() const;
+
+    struct EntityInfo {
+        float x, y;
+        bool isAlive;
+        bool isAggressive;
+    };
+    std::vector<EntityInfo> getEntitiesInfo() const;
+
+    // Méthodes liées aux entrées clavier (à implémenter selon ta plateforme)
+    void onKeyDown(int keyCode);
+    void onKeyUp(int keyCode);
+    bool isKeyPressed(int keyCode) const;
+
+private:
+    Map map;
+    FlowField flowField;
+    Player player;
+
+    std::vector<std::unique_ptr<Entity>> entities;
+
+    // Garde l'état des touches appuyées
+    std::unordered_map<int, bool> keyStates;
+
+    void generateEntities(int countWolf, int countBoar, int countDeer);
+    void placeEntityRandomly(Entity* entity);
+
+    void updateFlowField();
+    void updateEntities(float deltaTime);
+
+    bool isWalkableTile(int x, int y) const;
 };

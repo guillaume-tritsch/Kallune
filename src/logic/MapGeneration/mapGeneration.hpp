@@ -2,16 +2,16 @@
 
 #include <iostream>
 #include <vector>
-
+#include "utils/map.hpp"
 using namespace std;
 
-class CellularAutomaton
+class MapGeneration
 {
 public:
-    CellularAutomaton(unsigned int width, unsigned int height);
+    MapGeneration(unsigned int width, unsigned int height);
 
     int getValue(unsigned int x, unsigned int y);
-    vector<vector<int>> *getMap();
+    vector<vector<MapType>> getMap();
 
     void setWidth(unsigned int width);
     unsigned int getWidth();
@@ -19,6 +19,8 @@ public:
     unsigned int getHeight();
 
     void generate(int chanceToStartAlive = 40, unsigned int numberOfSteps = 6, unsigned int starvationLimit = 2, unsigned int overpopLimit = 3, unsigned int birthNumber = 3);
+
+    void postProcess();
 
 private:
     vector<vector<int>> map;
@@ -28,5 +30,4 @@ private:
     void printMap();
     void step();
     int countNeighbors(int x, int y, int dist, vector<int> valueToSearch);
-
 };

@@ -11,7 +11,7 @@
 using namespace glbasimac;
 
 /* OpenGL Engine */
-extern GLBI_Engine myEngine;
+extern GLBI_Engine GameEngine;
 extern double mouseX, mouseY;
 extern double x_world;
 extern double y_world;
@@ -24,10 +24,15 @@ public:
     MenuScene();
     ~MenuScene() = default;
 
-    void draw();
+    void draw(double deltaTime);
 
 private:
-    AnimatedSprite *background{};
-    Sprite *cursorSprite{};
-    AnimatedSprite *cursorAnimatedSprite{};
+    // BACKGROUND
+    AnimatedSprite *animation {};
+    Sprite *background {};
+
+    // BUTTONS
+    Sprite *playButton {};
+    Sprite *settingsButton {};
+    Sprite *exitButton {};
 };

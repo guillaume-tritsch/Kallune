@@ -1,4 +1,0 @@
-class Interactions {
-public:
-    Interactions();
-};

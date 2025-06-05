@@ -9,7 +9,7 @@
 using namespace glbasimac;
 
 /* OpenGL Engine */
-extern GLBI_Engine myEngine;
+extern GLBI_Engine GameEngine;
 extern double mouseX, mouseY;
 extern double worldX, worldY;
 
@@ -22,5 +22,5 @@ class GameScene {
         GameScene();
         ~GameScene() = default;
 
-        void draw();
+        void draw(double deltaTime);
 };

@@ -11,9 +11,20 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 # Librairies
 
+# Ajout de GLM via FetchContent
+include(FetchContent)
+
+FetchContent_Declare(
+    glm
+    GIT_REPOSITORY https://github.com/g-truc/glm.git
+    GIT_TAG 0.9.9.8 # Tu peux mettre une version plus récente si tu veux
+)
+
+FetchContent_MakeAvailable(glm)
+
 # ---Add glbasimac---
 add_subdirectory(lib/glbasimac)
-target_link_libraries(${PROJECT_NAME} PRIVATE glbasimac)
+target_link_libraries(${PROJECT_NAME} PRIVATE glbasimac glm)
 
 include(CmakeUtils/files_and_folders.cmake)
 Cool__target_copy_folder(${PROJECT_NAME} "assets")
