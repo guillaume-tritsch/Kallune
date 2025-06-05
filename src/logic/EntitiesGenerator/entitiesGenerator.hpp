@@ -7,6 +7,7 @@
 #include "../Entity/Entities/deer.hpp"
 #include "../Player/player.hpp"
 #include "../Flowfield/flowfield.hpp"
+#include <memory>
 
 using namespace std;
 
@@ -19,10 +20,11 @@ public:
     void spawnWolf(int x, int y);
     void spawnBoar(int x, int y);
     void spawnDeer(int x, int y);
-    const vector<Entity*>& getEntities() const;
+const std::vector<std::unique_ptr<Entity>>& getEntities() const;
 
 private:
-    vector<Entity*> entities;
+std::vector<std::unique_ptr<Entity>> entities;
     FlowField* flowField;
     Player* player;
+
 };
