@@ -166,9 +166,9 @@ void Game::updateFlowField()
 
 void Game::updateEntities(float deltaTime)
 {
-    // for (auto &entity : entities)
-    // {
-    //     entity->decideBehavior(player);
-    //     entity->update(deltaTime);
-    // }
+    for (auto &entity : entities)
+    {
+        entity->decideBehavior(player);
+        entity->update(deltaTime);
+    }
 }
