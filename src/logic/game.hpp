@@ -40,7 +40,7 @@ public:
     std::set<std::pair<int, int>> occupiedTiles;
 
     bool isKeyPressed(int keyCode) const;
-
+std::optional<std::pair<int, int>> Game::getRandomPlacablePosition() const;
 private:
     FlowField flowField;
     Player player;

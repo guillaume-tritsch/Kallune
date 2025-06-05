@@ -23,6 +23,12 @@ void Player::kill()
     alive = false;
 }
 
+void Player::setPosition(float newX, float newY)
+{
+    x = newX;
+    y = newY;
+}
+
 float Player::getX() const
 {
     return x;

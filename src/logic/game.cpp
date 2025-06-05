@@ -3,14 +3,25 @@
 #include <ctime>
 #include <random>
 #include <set>
+#include <optional>
 
 
 Game::Game()
-    : map(), flowField(map.getWidth(), map.getHeight()), player(0.0f, 0.0f)
+    : map(), flowField(map.getWidth(), map.getHeight()), player(50.0f, 50.0f)
 {
+
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
-    player = Player(50.0f, 50.0f);
+    auto positionOpt = getRandomPlacablePosition();
+    if (positionOpt.has_value()) {
+        auto [x, y] = positionOpt.value();
+        occupiedTiles.insert({x, y});
+        player.setPosition(static_cast<float>(x), static_cast<float>(y));
+        std::cout << "Player placed at: (" << x << ", " << y << ")" << std::endl;
+    } else {
+        std::cerr << "Erreur : impossible de placer le joueur (aucune case disponible)." << std::endl;
+        player.setPosition(50.0f, 50.0f);
+    }
 
     updateFlowField();
     generateEntities(5, 3, 4);
@@ -88,38 +99,45 @@ Game::~Game()
 }
 
 
-void Game::placeEntityRandomly(Entity *entity)
+std::optional<std::pair<int, int>> Game::getRandomPlacablePosition() const
 {
-    //place les entités sur des cases valides (grass, sand ou flower) de la map
     const auto& grid = map.getMap();
     int width = map.getWidth();
     int height = map.getHeight();
 
     std::vector<std::pair<int, int>> validPositions;
 
-    // Collecter les cases valides
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
             MapType type = grid[y][x];
-            if (type == MapType::GRASS || type == MapType::SAND || type == MapType::FLOWER) {
-                if (occupiedTiles.find({x, y}) == occupiedTiles.end()) {
-                    validPositions.emplace_back(x, y);
-                }
+            if ((type == MapType::GRASS || type == MapType::SAND || type == MapType::FLOWER) &&
+                occupiedTiles.find({x, y}) == occupiedTiles.end()) 
+            {
+                validPositions.emplace_back(x, y);
             }
         }
     }
+
     if (validPositions.empty()) {
-        std::cerr << "Erreur : aucune case valide disponible pour placer l'entité." << std::endl;
-        return;
+        return std::nullopt;
     }
 
-    // Choix aléatoire d'une position
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, validPositions.size() - 1);
 
-    auto [tileX, tileY] = validPositions[dis(gen)];
+    return validPositions[dis(gen)];
+}
 
+void Game::placeEntityRandomly(Entity* entity)
+{
+    auto positionOpt = getRandomPlacablePosition();
+    if (!positionOpt.has_value()) {
+        std::cerr << "Erreur : aucune case valide disponible pour placer l'entité." << std::endl;
+        return;
+    }
+
+    auto [tileX, tileY] = positionOpt.value();
     occupiedTiles.insert({tileX, tileY});
 
     float posX = static_cast<float>(tileX);
@@ -128,29 +146,7 @@ void Game::placeEntityRandomly(Entity *entity)
     std::cout << "Placing entity at: (" << posX << ", " << posY << ")" << std::endl;
 
     entity->setPosition(posX, posY);
-    //entity->setPosition(0.0f, 0.0f); // For testing purposes, set to a fixed position
-
-
-    // int w = map.getWidth();
-    // int h = map.getHeight();
-
-    // int tries = 0;
-    // const int maxTries = 100;
-
-    // while (tries < maxTries)
-    // {
-    //     int x = std::rand() % w;
-    //     int y = std::rand() % h;
-    //     if (isWalkableTile(x, y))
-    //     {
-    //         entity->setPosition(x + 0.5f, y + 0.5f);
-    //         return;
-    //     }
-    //     ++tries;
-    // }
-    // entity->setPosition(w / 2.0f, h / 2.0f);
 }
-
 
 
 bool Game::isWalkableTile(int x, int y) const

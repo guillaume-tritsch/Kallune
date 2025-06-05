@@ -7,6 +7,8 @@ public:
     void move(float dirX, float dirY, float deltaTime);
     void takeDamage(float amount);
 
+
+    void setPosition(float newX, float newY);
     float getX() const;
     float getY() const;
     int getTileX() const;
