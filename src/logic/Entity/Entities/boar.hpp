@@ -17,7 +17,5 @@ private:
     bool aggressive() const override { return true; }
     bool coward() const override { return false; }
 
-    float attackRange = 1.2f;
-    float attackCooldown = 2.0f;
-    float timeSinceLastAttack = 0.0f;
+    float pursuitRange = 5.f;
 };

@@ -17,9 +17,9 @@ void Boar::decideBehavior(const Player& player)
 {
     float dx = player.getX() - x;
     float dy = player.getY() - y;
-    float distanceSq = dx * dx + dy * dy;
+    float distanceSq = std::sqrt(dx * dx + dy * dy);
 
-    if (distanceSq < attackRange * attackRange)
+    if (distanceSq < attackRange)
     {
         behavior = BehaviorType::Attack;
     }
@@ -39,17 +39,6 @@ void Boar::update(float deltaTime)
     switch (behavior)
     {
     case BehaviorType::Attack:
-        timeSinceLastAttack += deltaTime;
-        if (timeSinceLastAttack >= attackCooldown)
-        {
-            // Ex: player->takeDamage(20.0f);
-            timeSinceLastAttack = 0.0f;
-        }
-        break;
-
-    case BehaviorType::Idle:
-    case BehaviorType::Flee:
-    default:
     {
         int tileX = getTileX();
         int tileY = getTileY();
@@ -67,6 +56,9 @@ void Boar::update(float deltaTime)
             y += dirY * speed * deltaTime;
         }
     }
-    break;
+    case BehaviorType::Idle:
+        x += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+        y += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+    case BehaviorType::Flee:
     }
 }

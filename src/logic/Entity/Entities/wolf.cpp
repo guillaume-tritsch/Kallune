@@ -17,9 +17,9 @@ void Wolf::decideBehavior(const Player &player)
 {
     float dx = player.getX() - x;
     float dy = player.getY() - y;
-    float distanceSq = dx * dx + dy * dy;
+    float distanceSq = std::sqrt(dx * dx + dy * dy);
 
-    if (distanceSq < attackRange * attackRange)
+    if (distanceSq < pursuitRange)
     {
         behavior = BehaviorType::Attack;
     }
@@ -36,22 +36,9 @@ void Wolf::update(float deltaTime)
         return;
     }
 
-    // Comportement
     switch (behavior)
     {
     case BehaviorType::Attack:
-        timeSinceLastAttack += deltaTime;
-        if (timeSinceLastAttack >= attackCooldown)
-        {
-            // Ici tu peux appeler une méthode pour infliger des dégâts au joueur
-            // Exemple : player.takeDamage(10.0f);
-            timeSinceLastAttack = 0.0f;
-        }
-        break;
-
-    case BehaviorType::Idle:
-    case BehaviorType::Flee:
-    default:
     {
         int tileX = getTileX();
         int tileY = getTileY();
@@ -70,5 +57,10 @@ void Wolf::update(float deltaTime)
         }
     }
     break;
+    case BehaviorType::Idle:
+        x += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+        y += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+    case BehaviorType::Flee:
+
     }
 }
