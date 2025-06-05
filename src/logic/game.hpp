@@ -35,9 +35,6 @@ public:
 
     std::vector<EntityInfo> getEntitiesInfo() const;
 
-    void onKeyDown(int keyCode);
-    void onKeyUp(int keyCode);
-
     bool isKeyPressed(int keyCode) const;
 
 private:

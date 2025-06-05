@@ -47,16 +47,6 @@ std::vector<EntityInfo> Game::getEntitiesInfo() const
     return infos;
 }
 
-void Game::onKeyDown(int keyCode)
-{
-    keyStates[keyCode] = true;
-}
-
-void Game::onKeyUp(int keyCode)
-{
-    keyStates[keyCode] = false;
-}
-
 bool Game::isKeyPressed(int keyCode) const
 {
     auto it = keyStates.find(keyCode);

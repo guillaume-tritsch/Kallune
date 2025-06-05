@@ -18,9 +18,6 @@ public:
     ~EntitiesGenerator();
 
     void update(float deltaTime);
-    void spawnWolf(int x, int y);
-    void spawnBoar(int x, int y);
-    void spawnDeer(int x, int y);
     const std::vector<Entity *> &getEntities() const;
 private:
     std::vector<Entity *> entities;
