@@ -4,8 +4,9 @@
 #include <array>
 
 #include "utils/scene.hpp"
-#include "input/scenes/menu_state.hpp"
+// #include "input/scenes/menu_state.hpp"
 #include "utils/state.hpp"
+#include "utils/router.hpp"
 
 class Input {
 
@@ -17,7 +18,7 @@ private:
 
 public:
     Input(GLFWwindow* window);
-    void update(Scene currentScene);
+    void update(Router* router);
 
     static Input* getInput(GLFWwindow* window);
 

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cmath>
 #include "graphics.hpp"
+#include <iostream>
 
 using namespace glbasimac;
 
@@ -97,6 +98,7 @@ Graphics::Graphics()
 
     game_scene = new GameScene();
     menu_scene = new MenuScene();
+    settings_scene = new SettingsScene();
     end_scene = new EndScene();
 
     GameEngine.activateTexturing(true);
@@ -105,7 +107,7 @@ Graphics::Graphics()
     cursorAnimatedSprite = new AnimatedSprite("cursors/animated_cursor.png", 0.7f, 0.7f, 3, 1, 6);
 }
 
-void Graphics::render(double deltaTime, Scene currentScene, InputState inputState, Game game)
+void Graphics::render(double deltaTime, Router* router, InputState inputState, Game game)
 {
     /* Get time (in second) at loop beginning */
     double startTime = glfwGetTime();
@@ -122,10 +124,13 @@ void Graphics::render(double deltaTime, Scene currentScene, InputState inputStat
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    switch (currentScene)
+    switch (router->currentScene)
     {
     case Scene::Menu:
         menu_scene->draw(deltaTime);
+        break;
+    case Scene::Settings:
+        settings_scene->draw(deltaTime);
         break;
     case Scene::Playing:
         game_scene->draw(deltaTime, game);
@@ -169,10 +174,22 @@ void Graphics::render(double deltaTime, Scene currentScene, InputState inputStat
     }
 }
 
-void Graphics::update(Game game, InputState state)
+void Graphics::update(Game game, InputState state, Router* router)
 {
-    menu_scene->update(state);
+    switch (router->currentScene)
+    {
+    case Scene::Menu:
+        menu_scene->update(state, router);
+        break;
 
+    case Scene::Settings:
+        settings_scene->update(state, router);
+        break;
+    
+    default:
+        std::cerr << 'Euh y a un truc pas normal chef' << std::endl;
+        break;
+    }
 }
 
 bool Graphics::shouldClose()

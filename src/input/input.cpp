@@ -46,7 +46,7 @@ void Input::mouseCallback(GLFWwindow *window, int button, int action, int mods) 
     }
 }
 
-void Input::update(Scene currentScene) {
+void Input::update(Router* router) {
     /*Get the mouse position*/
     glfwGetCursorPos(window, &state.mouseX, &state.mouseY);
     

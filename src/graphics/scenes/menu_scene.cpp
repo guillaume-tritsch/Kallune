@@ -15,8 +15,16 @@ MenuScene::MenuScene()
     exitButtonHover = new Sprite("menu/exit-button-hover.png", 1.55f, 0.99f);
 }
 
-void MenuScene::update(InputState inputState) {
+void MenuScene::update(InputState inputState, Router* router) {
     state.update(inputState);
+
+    if(state.playButton == ButtonState::ACTIVE) {
+        router->goTo(Scene::Playing);
+    }
+
+    if(state.settingsButton == ButtonState::ACTIVE) {
+        router->goTo(Scene::Settings);
+    }
 }
 
 void MenuScene::draw(double deltaTime)

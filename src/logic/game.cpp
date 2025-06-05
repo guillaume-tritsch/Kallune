@@ -89,7 +89,7 @@ Game::~Game()
 {
     for (auto entity : entities)
     {
-        delete entity;
+        // delete entity;
     }
 }
 void Game::placeEntityRandomly(Entity *entity)

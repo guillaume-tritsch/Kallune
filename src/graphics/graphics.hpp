@@ -5,9 +5,10 @@
 #include "logic/game.hpp"
 #include "graphics/scenes/game_scene.hpp"
 #include "graphics/scenes/menu_scene.hpp"
-#include "graphics/scenes/menu_scene.hpp"
+#include "graphics/scenes/settings_scene.hpp"
 #include "graphics/scenes/end_scene.hpp"
 #include "utils/state.hpp"
+#include "utils/router.hpp"
 
 class Graphics {
 public:
@@ -18,10 +19,10 @@ public:
     ~Graphics() = default;
 
     // Update game state 
-    void update(Game game, InputState inputState);
+    void update(Game game, InputState inputState, Router* router);
 
     // Render the current frame
-    void render(double deltaTime, Scene current_scene, InputState inputState, Game game);
+    void render(double deltaTime, Router* router, InputState inputState, Game game);
 
     // Checks if the user requested to close the window
     bool shouldClose();
@@ -38,6 +39,7 @@ private:
     // SCENES
     GameScene *game_scene {};
     MenuScene *menu_scene {};
+    SettingsScene *settings_scene {};
     EndScene *end_scene {};
 
     // CURSOR

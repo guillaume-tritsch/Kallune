@@ -3,13 +3,14 @@
 #include "logic/game.hpp"
 #include "graphics/graphics.hpp"
 #include "utils/scene.hpp"
+#include "utils/router.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-Scene currentScene {Scene::Menu};
-
 int main() {
+
+    Router          router {Router()};
     Game            game {Game()};
     Graphics        graphics {Graphics()};
     Input           input {Input(graphics.window)};
@@ -23,13 +24,10 @@ int main() {
         double deltaTime = currentFrameTime - lastFrameTime;
         lastFrameTime = currentFrameTime;
 
-        input.update(currentScene);
-
-        // add a gui class ?
-
-        game.update(deltaTime, input.state);
-        graphics.update(game, input.state);
-        graphics.render(deltaTime, currentScene, input.state, game);
+        input.update(&router);
+        game.update(deltaTime, input.state); 
+        graphics.update(game, input.state, &router);
+        graphics.render(deltaTime, &router, input.state, game);
     }
 
     graphics.close();

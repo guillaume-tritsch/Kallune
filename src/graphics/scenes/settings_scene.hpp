@@ -7,7 +7,7 @@
 #include "tools/basic_mesh.hpp"
 
 #include "graphics/elements/animatedSprite.hpp"
-#include "input/scenes/menu_state.hpp"
+#include "input/scenes/settings_state.hpp"
 #include "utils/scene.hpp"
 #include "utils/router.hpp"
 
@@ -21,11 +21,11 @@ extern double y_world;
 extern bool cursorClicked;
 extern double cursorClickTime;
 
-class MenuScene
+class SettingsScene
 {
 public:
-    MenuScene();
-    ~MenuScene() = default;
+    SettingsScene();
+    ~SettingsScene() = default;
 
     void update(InputState inputState, Router* router);
     void draw(double deltaTime);
@@ -36,13 +36,9 @@ private:
     Sprite *background {};
 
     // BUTTONS
-    Sprite *playButton {};
-    Sprite *playButtonHover {};
-    Sprite *settingsButton {};
-    Sprite *settingsButtonHover {};
-    Sprite *exitButton {};
-    Sprite *exitButtonHover {};
+    Sprite *returnButton {};
+    Sprite *returnButtonHover {};
 
     // STATE
-    MenuState state {MenuState()};
+    SettingsState state {SettingsState()};
 };
