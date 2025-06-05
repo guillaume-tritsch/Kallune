@@ -32,8 +32,8 @@ void AnimatedSprite::setFrame(int frameIndex) {
         u1, v0  // Top-right
     };
 
-	mesh->addOneBuffer(2, 2, uvs_rect, "uvs", false);
-    mesh->createVAO(); // Recreate the VAO to reflect the changes
+	// mesh->addOneBuffer(2, 2, uvs_rect, "uvs", false);
+    mesh->updateUVs(uvs_rect, 8); // Recreate the VAO to reflect the changes
 }
 
 void AnimatedSprite::update(float deltaTime) {

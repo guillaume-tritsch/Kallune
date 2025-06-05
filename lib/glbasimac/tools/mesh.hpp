@@ -64,6 +64,7 @@ namespace STP3D {
 		bool createVAO();
 		unsigned int getIdVAO();
 		void draw() const;
+		void updateUVs(const GLfloat* new_uvs, size_t num_elements);
 private:
 		//  User defined members
 		/// All the data in CPU buffers
@@ -99,6 +100,23 @@ private:
 		glDeleteBuffers(vbo_id.size(),&(vbo_id[0]));
 		vbo_id.clear();
 		glDeleteVertexArrays(1,&id_vao);
+	}
+
+	inline void StandardMesh::updateUVs(const GLfloat* new_uvs, size_t num_elements) {
+		// Find the index corresponding to the UVs
+		for (size_t i = 0; i < attr_semantic.size(); ++i) {
+			std::cout << attr_semantic[i] << std::endl;
+			if (attr_semantic[i] == "uvs") {
+				glBindVertexArray(id_vao); // Ensure VAO is bound
+				glBindBuffer(GL_ARRAY_BUFFER, vbo_id[i]);
+				// num_elements should be nb_elts * size_one_elt[i] for UVs
+				glBufferSubData(GL_ARRAY_BUFFER, 0, nb_elts * size_one_elt[i] * sizeof(GLfloat), new_uvs);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+				glBindVertexArray(0);
+				return;
+			}
+		}
+		STP3D::setError("No UV attribute found in mesh.");
 	}
 
 	inline bool StandardMesh::createVAO() {
