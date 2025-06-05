@@ -13,19 +13,21 @@
 #include <memory>
 #include <unordered_map>
 
-    struct EntityInfo {
-        float x, y;
-        bool isAlive;
-        bool isAggressive;
-    };
+struct EntityInfo
+{
+    float x, y;
+    bool isAlive;
+    bool isAggressive;
+};
 
-class Game {
+class Game
+{
 public:
     Game();
+    ~Game();
 
     void update(float deltaTime, InputState input);
 
-    // Accès aux infos
     float getPlayerX() const;
     float getPlayerY() const;
 
@@ -41,13 +43,12 @@ private:
     FlowField flowField;
     Player player;
 
-    // std::vector<std::unique_ptr<Entity>> entities;
+    std::vector<Entity *> entities;
 
-    // Garde l'état des touches appuyées
     std::unordered_map<int, bool> keyStates;
 
     void generateEntities(int countWolf, int countBoar, int countDeer);
-    void placeEntityRandomly(Entity* entity);
+    void placeEntityRandomly(Entity *entity);
 
     void updateFlowField();
     void updateEntities(float deltaTime);

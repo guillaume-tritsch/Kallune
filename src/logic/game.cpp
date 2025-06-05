@@ -7,9 +7,7 @@ Game::Game()
 {
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
-    // Générer la map (déjà fait dans map constructor)
-    // Initialiser player quelque part valide
-    player = Player(50.0f, 50.0f); // exemple, ou place selon map
+    player = Player(50.0f, 50.0f);
 
     updateFlowField();
     generateEntities(5, 3, 4);
@@ -17,10 +15,8 @@ Game::Game()
 
 void Game::update(float deltaTime, InputState inputState)
 {
-    // Recalcul du flowfield vers le joueur (nouvelle position)
     updateFlowField();
 
-    // Mise à jour des entités (décision comportement, déplacement, etc)
     updateEntities(deltaTime);
 }
 
@@ -34,18 +30,20 @@ float Game::getPlayerY() const
     return player.getY();
 }
 
-// Add this method:
-std::vector<EntityInfo> Game::getEntitiesInfo() const {
+std::vector<EntityInfo> Game::getEntitiesInfo() const
+{
     std::vector<EntityInfo> infos;
-    // infos.reserve(entities.size());
-    // for (const auto& e : entities) {
-    //     infos.emplace_back(EntityInfo{
-    //         e->getX(),
-    //         e->getY(),
-    //         e->isAlive(),
-    //         e->isAggressive()
-    //     });
-    // }
+    infos.reserve(entities.size());
+    for (const auto& e : entities) {
+        infos.emplace_back(EntityInfo{
+            e->getX(),
+            e->getY(),
+            e->isAlive(),
+            e->isAggressive()
+        });
+    }
+
+
     return infos;
 }
 
@@ -67,29 +65,33 @@ bool Game::isKeyPressed(int keyCode) const
 
 void Game::generateEntities(int countWolf, int countBoar, int countDeer)
 {
-    // Génère les entités, place aléatoirement sur des cases praticables
     for (int i = 0; i < countWolf; ++i)
     {
-        auto wolf = std::make_unique<Wolf>(0, 0, &player, &flowField);
-        placeEntityRandomly(wolf.get());
-        // entities.push_back(std::move(wolf));
+        Wolf* wolf = new Wolf(0, 0, &player, &flowField);  
+        placeEntityRandomly(wolf);
+        entities.push_back(wolf);  
     }
     for (int i = 0; i < countBoar; ++i)
     {
-        auto boar = std::make_unique<Boar>(0, 0, &player, &flowField);
-        placeEntityRandomly(boar.get());
-        placeEntityRandomly(boar.get());
-        placeEntityRandomly(boar.get());
-        // entities.push_back(std::move(boar));
+        Boar* boar = new Boar(0, 0, &player, &flowField); 
+        placeEntityRandomly(boar);
+        entities.push_back(boar);  
     }
     for (int i = 0; i < countDeer; ++i)
     {
-        auto deer = std::make_unique<Deer>(0, 0, &player, &flowField);
-        placeEntityRandomly(deer.get());
-        // entities.push_back(std::move(deer));
+        Deer* deer = new Deer(0, 0, &player, &flowField);  
+        placeEntityRandomly(deer);
+        entities.push_back(deer); 
     }
 }
 
+Game::~Game()
+{
+    for (auto entity : entities)
+    {
+        delete entity;
+    }
+}
 void Game::placeEntityRandomly(Entity *entity)
 {
     int w = map.getWidth();
@@ -115,7 +117,6 @@ bool Game::isWalkableTile(int x, int y) const
 {
     if (x < 0 || y < 0 || x >= map.getWidth() || y >= map.getHeight())
         return false;
-    // Exclure murs / eau (vitesse 0)
     float speed = map.getSpeedMap()[x][y];
     return speed > 0.0f;
 }
