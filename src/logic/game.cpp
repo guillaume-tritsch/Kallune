@@ -32,19 +32,20 @@ void Game::handlePlayerMovement(const InputState& inputState, float deltaTime)
     float dirX = 0.0f;
     float dirY = 0.0f;
 
-    if (inputState.keyStates[GLFW_KEY_W] == GLFW_PRESS) {
+    if (inputState.keyStates[GLFW_KEY_W] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_W] == GLFW_REPEAT) {
         dirY -= 1.0f;
     }
-    if (inputState.keyStates[GLFW_KEY_S] == GLFW_PRESS) {
+    if (inputState.keyStates[GLFW_KEY_S] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_S] == GLFW_REPEAT) {
         dirY += 1.0f;
     }
-    if (inputState.keyStates[GLFW_KEY_A] == GLFW_PRESS) {
+    if (inputState.keyStates[GLFW_KEY_A] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_A] == GLFW_REPEAT) {
         dirX -= 1.0f;
     }
-    if (inputState.keyStates[GLFW_KEY_D] == GLFW_PRESS) {
+    if (inputState.keyStates[GLFW_KEY_D] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_D] == GLFW_REPEAT) {
         dirX += 1.0f;
     }
 
+    // Pas de mouvement
     if (dirX == 0.0f && dirY == 0.0f)
         return;
 
@@ -54,11 +55,11 @@ void Game::handlePlayerMovement(const InputState& inputState, float deltaTime)
     int tileX = static_cast<int>(nextX);
     int tileY = static_cast<int>(nextY);
 
+    // Collision simple : bloquer si la case est non marchable
     if (map.isWalkable(tileX, tileY)) {
         player.move(dirX, dirY, deltaTime);
     }
 }
-
 
 
 void Game::update(float deltaTime, InputState inputState)
