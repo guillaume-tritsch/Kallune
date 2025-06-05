@@ -7,7 +7,7 @@
 #include "graphics/scenes/menu_scene.hpp"
 #include "graphics/scenes/menu_scene.hpp"
 #include "graphics/scenes/end_scene.hpp"
-#include "input/input.hpp"
+#include "utils/state.hpp"
 
 class Graphics {
 public:
@@ -18,10 +18,10 @@ public:
     ~Graphics() = default;
 
     // Update game state 
-    void update(Game game);
+    void update(Game game, InputState inputState);
 
     // Render the current frame
-    void render(double deltaTime, Scene current_scene, Input input);
+    void render(double deltaTime, Scene current_scene, InputState inputState);
 
     // Checks if the user requested to close the window
     bool shouldClose();

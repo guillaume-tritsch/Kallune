@@ -15,7 +15,7 @@ Game::Game()
     generateEntities(5, 3, 4);
 }
 
-void Game::update(float deltaTime, Input input)
+void Game::update(float deltaTime, InputState inputState)
 {
     // Recalcul du flowfield vers le joueur (nouvelle position)
     updateFlowField();
@@ -37,15 +37,15 @@ float Game::getPlayerY() const
 // Add this method:
 std::vector<EntityInfo> Game::getEntitiesInfo() const {
     std::vector<EntityInfo> infos;
-    infos.reserve(entities.size());
-    for (const auto& e : entities) {
-        infos.emplace_back(EntityInfo{
-            e->getX(),
-            e->getY(),
-            e->isAlive(),
-            e->isAggressive()
-        });
-    }
+    // infos.reserve(entities.size());
+    // for (const auto& e : entities) {
+    //     infos.emplace_back(EntityInfo{
+    //         e->getX(),
+    //         e->getY(),
+    //         e->isAlive(),
+    //         e->isAggressive()
+    //     });
+    // }
     return infos;
 }
 
@@ -129,9 +129,9 @@ void Game::updateFlowField()
 
 void Game::updateEntities(float deltaTime)
 {
-    for (auto &entity : entities)
-    {
-        entity->decideBehavior(player);
-        entity->update(deltaTime);
-    }
+    // for (auto &entity : entities)
+    // {
+    //     entity->decideBehavior(player);
+    //     entity->update(deltaTime);
+    // }
 }

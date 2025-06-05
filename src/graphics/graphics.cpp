@@ -8,7 +8,7 @@ using namespace glbasimac;
 
 int WINDOW_WIDTH = 1280;
 int WINDOW_HEIGHT = 720;
-double FRAMERATE_IN_SECONDS {1. / 30.};
+double FRAMERATE_IN_SECONDS {1. / 60.};
 float aspectRatio {};
 
 float GL_VIEW_SIZE = 9.0f;
@@ -102,16 +102,16 @@ Graphics::Graphics()
     GameEngine.activateTexturing(true);
 
     cursorSprite = new Sprite("cursors/cursor.png", 0.7f, 0.7f);
-    cursorAnimatedSprite = new AnimatedSprite("cursors/animated_cursor.png", 0.7f, 0.7f, 3, 1, 15);
+    cursorAnimatedSprite = new AnimatedSprite("cursors/animated_cursor.png", 0.7f, 0.7f, 3, 1, 6);
 }
 
-void Graphics::render(double deltaTime, Scene currentScene, Input input)
+void Graphics::render(double deltaTime, Scene currentScene, InputState inputState)
 {
     /* Get time (in second) at loop beginning */
     double startTime = glfwGetTime();
 
-    double x_world = (mouseX / WINDOW_WIDTH) * viewWidth * 2 - viewWidth / 2.0f;
-    double y_world = (mouseY / WINDOW_HEIGHT) * viewHeight * -2 + viewHeight / 2.0f;
+    double x_world = (inputState.mouseX / WINDOW_WIDTH) * viewWidth * 2 - viewWidth / 2.0f;
+    double y_world = (inputState.mouseY / WINDOW_HEIGHT) * viewHeight * -2 + viewHeight / 2.0f;
 
     // Hide the cursor
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
@@ -135,23 +135,26 @@ void Graphics::render(double deltaTime, Scene currentScene, Input input)
         break;
     }
 
-    // if (y_world > 0)
-    // {
-    //     cursorAnimatedSprite->update(deltaTime);
-    //     GameEngine.mvMatrixStack.pushMatrix();
-    //     GameEngine.mvMatrixStack.addTranslation(Vector3D(x_world, y_world, 0.0f));
-    //     GameEngine.updateMvMatrix();
-    //     cursorAnimatedSprite->draw();
-    //     GameEngine.mvMatrixStack.popMatrix();
-    // }
-    // else
-    // {
-    //     GameEngine.mvMatrixStack.pushMatrix();
-    //     GameEngine.mvMatrixStack.addTranslation(Vector3D(x_world, y_world, 0.0f));
-    //     GameEngine.updateMvMatrix();
-    //     cursorSprite->draw();
-    //     GameEngine.mvMatrixStack.popMatrix();
-    // }
+    GameEngine.mvMatrixStack.pushMatrix();
+    GameEngine.mvMatrixStack.addTranslation(Vector3D(0.1f, -0.2f, 0.0f));
+        if (startTime - inputState.cursorClickTime < CURSOR_ANIMATION_DURATION)
+        {
+            cursorAnimatedSprite->update(deltaTime);
+            GameEngine.mvMatrixStack.pushMatrix();
+            GameEngine.mvMatrixStack.addTranslation(Vector3D(inputState.x_world, inputState.y_world, 0.0f));
+            GameEngine.updateMvMatrix();
+            cursorAnimatedSprite->draw();
+            GameEngine.mvMatrixStack.popMatrix();
+        }
+        else
+        {
+            GameEngine.mvMatrixStack.pushMatrix();
+            GameEngine.mvMatrixStack.addTranslation(Vector3D(inputState.x_world, inputState.y_world, 0.0f));
+            GameEngine.updateMvMatrix();
+            cursorSprite->draw();
+            GameEngine.mvMatrixStack.popMatrix();
+        }
+    GameEngine.mvMatrixStack.popMatrix();
 
     /* Swap front and back buffers */
     glfwSwapBuffers(window);
@@ -166,9 +169,9 @@ void Graphics::render(double deltaTime, Scene currentScene, Input input)
     }
 }
 
-void Graphics::update(Game game)
+void Graphics::update(Game game, InputState state)
 {
-
+    menu_scene->update(state);
 }
 
 bool Graphics::shouldClose()

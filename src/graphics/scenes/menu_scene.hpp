@@ -7,6 +7,7 @@
 #include "tools/basic_mesh.hpp"
 
 #include "graphics/elements/animatedSprite.hpp"
+#include "input/scenes/menu_state.hpp"
 
 using namespace glbasimac;
 
@@ -24,6 +25,7 @@ public:
     MenuScene();
     ~MenuScene() = default;
 
+    void update(InputState inputState);
     void draw(double deltaTime);
 
 private:
@@ -33,6 +35,12 @@ private:
 
     // BUTTONS
     Sprite *playButton {};
+    Sprite *playButtonHover {};
     Sprite *settingsButton {};
+    Sprite *settingsButtonHover {};
     Sprite *exitButton {};
+    Sprite *exitButtonHover {};
+
+    // STATE
+    MenuState state {MenuState()};
 };

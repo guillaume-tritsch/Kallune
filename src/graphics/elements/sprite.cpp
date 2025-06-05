@@ -11,7 +11,7 @@ Sprite::Sprite(const std::string& filename, float sizex, float sizez) {
 	texture->createTexture();
     texture->attachTexture();
 	texture->loadImage(x, y, n, imageData);
-    std::cout << "Texture ID for " << filename << " : " << texture->id_in_GL << std::endl;
+    // std::cout << "Texture ID for " << filename << " : " << texture->id_in_GL << std::endl;
 	texture->setParameters(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	texture->setParameters(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	
@@ -36,7 +36,7 @@ Sprite::Sprite(const std::string& filename, float sizex, float sizez) {
 }
 
 Sprite::~Sprite() {
-	//stbi_image_free((void *)imageData);
+	delete texture;
     delete mesh;
 }
 
