@@ -13,15 +13,18 @@
 #include <memory>
 #include <unordered_map>
 
-    struct EntityInfo {
-        float x, y;
-        bool isAlive;
-        bool isAggressive;
-    };
+struct EntityInfo
+{
+    float x, y;
+    bool isAlive;
+    bool isAggressive;
+};
 
-class Game {
+class Game
+{
 public:
     Game();
+    Map map;
 
     void update(float deltaTime, InputState input);
 
@@ -37,7 +40,6 @@ public:
     bool isKeyPressed(int keyCode) const;
 
 private:
-    Map map;
     FlowField flowField;
     Player player;
 
@@ -47,7 +49,7 @@ private:
     std::unordered_map<int, bool> keyStates;
 
     void generateEntities(int countWolf, int countBoar, int countDeer);
-    void placeEntityRandomly(Entity* entity);
+    void placeEntityRandomly(Entity *entity);
 
     void updateFlowField();
     void updateEntities(float deltaTime);

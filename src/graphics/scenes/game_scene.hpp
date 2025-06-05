@@ -5,6 +5,7 @@
 #include "glbasimac/glbi_convex_2D_shape.hpp"
 #include "glbasimac/glbi_texture.hpp"
 #include "tools/basic_mesh.hpp"
+#include "logic/game.hpp"
 
 using namespace glbasimac;
 
@@ -21,6 +22,5 @@ class GameScene {
     public:
         GameScene();
         ~GameScene() = default;
-
-        void draw(double deltaTime);
+        void draw(double deltaTime, Game game);
 };

@@ -9,29 +9,15 @@
 GLBI_Engine GameEngine;
 
 std::vector<Sprite *> tileset;
-const int MAP_WIDTH = 10;
-const int MAP_HEIGHT = 10;
-
-int map[MAP_HEIGHT][MAP_WIDTH];
 
 AnimatedSprite *badger{};
 AnimatedSprite *boar{};
 AnimatedSprite *stag{};
 AnimatedSprite *wolf{};
 
-void generateMap()
+GameScene::GameScene()
 {
-	std::srand(std::time(nullptr));
-	for (int y = 0; y < MAP_HEIGHT; ++y)
-	{
-		for (int x = 0; x < MAP_WIDTH; ++x)
-		{
-			map[y][x] = rand() % 2;
-		}
-	}
-}
 
-GameScene::GameScene() {
 	for (int i = 0; i < 114; ++i)
 	{
 		std::ostringstream ss;
@@ -43,17 +29,21 @@ GameScene::GameScene() {
 	boar = new AnimatedSprite("critters/boar/boar_SE_run_sheet.png", 3.0f, 2.3f, 2, 2, 10);
 	stag = new AnimatedSprite("critters/stag/critter_stag_SE_walk.png", 2.7f, 2.7f, 11, 1, 15);
 	wolf = new AnimatedSprite("critters/wolf/wolf-run.png", 4.0f, 4.0f, 8, 4, 15);
-
-	generateMap();
 }
 
-void GameScene::draw(double deltaTime)
+void GameScene::draw(double deltaTime, Game game)
 {
+
+	int MAP_WIDTH = game.map.getWidth();
+	int MAP_HEIGHT = game.map.getHeight();
+
+	const std::vector<std::vector<MapType>> &carte = game.map.getMap();
+
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glDisable(GL_DEPTH_TEST);
-    glDepthMask(GL_FALSE);
+	glDisable(GL_DEPTH_TEST);
+	glDepthMask(GL_FALSE);
 
 	// float z_index = 0.0f;
 	for (int layer = MAP_WIDTH + MAP_HEIGHT - 2; layer >= 0; --layer)
@@ -67,7 +57,28 @@ void GameScene::draw(double deltaTime)
 			if (y < 0 || y >= MAP_HEIGHT)
 				continue;
 
-			int tileType = (map[y][x] == 0) ? 5 : 22;
+			int tileType;
+
+			if (carte[y][x] == MapType::WATER)
+			{
+				tileType = 92;
+			}
+			else if (carte[y][x] == MapType::GRASS)
+			{
+				tileType = 23;
+			}
+			else if (carte[y][x] == MapType::SAND)
+			{
+				tileType = 66;
+			}
+			else if (carte[y][x] == MapType::WALL)
+			{
+				tileType = 2;
+			}
+			else
+			{
+				tileType = 3;
+			}
 
 			float iso_x = (x - y) * 0.50f;
 			float iso_y = (x + y) * 0.25f;
@@ -79,17 +90,27 @@ void GameScene::draw(double deltaTime)
 			tileset[tileType]->draw();
 
 			GameEngine.mvMatrixStack.popMatrix();
+			if (carte[y][x] == MapType::WALL)
+			{
+				GameEngine.mvMatrixStack.pushMatrix();
+				GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y - 1.75f, 0.0f));
+				GameEngine.updateMvMatrix();
+
+				tileset[tileType]->draw();
+
+				GameEngine.mvMatrixStack.popMatrix();
+			}
 		}
 	}
 
 	GameEngine.mvMatrixStack.pushMatrix();
 	GameEngine.mvMatrixStack.addHomothety(Vector3D(0.4f, 0.4f, 0.4f));
-	
+
 	// badger
 	GameEngine.mvMatrixStack.pushMatrix();
 	GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, -1.5f, 0.0f));
 	GameEngine.updateMvMatrix();
-	badger->update(deltaTime);
+	// badger->update(deltaTime);
 	badger->draw();
 	GameEngine.mvMatrixStack.popMatrix();
 
@@ -97,7 +118,7 @@ void GameScene::draw(double deltaTime)
 	GameEngine.mvMatrixStack.pushMatrix();
 	GameEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, -1.5f, 0.0f));
 	GameEngine.updateMvMatrix();
-	boar->update(deltaTime);
+	// boar->update(deltaTime);
 	boar->draw();
 	GameEngine.mvMatrixStack.popMatrix();
 
@@ -105,7 +126,7 @@ void GameScene::draw(double deltaTime)
 	GameEngine.mvMatrixStack.pushMatrix();
 	GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, 1.5f, 0.0f));
 	GameEngine.updateMvMatrix();
-	stag->update(deltaTime);
+	// stag->update(deltaTime);
 	stag->draw();
 	GameEngine.mvMatrixStack.popMatrix();
 
@@ -113,9 +134,8 @@ void GameScene::draw(double deltaTime)
 	GameEngine.mvMatrixStack.pushMatrix();
 	GameEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, 1.5f, 0.0f));
 	GameEngine.updateMvMatrix();
-	wolf->update(deltaTime);
+	// wolf->update(deltaTime);
 	wolf->draw();
 	GameEngine.mvMatrixStack.popMatrix();
 	GameEngine.mvMatrixStack.popMatrix();
-
 }

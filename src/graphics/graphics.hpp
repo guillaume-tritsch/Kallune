@@ -21,7 +21,7 @@ public:
     void update(Game game, InputState inputState);
 
     // Render the current frame
-    void render(double deltaTime, Scene current_scene, InputState inputState);
+    void render(double deltaTime, Scene current_scene, InputState inputState, Game game);
 
     // Checks if the user requested to close the window
     bool shouldClose();

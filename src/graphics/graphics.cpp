@@ -105,7 +105,7 @@ Graphics::Graphics()
     cursorAnimatedSprite = new AnimatedSprite("cursors/animated_cursor.png", 0.7f, 0.7f, 3, 1, 6);
 }
 
-void Graphics::render(double deltaTime, Scene currentScene, InputState inputState)
+void Graphics::render(double deltaTime, Scene currentScene, InputState inputState, Game game)
 {
     /* Get time (in second) at loop beginning */
     double startTime = glfwGetTime();
@@ -128,7 +128,7 @@ void Graphics::render(double deltaTime, Scene currentScene, InputState inputStat
         menu_scene->draw(deltaTime);
         break;
     case Scene::Playing:
-        game_scene->draw(deltaTime);
+        game_scene->draw(deltaTime, game);
         break;
     case Scene::End:
         end_scene->draw();
@@ -172,6 +172,7 @@ void Graphics::render(double deltaTime, Scene currentScene, InputState inputStat
 void Graphics::update(Game game, InputState state)
 {
     menu_scene->update(state);
+
 }
 
 bool Graphics::shouldClose()
