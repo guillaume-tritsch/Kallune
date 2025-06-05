@@ -48,8 +48,11 @@ vector<vector<MapType>> MapGeneration::getMap()
             case 3:
                 enumsMap[x][y] = MapType::WALL;
                 break;
-
+            case 4:
+                enumsMap[x][y] = MapType::FLOWER;
+                break;
             default:
+                enumsMap[x][y] = MapType::GRASS;
                 break;
             }
         }
@@ -89,14 +92,12 @@ void MapGeneration::generate(int chanceToStartAlive, unsigned int numberOfSteps,
 {
     srand(static_cast<unsigned>(time(0)));
 
-    // Initialisation aléatoire
     map = vector<vector<int>>(width, vector<int>(height, 0));
     for (unsigned int x = 0; x < width; ++x)
     {
         for (unsigned int y = 0; y < height; ++y)
         {
-            map[x][y] = (rand() % 100 < chanceToStartAlive) ? 1 : (rand() % 100 < 70) ? 0
-                                                                                      : 3;
+            map[x][y] = (rand() % 100 < chanceToStartAlive) ? 1 : (rand() % 100 < 65) ? 0 : 3;
         }
     }
 
@@ -119,9 +120,6 @@ void MapGeneration::postProcess()
             if (map[x][y] == 0)
             {
                 map[x][y] = (rand() % 100 < 80) ? 0 : 4;
-
-                // glm::vec2 pos(x,y);
-                // map[x][y] = glm::perlin(pos) * 4;
             }
         }
     }
@@ -146,7 +144,6 @@ void MapGeneration::step()
                 newMap[x][y] = 3;
             }
             else if
-
                 (distantFilled >= 40)
             {
                 newMap[x][y] = 2;

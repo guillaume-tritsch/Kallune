@@ -19,17 +19,13 @@ struct EntityInfo
     bool isAlive;
     bool isAggressive;
 };
-struct EntityInfo
-{
-    float x, y;
-    bool isAlive;
-    bool isAggressive;
-};
+
 
 class Game
 {
 public:
     Game();
+    ~Game();	
     Map map;
 
     void update(float deltaTime, InputState input);

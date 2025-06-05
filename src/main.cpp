@@ -29,7 +29,7 @@ int main() {
 
         game.update(deltaTime, input.state);
         graphics.update(game, input.state);
-        graphics.render(deltaTime, currentScene, input.state);
+        graphics.render(deltaTime, currentScene, input.state, game);
     }
 
     graphics.close();

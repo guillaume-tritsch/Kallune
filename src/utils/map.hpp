@@ -4,5 +4,6 @@ enum MapType {
   WATER,
   SAND,
   GRASS,
-  WALL
+  WALL,
+  FLOWER
 };

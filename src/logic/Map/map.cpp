@@ -34,6 +34,6 @@ float Map::getSpeed(MapType type) const
     case MapType::SAND:
         return 0.75f;
     default:
-        return 1.0f; // valeur par défaut sûre
+        return 1.0f;
     }
 }
