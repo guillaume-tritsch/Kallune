@@ -118,39 +118,39 @@ void GameScene::draw(double deltaTime, Game game)
 		}
 	}
 
-	GameEngine.mvMatrixStack.pushMatrix();
-	GameEngine.mvMatrixStack.addHomothety(Vector3D(0.4f, 0.4f, 0.4f));
+	// GameEngine.mvMatrixStack.pushMatrix();
+	// GameEngine.mvMatrixStack.addHomothety(Vector3D(0.4f, 0.4f, 0.4f));
 
 	// badger
-	GameEngine.mvMatrixStack.pushMatrix();
-	GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, -1.5f, 0.0f));
-	GameEngine.updateMvMatrix();
-	// badger->update(deltaTime);
-	badger->draw();
-	GameEngine.mvMatrixStack.popMatrix();
+	// GameEngine.mvMatrixStack.pushMatrix();
+	// GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, -1.5f, 0.0f));
+	// GameEngine.updateMvMatrix();
+	// // badger->update(deltaTime);
+	// badger->draw();
+	// GameEngine.mvMatrixStack.popMatrix();
 
-	// boar
-	GameEngine.mvMatrixStack.pushMatrix();
-	GameEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, -1.5f, 0.0f));
-	GameEngine.updateMvMatrix();
-	// boar->update(deltaTime);
-	boar->draw();
-	GameEngine.mvMatrixStack.popMatrix();
+	// // boar
+	// GameEngine.mvMatrixStack.pushMatrix();
+	// GameEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, -1.5f, 0.0f));
+	// GameEngine.updateMvMatrix();
+	// // boar->update(deltaTime);
+	// boar->draw();
+	// GameEngine.mvMatrixStack.popMatrix();
 
-	// stag
-	GameEngine.mvMatrixStack.pushMatrix();
-	GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, 1.5f, 0.0f));
-	GameEngine.updateMvMatrix();
-	// stag->update(deltaTime);
-	stag->draw();
-	GameEngine.mvMatrixStack.popMatrix();
+	// // stag
+	// GameEngine.mvMatrixStack.pushMatrix();
+	// GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, 1.5f, 0.0f));
+	// GameEngine.updateMvMatrix();
+	// // stag->update(deltaTime);
+	// stag->draw();
+	// GameEngine.mvMatrixStack.popMatrix();
 
-	// wolf
-	GameEngine.mvMatrixStack.pushMatrix();
-	GameEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, 1.5f, 0.0f));
-	GameEngine.updateMvMatrix();
-	// wolf->update(deltaTime);
-	wolf->draw();
-	GameEngine.mvMatrixStack.popMatrix();
-	GameEngine.mvMatrixStack.popMatrix();
+	// // wolf
+	// GameEngine.mvMatrixStack.pushMatrix();
+	// GameEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, 1.5f, 0.0f));
+	// GameEngine.updateMvMatrix();
+	// // wolf->update(deltaTime);
+	// wolf->draw();
+	// GameEngine.mvMatrixStack.popMatrix();
+	// GameEngine.mvMatrixStack.popMatrix();
 }

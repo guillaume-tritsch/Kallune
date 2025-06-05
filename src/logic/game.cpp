@@ -1,6 +1,9 @@
 #include "game.hpp"
 #include <cstdlib>
 #include <ctime>
+#include <random>
+#include <set>
+
 
 Game::Game()
     : map(), flowField(map.getWidth(), map.getHeight()), player(0.0f, 0.0f)
@@ -86,24 +89,61 @@ Game::~Game()
 
 void Game::placeEntityRandomly(Entity *entity)
 {
-    int w = map.getWidth();
-    int h = map.getHeight();
+    //place les entités sur des cases valides (grass, sand ou flower) de la map
+    const auto& grid = map.getMap();
+    int width = map.getWidth();
+    int height = map.getHeight();
 
-    int tries = 0;
-    const int maxTries = 100;
+    std::vector<std::pair<int, int>> validPositions;
 
-    while (tries < maxTries)
-    {
-        int x = std::rand() % w;
-        int y = std::rand() % h;
-        if (isWalkableTile(x, y))
-        {
-            entity->setPosition(x + 0.5f, y + 0.5f);
-            return;
+    // Collecter les cases valides
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            MapType type = grid[y][x];
+            if (type == MapType::GRASS || type == MapType::SAND || type == MapType::FLOWER) {
+                if (occupiedTiles.find({x, y}) == occupiedTiles.end()) {
+                    validPositions.emplace_back(x, y);
+                }
+            }
         }
-        ++tries;
     }
-    entity->setPosition(w / 2.0f, h / 2.0f);
+    if (validPositions.empty()) {
+        std::cerr << "Erreur : aucune case valide disponible pour placer l'entité." << std::endl;
+        return;
+    }
+
+    // Choix aléatoire d'une position
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, validPositions.size() - 1);
+
+    auto [tileX, tileY] = validPositions[dis(gen)];
+
+    occupiedTiles.insert({tileX, tileY});
+
+    float posX = static_cast<float>(tileX);
+    float posY = static_cast<float>(tileY);
+    entity->setPosition(posX, posY);
+
+
+    // int w = map.getWidth();
+    // int h = map.getHeight();
+
+    // int tries = 0;
+    // const int maxTries = 100;
+
+    // while (tries < maxTries)
+    // {
+    //     int x = std::rand() % w;
+    //     int y = std::rand() % h;
+    //     if (isWalkableTile(x, y))
+    //     {
+    //         entity->setPosition(x + 0.5f, y + 0.5f);
+    //         return;
+    //     }
+    //     ++tries;
+    // }
+    // entity->setPosition(w / 2.0f, h / 2.0f);
 }
 
 
