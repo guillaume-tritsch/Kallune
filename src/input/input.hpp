@@ -12,7 +12,6 @@ class Input {
 
 private:
     static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
-    void NewFunction(const char *keyName, int key, int action);
     static void mouseCallback(GLFWwindow *window, int button, int action, int mods);
     GLFWwindow* window;
 

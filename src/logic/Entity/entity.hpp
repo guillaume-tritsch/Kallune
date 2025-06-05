@@ -1,5 +1,7 @@
 #pragma once
 
+#include "utils/entityType.hpp"
+
 class Player;
 class FlowField;
 
@@ -31,11 +33,14 @@ public:
     void takeDamage(float dmg); 
     void setPlayer(const Player* p);
     void setPosition(float newX, float newY);
+
+    EntityType getType() const;
 protected:
     float x, y;
     float speed = 1.5f;
     float health = 100.0f;
     float tileSize = 1.0f;
+    EntityType type;
     const FlowField* flowField = nullptr;
     BehaviorType behavior = BehaviorType::Idle;
 

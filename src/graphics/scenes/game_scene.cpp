@@ -45,6 +45,9 @@ void GameScene::draw(double deltaTime, Game game)
 	glDisable(GL_DEPTH_TEST);
 	glDepthMask(GL_FALSE);
 
+	GameEngine.mvMatrixStack.pushMatrix();
+	GameEngine.mvMatrixStack.addHomothety(Vector3D(0.2f, 0.2f, 0.2f));
+
 	// float z_index = 0.0f;
 	for (int layer = MAP_WIDTH + MAP_HEIGHT - 2; layer >= 0; --layer)
 	{
@@ -71,6 +74,11 @@ void GameScene::draw(double deltaTime, Game game)
 			{
 				tileType = 66;
 			}
+			else if (carte[y][x] == MapType::FLOWER)
+			{
+				tileType = 4;
+			}
+
 			else if (carte[y][x] == MapType::WALL)
 			{
 				tileType = 2;
@@ -100,42 +108,84 @@ void GameScene::draw(double deltaTime, Game game)
 
 				GameEngine.mvMatrixStack.popMatrix();
 			}
+			else if (carte[y][x] == MapType::FLOWER)
+			{
+				GameEngine.mvMatrixStack.pushMatrix();
+				GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y - 1.75f, 0.0f));
+				GameEngine.updateMvMatrix();
+
+				tileset[44]->draw();
+
+				GameEngine.mvMatrixStack.popMatrix();
+			}
 		}
 	}
+
+	// Draw entities
 
 	GameEngine.mvMatrixStack.pushMatrix();
 	GameEngine.mvMatrixStack.addHomothety(Vector3D(0.4f, 0.4f, 0.4f));
 
+	for (const auto &entity : game.getEntitiesInfo())
+	{
+		GameEngine.mvMatrixStack.pushMatrix();
+		float iso_x_entities = (entity.x - entity.y) * 0.50f;
+		float iso_y_entities = (entity.x + entity.y) * 0.25f;
+
+		GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x_entities, iso_y_entities - 1.75f, 0.0f));
+		GameEngine.updateMvMatrix();
+
+		if (entity.type == EntityType::BOAR)
+		{
+			boar->draw();
+		}
+		else if (entity.type == EntityType::DEER)
+		{
+			stag->draw();
+		}
+		else if (entity.type == EntityType::WOLF)
+		{
+			wolf->draw();
+		}
+		GameEngine.mvMatrixStack.popMatrix();
+	}
+
+	GameEngine.mvMatrixStack.popMatrix();
+	GameEngine.mvMatrixStack.popMatrix();
+
+	// GameEngine.mvMatrixStack.pushMatrix();
+	// GameEngine.mvMatrixStack.addHomothety(Vector3D(0.4f, 0.4f, 0.4f));
+
 	// badger
-	GameEngine.mvMatrixStack.pushMatrix();
-	GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, -1.5f, 0.0f));
-	GameEngine.updateMvMatrix();
-	// badger->update(deltaTime);
-	badger->draw();
-	GameEngine.mvMatrixStack.popMatrix();
+	// GameEngine.mvMatrixStack.pushMatrix();
+	// GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, -1.5f, 0.0f));
+	// GameEngine.updateMvMatrix();
+	// // badger->update(deltaTime);
+	// badger->draw();
+	// GameEngine.mvMatrixStack.popMatrix();
 
-	// boar
-	GameEngine.mvMatrixStack.pushMatrix();
-	GameEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, -1.5f, 0.0f));
-	GameEngine.updateMvMatrix();
-	// boar->update(deltaTime);
-	boar->draw();
-	GameEngine.mvMatrixStack.popMatrix();
+	// // boar
+	// GameEngine.mvMatrixStack.pushMatrix();
+	// GameEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, -1.5f, 0.0f));
+	// GameEngine.updateMvMatrix();
+	// // boar->update(deltaTime);
+	// boar->draw();
+	// GameEngine.mvMatrixStack.popMatrix();
 
-	// stag
-	GameEngine.mvMatrixStack.pushMatrix();
-	GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, 1.5f, 0.0f));
-	GameEngine.updateMvMatrix();
-	// stag->update(deltaTime);
-	stag->draw();
-	GameEngine.mvMatrixStack.popMatrix();
+	// // stag
+	// GameEngine.mvMatrixStack.pushMatrix();
+	// GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, 1.5f, 0.0f));
+	// GameEngine.updateMvMatrix();
+	// // stag->update(deltaTime);
+	// stag->draw();
+	// GameEngine.mvMatrixStack.popMatrix();
 
-	// wolf
-	GameEngine.mvMatrixStack.pushMatrix();
-	GameEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, 1.5f, 0.0f));
-	GameEngine.updateMvMatrix();
-	// wolf->update(deltaTime);
-	wolf->draw();
-	GameEngine.mvMatrixStack.popMatrix();
-	GameEngine.mvMatrixStack.popMatrix();
+	// // wolf
+	// GameEngine.mvMatrixStack.pushMatrix();
+	// GameEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, 1.5f, 0.0f));
+	// GameEngine.updateMvMatrix();
+	// // wolf->update(deltaTime);
+	// wolf->draw();
+	// GameEngine.mvMatrixStack.popMatrix();
+	// GameEngine.mvMatrixStack.popMatrix();
 }

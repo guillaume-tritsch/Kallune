@@ -1,11 +1,13 @@
 #include "deer.hpp"
+#include "utils/entityType.hpp"
 
 Deer::Deer(float startX, float startY) : Entity(startX, startY)
 {
     speed = 2.0f;
+    type = EntityType::DEER;
 }
 
-Deer::Deer(float startX, float startY, const Player* player, const FlowField* flowField)
+Deer::Deer(float startX, float startY, const Player *player, const FlowField *flowField)
     : Entity(startX, startY)
 {
     this->player = player;
@@ -13,13 +15,13 @@ Deer::Deer(float startX, float startY, const Player* player, const FlowField* fl
     speed = 2.0f;
 }
 
-void Deer::decideBehavior(const Player& player)
+void Deer::decideBehavior(const Player &player)
 {
     float dx = player.getX() - x;
     float dy = player.getY() - y;
-    float distanceSq = dx * dx + dy * dy;
+    float distanceSq = std::sqrt(dx * dx + dy * dy);
 
-    if (distanceSq < fleeDistance * fleeDistance)
+    if (distanceSq < fleeDistance)
     {
         behavior = BehaviorType::Flee;
     }
@@ -36,26 +38,29 @@ void Deer::update(float deltaTime)
         return;
     }
 
-    int tileX = getTileX();
-    int tileY = getTileY();
-    float dirX = 0.0f, dirY = 0.0f;
-
-    flowField->getDirectionAt(tileX, tileY, dirX, dirY);
-
-    float length = std::sqrt(dirX * dirX + dirY * dirY);
-    if (length > 0.0f)
+    switch (behavior)
     {
-        dirX /= length;
-        dirY /= length;
+    case BehaviorType::Attack:
+    case BehaviorType::Idle:
+            x += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+            y += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+    case BehaviorType::Flee:
+        int tileX = getTileX();
+        int tileY = getTileY();
+        float dirX = 0.0f, dirY = 0.0f;
 
-        // Si comportement = fuite, inverse la direction
-        if (behavior == BehaviorType::Flee)
+        flowField->getDirectionAt(tileX, tileY, dirX, dirY);
+
+        float length = std::sqrt(dirX * dirX + dirY * dirY);
+        if (length > 0.0f)
         {
-            dirX = -dirX;
-            dirY = -dirY;
+            dirX /= length;
+            dirY /= length;
+
+            x += dirX * speed * deltaTime;
+            y += dirY * speed * deltaTime;
         }
 
-        x += dirX * speed * deltaTime;
-        y += dirY * speed * deltaTime;
+        break;
     }
 }

@@ -1,4 +1,5 @@
 #include "wolf.hpp"
+#include "utils/entityType.hpp"
 
 Wolf::Wolf(float startX, float startY, const Player *player, const FlowField *flowField)
     : Entity(startX, startY)
@@ -6,6 +7,7 @@ Wolf::Wolf(float startX, float startY, const Player *player, const FlowField *fl
     this->player = player;
     this->flowField = flowField;
     speed = 2.5f;
+    type = EntityType::WOLF;
 }
 
 Wolf::Wolf(float startX, float startY) : Entity(startX, startY)
@@ -17,9 +19,9 @@ void Wolf::decideBehavior(const Player &player)
 {
     float dx = player.getX() - x;
     float dy = player.getY() - y;
-    float distanceSq = dx * dx + dy * dy;
+    float distanceSq = std::sqrt(dx * dx + dy * dy);
 
-    if (distanceSq < attackRange * attackRange)
+    if (distanceSq < pursuitRange)
     {
         behavior = BehaviorType::Attack;
     }
@@ -36,22 +38,9 @@ void Wolf::update(float deltaTime)
         return;
     }
 
-    // Comportement
     switch (behavior)
     {
     case BehaviorType::Attack:
-        timeSinceLastAttack += deltaTime;
-        if (timeSinceLastAttack >= attackCooldown)
-        {
-            // Ici tu peux appeler une méthode pour infliger des dégâts au joueur
-            // Exemple : player.takeDamage(10.0f);
-            timeSinceLastAttack = 0.0f;
-        }
-        break;
-
-    case BehaviorType::Idle:
-    case BehaviorType::Flee:
-    default:
     {
         int tileX = getTileX();
         int tileY = getTileY();
@@ -68,7 +57,17 @@ void Wolf::update(float deltaTime)
             x += dirX * speed * deltaTime;
             y += dirY * speed * deltaTime;
         }
+        break;
     }
-    break;
+    case BehaviorType::Idle:
+    {
+        x += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+        y += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+        break;
+    }
+    case BehaviorType::Flee:
+    {
+        break;
+    }
     }
 }

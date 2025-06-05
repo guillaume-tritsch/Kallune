@@ -8,24 +8,27 @@
 #include "Entity/Entities/deer.hpp"
 #include "Entity/Entities/wolf.hpp"
 #include "utils/state.hpp"
-
+#include "utils/entityType.hpp"
 #include <vector>
 #include <memory>
 #include <unordered_map>
+#include <set>
+#include <utility>
+
 
 struct EntityInfo
 {
     float x, y;
     bool isAlive;
     bool isAggressive;
+    EntityType type;
 };
-
 
 class Game
 {
 public:
     Game();
-    ~Game();	
+    ~Game();
     Map map;
 
     void update(float deltaTime, InputState input);
@@ -34,9 +37,7 @@ public:
     float getPlayerY() const;
 
     std::vector<EntityInfo> getEntitiesInfo() const;
-
-    void onKeyDown(int keyCode);
-    void onKeyUp(int keyCode);
+    std::set<std::pair<int, int>> occupiedTiles;
 
     bool isKeyPressed(int keyCode) const;
 

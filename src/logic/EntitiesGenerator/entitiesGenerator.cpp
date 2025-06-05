@@ -23,21 +23,6 @@ void EntitiesGenerator::update(float deltaTime)
     }
 }
 
-void EntitiesGenerator::spawnWolf(int x, int y)
-{
-    entities.push_back(new Wolf(x, y, player, flowField));
-}
-
-void EntitiesGenerator::spawnBoar(int x, int y)
-{
-    entities.push_back(new Boar(x, y, player, flowField)); 
-}
-
-void EntitiesGenerator::spawnDeer(int x, int y)
-{
-    entities.push_back(new Deer(x, y, player, flowField));
-}
-
 const std::vector<Entity*>& EntitiesGenerator::getEntities() const
 {
     return entities;
