@@ -1,6 +1,6 @@
 #include "entitiesGenerator.hpp"
 
-EntitiesGenerator::EntitiesGenerator(FlowField* flowField, Player* player)
+EntitiesGenerator::EntitiesGenerator(FlowField *flowField, Player *player)
     : flowField(flowField), player(player)
 {
 }
@@ -9,13 +9,11 @@ void EntitiesGenerator::update(float deltaTime)
 {
     for (auto it = entities.begin(); it != entities.end();)
     {
-        Entity* entity = *it;
-        entity->update(deltaTime);
+        (*it)->update(deltaTime);
 
-        if (!entity->isAlive())
+        if (!(*it)->isAlive())
         {
-            delete entity;
-            it = entities.erase(it);
+            it = entities.erase(it); // plus besoin de delete
         }
         else
         {
@@ -26,20 +24,20 @@ void EntitiesGenerator::update(float deltaTime)
 
 void EntitiesGenerator::spawnWolf(int x, int y)
 {
-    entities.push_back(new Wolf(x, y, player, flowField));
+    entities.push_back(std::make_unique<Wolf>(x, y, player, flowField));
 }
 
 void EntitiesGenerator::spawnBoar(int x, int y)
 {
-    entities.push_back(new Boar(x, y, player, flowField));
+    entities.push_back(std::make_unique<Boar>(x, y, player, flowField));
 }
 
 void EntitiesGenerator::spawnDeer(int x, int y)
 {
-    entities.push_back(new Deer(x, y, player, flowField));
+    entities.push_back(std::make_unique<Deer>(x, y, player, flowField));
 }
 
-const vector<Entity*>& EntitiesGenerator::getEntities() const
+const std::vector<std::unique_ptr<Entity>> &EntitiesGenerator::getEntities() const
 {
     return entities;
 }

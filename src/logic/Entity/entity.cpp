@@ -19,7 +19,7 @@ bool Entity::isAlive() const
     return health > 0.0f;
 }
 
-bool Entity::isAgressive() const
+bool Entity::isAggressive() const
 {
     return aggressive();
 }

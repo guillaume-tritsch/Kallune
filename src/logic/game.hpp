@@ -13,6 +13,12 @@
 #include <memory>
 #include <unordered_map>
 
+    struct EntityInfo {
+        float x, y;
+        bool isAlive;
+        bool isAggressive;
+    };
+
 class Game {
 public:
     Game();
@@ -23,16 +29,11 @@ public:
     float getPlayerX() const;
     float getPlayerY() const;
 
-    struct EntityInfo {
-        float x, y;
-        bool isAlive;
-        bool isAggressive;
-    };
     std::vector<EntityInfo> getEntitiesInfo() const;
 
-    // Méthodes liées aux entrées clavier (à implémenter selon ta plateforme)
     void onKeyDown(int keyCode);
     void onKeyUp(int keyCode);
+
     bool isKeyPressed(int keyCode) const;
 
 private:

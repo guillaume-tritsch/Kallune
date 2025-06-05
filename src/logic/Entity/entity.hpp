@@ -25,7 +25,7 @@ public:
     int getTileY() const;
 
     bool isAlive() const;        // ✅ Ajouté
-    bool isAgressive() const;    // true pour loup / sanglier
+    bool isAggressive() const;    // true pour loup / sanglier
     bool isCoward() const;       // true pour cerf
 
     void takeDamage(float dmg);  // ✅ Utile pour combat/attaque
