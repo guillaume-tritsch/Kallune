@@ -131,7 +131,7 @@ Game::~Game()
 }
 
 
-std::optional<std::pair<int, int>> Game::getRandomPlacablePosition() const
+std::optional<std::pair<int, int>> Game::getRandomPlacablePosition()
 {
     const auto& grid = map.getMap();
     int width = map.getWidth();

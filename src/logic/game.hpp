@@ -14,6 +14,7 @@
 #include <unordered_map>
 #include <set>
 #include <utility>
+#include <optional>
 
 
 struct EntityInfo
@@ -40,7 +41,7 @@ public:
     std::set<std::pair<int, int>> occupiedTiles;
 
     bool isKeyPressed(int keyCode) const;
-std::optional<std::pair<int, int>> Game::getRandomPlacablePosition() const;
+std::optional<std::pair<int, int>> getRandomPlacablePosition();
 private:
     FlowField flowField;
     Player player;
