@@ -124,7 +124,11 @@ void Game::placeEntityRandomly(Entity *entity)
 
     float posX = static_cast<float>(tileX);
     float posY = static_cast<float>(tileY);
+
+    std::cout << "Placing entity at: (" << posX << ", " << posY << ")" << std::endl;
+
     entity->setPosition(posX, posY);
+    //entity->setPosition(0.0f, 0.0f); // For testing purposes, set to a fixed position
 
 
     // int w = map.getWidth();
