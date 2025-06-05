@@ -11,7 +11,7 @@ public:
     Wolf(float startX, float startY, const Player *player, const FlowField *flowField);
 
     void update(float deltaTime) override;
-    void decideBehavior(const Player &player) override;
+    void decideBehavior(Player &player) override;
 
 private:
     bool aggressive() const override { return true; }

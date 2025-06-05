@@ -15,7 +15,7 @@ Deer::Deer(float startX, float startY, const Player *player, const FlowField *fl
     speed = 2.0f;
 }
 
-void Deer::decideBehavior(const Player &player)
+void Deer::decideBehavior(Player &player)
 {
     float dx = player.getX() - x;
     float dy = player.getY() - y;

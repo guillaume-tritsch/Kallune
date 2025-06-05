@@ -51,6 +51,9 @@ vector<vector<MapType>> MapGeneration::getMap()
             case 4:
                 enumsMap[x][y] = MapType::FLOWER;
                 break;
+            case 5:
+                enumsMap[x][y] = MapType::SOLID_WALL;
+                break;
             default:
                 enumsMap[x][y] = MapType::GRASS;
                 break;
@@ -136,12 +139,14 @@ void MapGeneration::step()
             int filled = countNeighbors(x, y, 1, {1, 2});
             int distantFilled = countNeighbors(x, y, 3, {1, 2});
             int moutainCount = countNeighbors(x, y, 1, {3});
+            int distantMoutainCount = countNeighbors(x, y, 3, {3});
 
-            // if (newMap[x][y] != -1)
-            // {
+
             if (moutainCount >= 3)
             {
                 newMap[x][y] = 3;
+            } else if (distantMoutainCount >= 20) {
+                newMap[x][y] = 5;
             }
             else if
                 (distantFilled >= 40)
@@ -157,7 +162,6 @@ void MapGeneration::step()
                 newMap[x][y] = 0;
             }
 
-            // }
         }
     }
 

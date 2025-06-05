@@ -33,10 +33,10 @@ void Game::handlePlayerMovement(const InputState& inputState, float deltaTime)
     float dirY = 0.0f;
 
     if (inputState.keyStates[GLFW_KEY_W] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_W] == GLFW_REPEAT) {
-        dirY -= 1.0f;
+        dirY += 1.0f;
     }
     if (inputState.keyStates[GLFW_KEY_S] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_S] == GLFW_REPEAT) {
-        dirY += 1.0f;
+        dirY -= 1.0f;
     }
     if (inputState.keyStates[GLFW_KEY_A] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_A] == GLFW_REPEAT) {
         dirX -= 1.0f;

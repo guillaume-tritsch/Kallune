@@ -5,5 +5,6 @@ enum MapType {
   SAND,
   GRASS,
   WALL,
-  FLOWER
+  FLOWER,
+  SOLID_WALL
 };

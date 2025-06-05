@@ -15,13 +15,17 @@ Wolf::Wolf(float startX, float startY) : Entity(startX, startY)
     speed = 2.5f; // Plus rapide que le sanglier
 }
 
-void Wolf::decideBehavior(const Player &player)
+void Wolf::decideBehavior(Player &player)
 {
     float dx = player.getX() - x;
     float dy = player.getY() - y;
     float distanceSq = std::sqrt(dx * dx + dy * dy);
 
-    if (distanceSq < pursuitRange)
+    if (distanceSq < 0.5f)
+    {
+        player.kill();
+    }
+    else if (distanceSq < pursuitRange)
     {
         behavior = BehaviorType::Attack;
     }
@@ -29,6 +33,8 @@ void Wolf::decideBehavior(const Player &player)
     {
         behavior = BehaviorType::Idle;
     }
+            return;
+
 }
 
 void Wolf::update(float deltaTime)

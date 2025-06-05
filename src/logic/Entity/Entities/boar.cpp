@@ -15,12 +15,16 @@ Boar::Boar(float startX, float startY, const Player *player, const FlowField *fl
     speed = 1.2f;
 }
 
-void Boar::decideBehavior(const Player &player)
+void Boar::decideBehavior(Player &player)
 {
     float dx = player.getX() - x;
     float dy = player.getY() - y;
     float distanceSq = std::sqrt(dx * dx + dy * dy);
 
+    if (distanceSq < 0.5f)
+    {
+        player.kill();
+    } else
     if (distanceSq < pursuitRange)
     {
         behavior = BehaviorType::Attack;

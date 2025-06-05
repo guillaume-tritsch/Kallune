@@ -25,9 +25,6 @@ public:
     void addScore(int points);
 
     void resetScore() { score = 0; }
-
-
-
 private:
     float x, y;               // position en unités
     float speed = 2.5f;       // vitesse en unités/seconde

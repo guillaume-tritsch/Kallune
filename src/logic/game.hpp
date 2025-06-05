@@ -16,7 +16,6 @@
 #include <utility>
 #include <optional>
 
-
 struct EntityInfo
 {
     float x, y;
@@ -43,13 +42,26 @@ public:
     std::set<std::pair<int, int>> occupiedTiles;
 
     bool isKeyPressed(int keyCode) const;
-std::optional<std::pair<int, int>> getRandomPlacablePosition();
+    std::optional<std::pair<int, int>> getRandomPlacablePosition();
+
+    bool isPlayerAlive() const { return player.isAlive(); }
+
+    void setKeyState(int keyCode, bool pressed)
+    {
+        keyStates[keyCode] = pressed;
+    }
+
+    void clearKeyStates()
+    {
+        keyStates.clear();
+    }
+
 private:
     FlowField flowField;
     Player player;
 
     std::vector<Entity *> entities;
-    void handlePlayerMovement(const InputState& inputState, float deltaTime);
+    void handlePlayerMovement(const InputState &inputState, float deltaTime);
 
     std::unordered_map<int, bool> keyStates;
 

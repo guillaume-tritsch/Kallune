@@ -17,7 +17,7 @@ public:
     virtual ~Entity() = default;
 
     virtual void update(float deltaTime) = 0;
-    virtual void decideBehavior(const Player& player) = 0;
+    virtual void decideBehavior( Player& player) = 0;
 
     void setFlowField(const FlowField* field);
 
