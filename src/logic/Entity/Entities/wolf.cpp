@@ -55,12 +55,17 @@ void Wolf::update(float deltaTime)
             x += dirX * speed * deltaTime;
             y += dirY * speed * deltaTime;
         }
+        break;
     }
-    break;
     case BehaviorType::Idle:
+    {
         x += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
         y += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+        break;
+    }
     case BehaviorType::Flee:
-
+    {
+        break;
+    }
     }
 }

@@ -5,7 +5,7 @@ Boar::Boar(float startX, float startY) : Entity(startX, startY)
     speed = 1.2f; // Plus lent que le loup
 }
 
-Boar::Boar(float startX, float startY, const Player* player, const FlowField* flowField)
+Boar::Boar(float startX, float startY, const Player *player, const FlowField *flowField)
     : Entity(startX, startY)
 {
     this->player = player;
@@ -13,13 +13,13 @@ Boar::Boar(float startX, float startY, const Player* player, const FlowField* fl
     speed = 1.2f;
 }
 
-void Boar::decideBehavior(const Player& player)
+void Boar::decideBehavior(const Player &player)
 {
     float dx = player.getX() - x;
     float dy = player.getY() - y;
     float distanceSq = std::sqrt(dx * dx + dy * dy);
 
-    if (distanceSq < attackRange)
+    if (distanceSq < pursuitRange)
     {
         behavior = BehaviorType::Attack;
     }
@@ -55,10 +55,17 @@ void Boar::update(float deltaTime)
             x += dirX * speed * deltaTime;
             y += dirY * speed * deltaTime;
         }
+        break;
     }
     case BehaviorType::Idle:
+    {
         x += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
         y += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+        break;
+    }
     case BehaviorType::Flee:
+    {
+        break;
+    }
     }
 }
