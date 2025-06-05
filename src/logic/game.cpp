@@ -35,7 +35,8 @@ float Game::getPlayerY() const
 }
 
 // Add this method:
-std::vector<EntityInfo> Game::getEntitiesInfo() const {
+std::vector<EntityInfo> Game::getEntitiesInfo() const
+{
     std::vector<EntityInfo> infos;
     infos.reserve(entities.size());
     for (const auto& e : entities) {
@@ -46,6 +47,7 @@ std::vector<EntityInfo> Game::getEntitiesInfo() const {
             e->isAggressive()
         });
     }
+
     return infos;
 }
 
@@ -70,26 +72,32 @@ void Game::generateEntities(int countWolf, int countBoar, int countDeer)
     // Génère les entités, place aléatoirement sur des cases praticables
     for (int i = 0; i < countWolf; ++i)
     {
-        auto wolf = std::make_unique<Wolf>(0, 0, &player, &flowField);
-        placeEntityRandomly(wolf.get());
-        // entities.push_back(std::move(wolf));
+        Wolf* wolf = new Wolf(0, 0, &player, &flowField);  // Changed from std::make_unique
+        placeEntityRandomly(wolf);
+        entities.push_back(wolf);  // No std::move needed
     }
     for (int i = 0; i < countBoar; ++i)
     {
-        auto boar = std::make_unique<Boar>(0, 0, &player, &flowField);
-        placeEntityRandomly(boar.get());
-        placeEntityRandomly(boar.get());
-        placeEntityRandomly(boar.get());
-        // entities.push_back(std::move(boar));
+        Boar* boar = new Boar(0, 0, &player, &flowField);  // Changed from std::make_unique
+        placeEntityRandomly(boar);
+        entities.push_back(boar);  // No std::move needed
     }
     for (int i = 0; i < countDeer; ++i)
     {
-        auto deer = std::make_unique<Deer>(0, 0, &player, &flowField);
-        placeEntityRandomly(deer.get());
-        // entities.push_back(std::move(deer));
+        Deer* deer = new Deer(0, 0, &player, &flowField);  // Changed from std::make_unique
+        placeEntityRandomly(deer);
+        entities.push_back(deer);  // No std::move needed
     }
 }
 
+// Add destructor to clean up memory
+Game::~Game()
+{
+    for (auto entity : entities)
+    {
+        delete entity;
+    }
+}
 void Game::placeEntityRandomly(Entity *entity)
 {
     int w = map.getWidth();
