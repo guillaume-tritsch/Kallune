@@ -72,20 +72,21 @@ void Game::generateEntities(int countWolf, int countBoar, int countDeer)
     {
         auto wolf = std::make_unique<Wolf>(0, 0, &player, &flowField);
         placeEntityRandomly(wolf.get());
-        entities.push_back(std::move(wolf));
+        // entities.push_back(std::move(wolf));
     }
     for (int i = 0; i < countBoar; ++i)
     {
         auto boar = std::make_unique<Boar>(0, 0, &player, &flowField);
         placeEntityRandomly(boar.get());
         placeEntityRandomly(boar.get());
-        entities.push_back(std::move(boar));
+        placeEntityRandomly(boar.get());
+        // entities.push_back(std::move(boar));
     }
     for (int i = 0; i < countDeer; ++i)
     {
         auto deer = std::make_unique<Deer>(0, 0, &player, &flowField);
         placeEntityRandomly(deer.get());
-        entities.push_back(std::move(deer));
+        // entities.push_back(std::move(deer));
     }
 }
 

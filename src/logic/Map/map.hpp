@@ -30,5 +30,5 @@ private:
     int height;
 
 public:
-    MapGeneration generator; // Tu peux envisager de mettre ce membre en privé et ajouter un getter si besoin
+    MapGeneration generator;
 };

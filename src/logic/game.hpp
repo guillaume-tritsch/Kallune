@@ -41,7 +41,7 @@ private:
     FlowField flowField;
     Player player;
 
-    std::vector<std::unique_ptr<Entity>> entities;
+    // std::vector<std::unique_ptr<Entity>> entities;
 
     // Garde l'état des touches appuyées
     std::unordered_map<int, bool> keyStates;
