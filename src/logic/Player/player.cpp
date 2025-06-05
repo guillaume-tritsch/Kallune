@@ -2,7 +2,7 @@
 #include <cmath>
 
 Player::Player(float startX, float startY)
-    : x(startX), y(startY), health(100.0f), speed(2.5f), tileSize(1.0f)
+    : x(startX), y(startY), speed(2.5f), tileSize(1.0f), alive(true)
 {
 }
 
@@ -18,12 +18,9 @@ void Player::move(float dirX, float dirY, float deltaTime)
     }
 }
 
-void Player::takeDamage(float amount)
+void Player::kill()
 {
-    health -= amount;
-    if (health < 0.0f) {
-        health = 0.0f;
-    }
+    alive = false;
 }
 
 float Player::getX() const
