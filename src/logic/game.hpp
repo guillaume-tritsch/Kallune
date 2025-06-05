@@ -28,7 +28,6 @@ public:
 
     void update(float deltaTime, Input input);
 
-    // Accès aux infos
     float getPlayerX() const;
     float getPlayerY() const;
 
@@ -46,7 +45,6 @@ private:
 
     std::vector<Entity *> entities;
 
-    // Garde l'état des touches appuyées
     std::unordered_map<int, bool> keyStates;
 
     void generateEntities(int countWolf, int countBoar, int countDeer);
