@@ -140,14 +140,15 @@ void MapGeneration::step()
             int distantFilled = countNeighbors(x, y, 3, {1, 2});
             int moutainCount = countNeighbors(x, y, 1, {3});
             int distantMoutainCount = countNeighbors(x, y, 3, {3});
-
-
-            if (moutainCount >= 3)
-            {
-                newMap[x][y] = 3;
-            } else if (distantMoutainCount >= 20) {
+            int solidWall = countNeighbors(x, y, 1, {5});
+            
+            if (distantMoutainCount >= 20 && solidWall <= 7) {
                 newMap[x][y] = 5;
             }
+            else if (moutainCount >= 3)
+            {
+                newMap[x][y] = 3;
+            } 
             else if
                 (distantFilled >= 40)
             {

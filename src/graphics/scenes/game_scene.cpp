@@ -215,7 +215,7 @@ void GameScene::draw(double deltaTime, Game game)
 		float iso_x_entities = (posX + posY) * 0.50f;
 		float iso_y_entities = (posY - posX) * 0.25f;
 		
-		std::cout << posX << " x " << posY << "   -   " << iso_x_entities << " x " << iso_y_entities << std::endl;
+		// std::cout << posX << " x " << posY << "   -   " << iso_x_entities << " x " << iso_y_entities << std::endl;
 
 		GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x_entities, iso_y_entities, 0.0f));
 		GameEngine.updateMvMatrix();

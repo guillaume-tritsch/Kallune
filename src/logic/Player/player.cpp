@@ -16,8 +16,8 @@ void Player::move(float dirX, float dirY, float deltaTime)
         dirX /= length;
         dirY /= length;
         
-        x += dirX * speed * deltaTime;
-        y += dirY * speed * deltaTime;
+        x += dirX * speed * map.getSpeed(map.getMap()[getTileX()][getTileY()]) * deltaTime;
+        y += dirY * speed * map.getSpeed(map.getMap()[getTileX()][getTileY()]) * deltaTime;
     }
 
     int tileX = getTileX();
