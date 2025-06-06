@@ -122,7 +122,7 @@ void MapGeneration::postProcess()
         {
             if (map[x][y] == 0)
             {
-                map[x][y] = (rand() % 100 < 95) ? 0 : 4;
+                map[x][y] = (rand() % 100 < 99) ? 0 : 4;
             }
         }
     }
