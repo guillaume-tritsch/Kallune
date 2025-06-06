@@ -7,6 +7,11 @@
 #include "tools/basic_mesh.hpp"
 #include "logic/game.hpp"
 
+#include "graphics/elements/sprite.hpp"
+#include "input/scenes/playing_state.hpp"
+#include "utils/scene.hpp"
+#include "utils/router.hpp"
+
 using namespace glbasimac;
 
 /* OpenGL Engine */
@@ -17,10 +22,18 @@ extern double worldX, worldY;
 extern int WINDOW_WIDTH, WINDOW_HEIGHT;
 extern float viewWidth, viewHeight;
 
+class GameScene
+{
+public:
+    GameScene();
+    ~GameScene() = default;
+    void draw(double deltaTime, Game game);
+    void update(InputState inputState, Router *router);
 
-class GameScene {
-    public:
-        GameScene();
-        ~GameScene() = default;
-        void draw(double deltaTime, Game game);
+private:
+
+    Sprite *pauseButton {};
+    Sprite *pauseButtonHover {};
+
+    PlayingState state{PlayingState()};
 };

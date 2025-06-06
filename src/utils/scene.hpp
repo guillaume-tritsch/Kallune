@@ -4,5 +4,6 @@ enum Scene {
     Menu,
     Settings,
     Playing,
-    End
+    End,
+    Pause
 };

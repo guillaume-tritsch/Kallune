@@ -15,6 +15,9 @@ AnimatedSprite *boar{};
 AnimatedSprite *stag{};
 AnimatedSprite *wolf{};
 
+Sprite *pauseButton{};
+Sprite *pauseButtonHover{};
+
 GameScene::GameScene()
 {
 
@@ -29,7 +32,20 @@ GameScene::GameScene()
 	boar = new AnimatedSprite("critters/boar/boar_SE_run_sheet.png", 3.0f, 2.3f, 2, 2, 10);
 	stag = new AnimatedSprite("critters/stag/critter_stag_SE_walk.png", 2.7f, 2.7f, 11, 1, 15);
 	wolf = new AnimatedSprite("critters/wolf/wolf-run.png", 4.0f, 4.0f, 8, 4, 15);
+
+	pauseButton = new Sprite("pause/pause-button.png", 0.99f, 0.99f);
+	pauseButtonHover = new Sprite("pause/pause-button-hover.png", 0.99f, 0.99f);
 }
+
+void GameScene::update(InputState inputState, Router* router) {
+    state.update(inputState);
+
+    if(state.pauseButton == ButtonState::ACTIVE) {
+        router->goTo(Scene::Pause);
+    }
+
+}
+
 
 void GameScene::draw(double deltaTime, Game game)
 {
@@ -50,6 +66,7 @@ void GameScene::draw(double deltaTime, Game game)
 
 	glDisable(GL_DEPTH_TEST);
 	glDepthMask(GL_FALSE);
+
 
 	GameEngine.mvMatrixStack.pushMatrix();
 	GameEngine.mvMatrixStack.addHomothety(Vector3D(1.0f, 1.0f, 1.0f));
@@ -168,8 +185,7 @@ void GameScene::draw(double deltaTime, Game game)
 	GameEngine.mvMatrixStack.popMatrix();
 	GameEngine.mvMatrixStack.popMatrix();
 
-
-
+	// Draw player
 	GameEngine.mvMatrixStack.pushMatrix();
 	GameEngine.mvMatrixStack.addHomothety(Vector3D(0.5f, 0.5f, 0.5f));
 	GameEngine.mvMatrixStack.addTranslation(Vector3D(0.0f, 0.0f, 0.0f));
@@ -177,6 +193,20 @@ void GameScene::draw(double deltaTime, Game game)
 	GameEngine.updateMvMatrix();
 	badger->update(deltaTime);
 	badger->draw();
+	GameEngine.mvMatrixStack.popMatrix();
+
+	// Draw pause button
+	GameEngine.mvMatrixStack.pushMatrix();
+	GameEngine.mvMatrixStack.addTranslation(Vector3D(8.0f - 1.0f, 4.5f - 1.0f, 0.0f));
+	GameEngine.updateMvMatrix();
+	switch(state.pauseButton) {
+            case ButtonState::HOVER:
+                pauseButtonHover->draw();
+                break;
+            default:
+                pauseButton->draw();
+                break;
+        }
 	GameEngine.mvMatrixStack.popMatrix();
 
 }

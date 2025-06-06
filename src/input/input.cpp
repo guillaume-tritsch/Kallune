@@ -82,5 +82,4 @@ Input::Input(GLFWwindow* window) {
     glfwSetWindowUserPointer(window, this);
     glfwSetKeyCallback(window, keyCallback);
     glfwSetMouseButtonCallback(window, mouseCallback);
-    // menu_state = new MenuState();
 }

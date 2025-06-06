@@ -9,6 +9,7 @@
 #include "graphics/scenes/end_scene.hpp"
 #include "utils/state.hpp"
 #include "utils/router.hpp"
+#include "graphics/scenes/pause_scene.hpp"
 
 class Graphics {
 public:
@@ -41,6 +42,7 @@ private:
     MenuScene *menu_scene {};
     SettingsScene *settings_scene {};
     EndScene *end_scene {};
+    PauseScene *pause_scene {};
 
     // CURSOR
     const double CURSOR_ANIMATION_DURATION = 0.5;
