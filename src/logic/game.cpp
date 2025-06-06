@@ -51,8 +51,10 @@ void Game::handlePlayerMovement(const InputState &inputState, float deltaTime)
         dirX += 1.0f;
     }
 
-    if (dirX == 0.0f && dirY == 0.0f)
+    if (dirX == 0.0f && dirY == 0.0f) {
+        player.calculateDirectionAndBehavior(dirX, dirY);
         return;
+    }
 
     float nextX = player.getX() + dirX * player.getSpeed() * deltaTime;
     float nextY = player.getY() + dirY * player.getSpeed() * deltaTime;
@@ -127,9 +129,10 @@ std::vector<EntityInfo> Game::getEntitiesInfo() const
             e->getY(),
             e->isAlive(),
             e->isAggressive(),
-            e->getType()});
-        e->getBehavior();
-        e->getDirection();
+            e->getType(),
+            e->getDirection(),
+            e->getBehavior()
+        });
     }
 
     return infos;

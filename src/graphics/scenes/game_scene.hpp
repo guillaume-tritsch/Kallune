@@ -6,6 +6,7 @@
 #include "glbasimac/glbi_texture.hpp"
 #include "tools/basic_mesh.hpp"
 #include "logic/game.hpp"
+#include "graphics/elements/character.hpp"
 
 using namespace glbasimac;
 
@@ -23,4 +24,10 @@ class GameScene {
         GameScene();
         ~GameScene() = default;
         void draw(double deltaTime, Game game);
+
+    private:
+        Character* badger {};
+        Character* wolf {};
+        Character* stag {};
+        Character* boar {};
 };

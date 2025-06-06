@@ -96,6 +96,6 @@ void Player::calculateDirectionAndBehavior(float dirX, float dirY)
         if (dirX == 0.0f && dirY == 0.0f) {
             behavior = BehaviorType::IDLE;
         } else {
-            behavior = BehaviorType::ATTACK;
+            behavior = BehaviorType::MOVE;
         }
 }
