@@ -27,7 +27,7 @@ public:
     MenuScene();
     ~MenuScene() = default;
 
-    void update(InputState inputState, Router* router);
+    void update(InputState inputState, Router* router, GLFWwindow* window);
     void draw(double deltaTime);
 
 private:

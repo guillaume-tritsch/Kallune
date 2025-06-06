@@ -15,7 +15,7 @@ MenuScene::MenuScene()
     exitButtonHover = new Sprite("menu/exit-button-hover.png", 1.55f, 0.99f);
 }
 
-void MenuScene::update(InputState inputState, Router* router) {
+void MenuScene::update(InputState inputState, Router* router, GLFWwindow* window) {
     state.update(inputState);
 
     if(state.playButton == ButtonState::ACTIVE) {
@@ -24,6 +24,10 @@ void MenuScene::update(InputState inputState, Router* router) {
 
     if(state.settingsButton == ButtonState::ACTIVE) {
         router->goTo(Scene::Settings);
+    }
+
+    if(state.exitButton == ButtonState::ACTIVE) {
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
 }
 

@@ -182,7 +182,7 @@ void Graphics::update(Game game, InputState state, Router *router)
     switch (router->currentScene)
     {
     case Scene::Menu:
-        menu_scene->update(state, router);
+        menu_scene->update(state, router, window);
         break;
 
     case Scene::Settings:
