@@ -32,6 +32,8 @@ public:
 
     Direction getDirection() const { return direction; }
 
+    BehaviorType getBehavior() const { return behavior; }
+
 private:
     float x, y;            
     float speed = 20.f;     
@@ -43,4 +45,5 @@ private:
 
     Direction direction = Direction::SOUTH; 
     BehaviorType behavior = BehaviorType::IDLE;
+
 };

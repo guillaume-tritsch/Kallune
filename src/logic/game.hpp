@@ -65,6 +65,15 @@ public:
         return player.getDirection();
     }
 
+    BehaviorType getPlayerBehavior() const
+    {
+        return player.getBehavior();
+    }
+
+        void togglePause() { isGamePaused = !isGamePaused; }
+
+    bool isPaused() const { return isGamePaused; }
+    void checkPause(InputState inputState);
 private:
     FlowField flowField;
     Player player;
@@ -81,4 +90,6 @@ private:
     void updateEntities(float deltaTime);
 
     bool isWalkableTile(int x, int y) const;
+
+        bool isGamePaused = false;
 };

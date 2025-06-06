@@ -54,7 +54,6 @@ void Game::handlePlayerMovement(const InputState &inputState, float deltaTime)
     if (dirX == 0.0f && dirY == 0.0f)
         return;
 
-
     float nextX = player.getX() + dirX * player.getSpeed() * deltaTime;
     float nextY = player.getY() + dirY * player.getSpeed() * deltaTime;
 
@@ -68,21 +67,35 @@ void Game::handlePlayerMovement(const InputState &inputState, float deltaTime)
     else if (map.isWalkable(tileX, tileY))
     {
         player.move(dirX, dirY, deltaTime);
-    } else {
+    }
+    else
+    {
         dirX = 0.0f;
         dirY = 0.0f;
     }
     player.calculateDirectionAndBehavior(dirX, dirY);
+}
 
+void Game::checkPause(InputState inputState)
+{
+    if (inputState.keyStates[GLFW_KEY_ESCAPE] == GLFW_PRESS)
+    {
+        togglePause();
+    }
 }
 
 void Game::update(float deltaTime, InputState inputState)
 {
-    handlePlayerMovement(inputState, deltaTime); // ← Ajouté
+    checkPause(inputState);
 
-    updateFlowField();
+    if (!isGamePaused)
+    {
+        handlePlayerMovement(inputState, deltaTime);
 
-    updateEntities(deltaTime);
+        updateFlowField();
+
+        updateEntities(deltaTime);
+    }
 }
 
 float Game::getPlayerX() const
@@ -107,8 +120,8 @@ std::vector<EntityInfo> Game::getEntitiesInfo() const
             e->isAlive(),
             e->isAggressive(),
             e->getType()});
-            e->getBehavior();
-            e->getDirection();
+        e->getBehavior();
+        e->getDirection();
     }
 
     return infos;
