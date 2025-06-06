@@ -183,7 +183,8 @@ std::optional<std::pair<int, int>> Game::getRandomPlacablePosition()
     {
         for (int x = 0; x < width; ++x)
         {
-            MapType type = grid[y][x];
+
+            MapType type = grid[x][y];
             if ((type == MapType::GRASS || type == MapType::SAND || type == MapType::FLOWER) &&
                 occupiedTiles.find({x, y}) == occupiedTiles.end())
             {
