@@ -29,32 +29,6 @@ Game::Game()
     generateEntities(5, 3, 4);
 }
 
-void Game::reset()
-{
-    for (auto entity : entities) {
-        delete entity;
-    }
-    entities.clear();
-    occupiedTiles.clear();
-    
-    map = Map();
-    flowField = FlowField(map.getWidth(), map.getHeight());
-    
-    auto positionOpt = getRandomPlacablePosition();
-    if (positionOpt.has_value()) {
-        auto [x, y] = positionOpt.value();
-        occupiedTiles.insert({x, y});
-        player.~Player();
-        new (&player) Player(static_cast<float>(x), static_cast<float>(y), map);
-    } else {
-        player.~Player();
-        new (&player) Player(50.0f, 50.0f, map);
-    }
-    
-    updateFlowField();
-    generateEntities(5, 3, 4);
-}
-
 void Game::handlePlayerMovement(const InputState &inputState, float deltaTime)
 {
     float dirX = 0.0f;
@@ -77,7 +51,8 @@ void Game::handlePlayerMovement(const InputState &inputState, float deltaTime)
         dirX += 1.0f;
     }
 
-    if (dirX == 0.0f && dirY == 0.0f) {
+    if (dirX == 0.0f && dirY == 0.0f)
+    {
         player.calculateBehavior(dirX, dirY);
         return;
     }
@@ -160,8 +135,7 @@ std::vector<EntityInfo> Game::getEntitiesInfo() const
             e->isAggressive(),
             e->getType(),
             e->getDirection(),
-            e->getBehavior()
-        });
+            e->getBehavior()});
     }
 
     return infos;
@@ -279,4 +253,9 @@ void Game::updateEntities(float deltaTime)
         entity->decideBehavior(player);
         entity->update(deltaTime);
     }
+}
+
+bool Game::isPlayerAlive()
+{
+    return player.isAlive();
 }

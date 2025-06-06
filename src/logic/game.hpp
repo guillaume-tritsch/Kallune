@@ -35,7 +35,6 @@ public:
     ~Game();
     Map map;
 
-    void reset();
     void update(float deltaTime, InputState input);
 
     float getPlayerX() const;
@@ -49,7 +48,8 @@ public:
     bool isKeyPressed(int keyCode) const;
     std::optional<std::pair<int, int>> getRandomPlacablePosition();
 
-    bool isPlayerAlive() const { return player.isAlive(); }
+    bool isPlayerAlive();
+    
 
     void setKeyState(int keyCode, bool pressed)
     {
@@ -71,7 +71,6 @@ public:
         return player.getBehavior();
     }
 
-
 private:
     FlowField flowField;
     Player player;
@@ -88,5 +87,4 @@ private:
     void updateEntities(float deltaTime);
 
     bool isWalkableTile(int x, int y) const;
-
 };

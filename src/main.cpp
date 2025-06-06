@@ -1,4 +1,3 @@
-
 #include "input/input.hpp"
 #include "logic/game.hpp"
 #include "graphics/graphics.hpp"
@@ -10,9 +9,8 @@
 
 int main()
 {
-
     Router router{Router()};
-    Game game{Game()};
+    Game* game = new Game();
     Graphics graphics{Graphics()};
     Input input{Input(graphics.window)};
 
@@ -20,8 +18,11 @@ int main()
 
     while (!graphics.shouldClose())
     {
+        if (router.currentScene == Scene::End && !game->isPlayerAlive()) {
+            delete game;
+            game = new Game();
+        }
 
-        // Calculate time delta between frames
         double currentFrameTime = glfwGetTime();
         double deltaTime = currentFrameTime - lastFrameTime;
         lastFrameTime = currentFrameTime;
@@ -29,12 +30,13 @@ int main()
         input.update(&router);
         if (router.currentScene != Scene::Pause)
         {
-            game.update(deltaTime, input.state);
+            game->update(deltaTime, input.state);
         }
-        graphics.update(game, input.state, &router);
-        graphics.render(deltaTime, &router, input.state, game);
+        graphics.update(*game, input.state, &router);
+        graphics.render(deltaTime, &router, input.state, *game);
     }
 
+    delete game; // Clean up
     graphics.close();
 
     return 0;
