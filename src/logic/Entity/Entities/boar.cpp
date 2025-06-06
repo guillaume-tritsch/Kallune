@@ -3,7 +3,7 @@
 
 Boar::Boar(float startX, float startY) : Entity(startX, startY)
 {
-    speed = 1.2f; // Plus lent que le loup
+    speed = 1.2f;
     type = EntityType::BOAR;
 }
 
@@ -69,9 +69,6 @@ void Boar::update(float deltaTime)
     }
     case BehaviorType::IDLE:
     {
-        // x += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
-        // y += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
-
         calculateDirection(0, 0);
 
         break;

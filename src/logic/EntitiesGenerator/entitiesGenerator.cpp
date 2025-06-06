@@ -28,7 +28,6 @@ const std::vector<Entity*>& EntitiesGenerator::getEntities() const
     return entities;
 }
 
-// Add destructor
 EntitiesGenerator::~EntitiesGenerator()
 {
     for (auto entity : entities)

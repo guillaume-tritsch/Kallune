@@ -52,6 +52,6 @@ private:
     Direction direction = Direction::SOUTH;
     BehaviorType behavior = BehaviorType::IDLE;
 
-    float miningCooldown = 0.0f;          // Temps avant de pouvoir miner à nouveau
-    const float maxMiningCooldown = 0.8f; // 1 seconde entre chaque minage
+    float miningCooldown = 0.0f;        
+    const float maxMiningCooldown = 0.8f; 
 };

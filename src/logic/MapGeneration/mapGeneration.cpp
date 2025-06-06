@@ -20,7 +20,7 @@ void MapGeneration::printMap()
 MapGeneration::MapGeneration(unsigned int width, unsigned int height)
     : width{width}, height{height}
 {
-    srand(static_cast<unsigned int>(time(nullptr))); // Initialisation RNG
+    srand(static_cast<unsigned int>(time(nullptr)));
 }
 
 int MapGeneration::getValue(unsigned int x, unsigned int y)
