@@ -105,7 +105,7 @@ private:
 	inline void StandardMesh::updateUVs(const GLfloat* new_uvs, size_t num_elements) {
 		// Find the index corresponding to the UVs
 		for (size_t i = 0; i < attr_semantic.size(); ++i) {
-			std::cout << attr_semantic[i] << std::endl;
+			//std::cout << attr_semantic[i] << std::endl;
 			if (attr_semantic[i] == "uvs") {
 				glBindVertexArray(id_vao); // Ensure VAO is bound
 				glBindBuffer(GL_ARRAY_BUFFER, vbo_id[i]);

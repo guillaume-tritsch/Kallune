@@ -38,6 +38,12 @@ void GameScene::draw(double deltaTime, Game game)
 	int MAP_HEIGHT = game.map.getHeight();
 
 	const std::vector<std::vector<MapType>> &carte = game.map.getMap();
+	std::vector<std::vector<MapType>> carte_inverted;
+	// invert rows
+	for (size_t i = 0; i < 100; i++)
+	{
+		carte_inverted.push_back(carte[99 - i]);
+	}
 
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -46,9 +52,15 @@ void GameScene::draw(double deltaTime, Game game)
 	glDepthMask(GL_FALSE);
 
 	GameEngine.mvMatrixStack.pushMatrix();
-	std::cout << -game.getPlayerX() << "x" << -game.getPlayerY() << "y" << std::endl;
-	GameEngine.mvMatrixStack.addTranslation(Vector3D(-game.getPlayerX(), -game.getPlayerY(), 0.0f));
-	GameEngine.mvMatrixStack.addHomothety(Vector3D(0.5f, 0.5f, 0.5f));
+	GameEngine.mvMatrixStack.addHomothety(Vector3D(1.0f, 1.0f, 1.0f));
+	//std::cout << -game.getPlayerX() << "x" << game.getPlayerY() << "y" << std::endl;
+	float player_x = game.getPlayerX();
+	float player_y = game.getPlayerY();
+	float iso_x_offset = (-player_x-player_y) * 0.50f;
+	float iso_y_offset = (-player_y + player_x) * 0.25f;
+	std::cout << game.getPlayerX() << "x" << game.getPlayerY() << "y" << std::endl;
+	GameEngine.mvMatrixStack.addTranslation(Vector3D(50.0f, -25.0f, 0.0f));
+	GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x_offset, iso_y_offset, 0.0f));
 
 	// float z_index = 0.0f;
 	for (int layer = MAP_WIDTH + MAP_HEIGHT - 2; layer >= 0; --layer)
@@ -64,24 +76,24 @@ void GameScene::draw(double deltaTime, Game game)
 
 			int tileType;
 
-			if (carte[y][x] == MapType::WATER)
+			if (carte_inverted[y][x] == MapType::WATER)
 			{
 				tileType = 92;
 			}
-			else if (carte[y][x] == MapType::GRASS)
+			else if (carte_inverted[y][x] == MapType::GRASS)
 			{
 				tileType = 23;
 			}
-			else if (carte[y][x] == MapType::SAND)
+			else if (carte_inverted[y][x] == MapType::SAND)
 			{
 				tileType = 66;
 			}
-			else if (carte[y][x] == MapType::FLOWER)
+			else if (carte_inverted[y][x] == MapType::FLOWER)
 			{
 				tileType = 4;
 			}
 
-			else if (carte[y][x] == MapType::WALL)
+			else if (carte_inverted[y][x] == MapType::WALL)
 			{
 				tileType = 2;
 			}
@@ -94,26 +106,26 @@ void GameScene::draw(double deltaTime, Game game)
 			float iso_y = (x + y) * 0.25f;
 
 			GameEngine.mvMatrixStack.pushMatrix();
-			GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y - 2.0f, 0.0f));
+			GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y, 0.0f));
 			GameEngine.updateMvMatrix();
 
 			tileset[tileType]->draw();
 
 			GameEngine.mvMatrixStack.popMatrix();
-			if (carte[y][x] == MapType::WALL)
+			if (carte_inverted[y][x] == MapType::WALL)
 			{
 				GameEngine.mvMatrixStack.pushMatrix();
-				GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y - 1.75f, 0.0f));
+				GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y +0.25f, 0.0f));
 				GameEngine.updateMvMatrix();
 
 				tileset[tileType]->draw();
 
 				GameEngine.mvMatrixStack.popMatrix();
 			}
-			else if (carte[y][x] == MapType::FLOWER)
+			else if (carte_inverted[y][x] == MapType::FLOWER)
 			{
 				GameEngine.mvMatrixStack.pushMatrix();
-				GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y - 1.75f, 0.0f));
+				GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y + 0.25f, 0.0f));
 				GameEngine.updateMvMatrix();
 
 				tileset[44]->draw();
@@ -126,7 +138,7 @@ void GameScene::draw(double deltaTime, Game game)
 	// Draw entities
 
 	GameEngine.mvMatrixStack.pushMatrix();
-	GameEngine.mvMatrixStack.addHomothety(Vector3D(0.4f, 0.4f, 0.4f));
+	//GameEngine.mvMatrixStack.addHomothety(Vector3D(0.4f, 0.4f, 0.4f));
 
 	for (const auto &entity : game.getEntitiesInfo())
 	{
@@ -134,7 +146,7 @@ void GameScene::draw(double deltaTime, Game game)
 		float iso_x_entities = (entity.x - entity.y) * 0.50f;
 		float iso_y_entities = (entity.x + entity.y) * 0.25f;
 
-		GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x_entities, iso_y_entities - 1.75f, 0.0f));
+		GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x_entities, iso_y_entities +0.25, 0.0f));
 		GameEngine.updateMvMatrix();
 
 		if (entity.type == EntityType::BOAR)
@@ -151,43 +163,20 @@ void GameScene::draw(double deltaTime, Game game)
 		}
 		GameEngine.mvMatrixStack.popMatrix();
 	}
+	
+
+	GameEngine.mvMatrixStack.popMatrix();
+	GameEngine.mvMatrixStack.popMatrix();
+
+
+
 	GameEngine.mvMatrixStack.pushMatrix();
+	GameEngine.mvMatrixStack.addHomothety(Vector3D(0.5f, 0.5f, 0.5f));
+	GameEngine.mvMatrixStack.addTranslation(Vector3D(0.0f, 0.0f, 0.0f));
 	// GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, -1.5f, 0.0f));
 	GameEngine.updateMvMatrix();
 	badger->update(deltaTime);
 	badger->draw();
 	GameEngine.mvMatrixStack.popMatrix();
 
-	GameEngine.mvMatrixStack.popMatrix();
-	GameEngine.mvMatrixStack.popMatrix();
-
-	// GameEngine.mvMatrixStack.pushMatrix();
-	// GameEngine.mvMatrixStack.addHomothety(Vector3D(0.4f, 0.4f, 0.4f));
-
-	// badger
-
-	// // boar
-	// GameEngine.mvMatrixStack.pushMatrix();
-	// GameEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, -1.5f, 0.0f));
-	// GameEngine.updateMvMatrix();
-	// // boar->update(deltaTime);
-	// boar->draw();
-	// GameEngine.mvMatrixStack.popMatrix();
-
-	// // stag
-	// GameEngine.mvMatrixStack.pushMatrix();
-	// GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, 1.5f, 0.0f));
-	// GameEngine.updateMvMatrix();
-	// // stag->update(deltaTime);
-	// stag->draw();
-	// GameEngine.mvMatrixStack.popMatrix();
-
-	// // wolf
-	// GameEngine.mvMatrixStack.pushMatrix();
-	// GameEngine.mvMatrixStack.addTranslation(Vector3D(1.5f, 1.5f, 0.0f));
-	// GameEngine.updateMvMatrix();
-	// // wolf->update(deltaTime);
-	// wolf->draw();
-	// GameEngine.mvMatrixStack.popMatrix();
-	// GameEngine.mvMatrixStack.popMatrix();
 }
