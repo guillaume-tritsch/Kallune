@@ -60,19 +60,26 @@ void Game::handlePlayerMovement(const InputState &inputState, float deltaTime)
     int tileX = static_cast<int>(nextX);
     int tileY = static_cast<int>(nextY);
 
+        
+    int tileXOffset = static_cast<int>(nextX + (dirX < 0 ? -0.2f : 0.2f));
+    int tileYOffset = static_cast<int>(nextY + (dirY < 0 ? -0.2f : 0.2f));
+
     if (map.getMap()[tileX][tileY] == MapType::WATER)
     {
         player.kill();
     }
-    else if (map.isWalkable(tileX, tileY))
-    {
-        player.move(dirX, dirY, deltaTime);
-    }
-    else
+    
+    if (!map.isWalkable(tileXOffset, tileY))
     {
         dirX = 0.0f;
+
+    }
+    if (!map.isWalkable(tileX, tileYOffset))
+    {
         dirY = 0.0f;
     }
+    
+    player.move(dirX, dirY, deltaTime);
     player.calculateDirectionAndBehavior(dirX, dirY);
 }
 

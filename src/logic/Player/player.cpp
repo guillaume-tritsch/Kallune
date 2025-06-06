@@ -5,7 +5,7 @@
 #include "utils/behavior.hpp"
 
 Player::Player(float startX, float startY, Map map)
-    : map(std::move(map)), x(startX), y(startY), speed(2.5f), tileSize(1.0f), alive(true), score(0)
+    : map(std::move(map)), x(startX), y(startY), speed(5.f), tileSize(1.0f), alive(true), score(0)
 {
 }
 

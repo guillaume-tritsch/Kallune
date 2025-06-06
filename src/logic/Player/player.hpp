@@ -4,13 +4,13 @@
 #include "utils/directions.hpp"
 #include "utils/behavior.hpp"
 
-class Player {
+class Player
+{
 public:
     Player(float startX, float startY, Map map);
 
     void move(float dirX, float dirY, float deltaTime);
     void takeDamage(float amount);
-
 
     void setPosition(float newX, float newY);
     float getX() const;
@@ -35,15 +35,14 @@ public:
     BehaviorType getBehavior() const { return behavior; }
 
 private:
-    float x, y;            
-    float speed = 20.f;     
+    float x, y;
+    float speed;
     bool alive = true;
-    float tileSize = 1.0f;   
+    float tileSize = 1.0f;
 
     int score = 0;
     Map map;
 
-    Direction direction = Direction::SOUTH; 
+    Direction direction = Direction::SOUTH;
     BehaviorType behavior = BehaviorType::IDLE;
-
 };
