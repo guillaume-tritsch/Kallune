@@ -9,8 +9,8 @@ using namespace glbasimac;
 
 int WINDOW_WIDTH = 1280;
 int WINDOW_HEIGHT = 720;
-double FRAMERATE_IN_SECONDS {1. / 60.};
-float aspectRatio {};
+double FRAMERATE_IN_SECONDS{1. / 60.};
+float aspectRatio{};
 
 float GL_VIEW_SIZE = 9.0f;
 float viewWidth = 16.0f;
@@ -22,13 +22,13 @@ void Graphics::onError(int error, const char *description)
     std::cout << "GLFW Error (" << error << ") : " << description << std::endl;
 }
 
-void Graphics::onWindowResized(GLFWwindow* window, int width, int height)
+void Graphics::onWindowResized(GLFWwindow *window, int width, int height)
 {
     std::cout << "Window resized to " << width << "x" << height << std::endl;
-    
+
     WINDOW_WIDTH = width;
     WINDOW_HEIGHT = height;
-    
+
     aspectRatio = width / (float)height;
     glfwGetFramebufferSize(window, &WINDOW_WIDTH, &WINDOW_HEIGHT);
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -76,7 +76,6 @@ Graphics::Graphics()
     // -- Callbacks --
     glfwSetWindowSizeCallback(window, onWindowResized);
 
-
     // Make the window's context current
     glfwMakeContextCurrent(window);
 
@@ -108,7 +107,7 @@ Graphics::Graphics()
     cursorAnimatedSprite = new AnimatedSprite("cursors/animated_cursor.png", 0.7f, 0.7f, 3, 1, 6);
 }
 
-void Graphics::render(double deltaTime, Router* router, InputState inputState, Game game)
+void Graphics::render(double deltaTime, Router *router, InputState inputState, Game game)
 {
     /* Get time (in second) at loop beginning */
     double startTime = glfwGetTime();
@@ -146,23 +145,23 @@ void Graphics::render(double deltaTime, Router* router, InputState inputState, G
 
     GameEngine.mvMatrixStack.pushMatrix();
     GameEngine.mvMatrixStack.addTranslation(Vector3D(0.1f, -0.2f, 0.0f));
-        if (startTime - inputState.cursorClickTime < CURSOR_ANIMATION_DURATION)
-        {
-            cursorAnimatedSprite->update(deltaTime);
-            GameEngine.mvMatrixStack.pushMatrix();
-            GameEngine.mvMatrixStack.addTranslation(Vector3D(inputState.x_world, inputState.y_world, 0.0f));
-            GameEngine.updateMvMatrix();
-            cursorAnimatedSprite->draw();
-            GameEngine.mvMatrixStack.popMatrix();
-        }
-        else
-        {
-            GameEngine.mvMatrixStack.pushMatrix();
-            GameEngine.mvMatrixStack.addTranslation(Vector3D(inputState.x_world, inputState.y_world, 0.0f));
-            GameEngine.updateMvMatrix();
-            cursorSprite->draw();
-            GameEngine.mvMatrixStack.popMatrix();
-        }
+    if (startTime - inputState.cursorClickTime < CURSOR_ANIMATION_DURATION)
+    {
+        cursorAnimatedSprite->update(deltaTime);
+        GameEngine.mvMatrixStack.pushMatrix();
+        GameEngine.mvMatrixStack.addTranslation(Vector3D(inputState.x_world, inputState.y_world, 0.0f));
+        GameEngine.updateMvMatrix();
+        cursorAnimatedSprite->draw();
+        GameEngine.mvMatrixStack.popMatrix();
+    }
+    else
+    {
+        GameEngine.mvMatrixStack.pushMatrix();
+        GameEngine.mvMatrixStack.addTranslation(Vector3D(inputState.x_world, inputState.y_world, 0.0f));
+        GameEngine.updateMvMatrix();
+        cursorSprite->draw();
+        GameEngine.mvMatrixStack.popMatrix();
+    }
     GameEngine.mvMatrixStack.popMatrix();
 
     /* Swap front and back buffers */
@@ -178,7 +177,7 @@ void Graphics::render(double deltaTime, Router* router, InputState inputState, G
     }
 }
 
-void Graphics::update(Game game, InputState state, Router* router)
+void Graphics::update(Game game, InputState state, Router *router)
 {
     switch (router->currentScene)
     {
@@ -191,13 +190,25 @@ void Graphics::update(Game game, InputState state, Router* router)
         break;
 
     case Scene::Playing:
-        game_scene->update(state, router);
-        break;
+        if (!game.isPlayerAlive())
+        {
+            router->goTo(Scene::End);
+            return;
+        }
+        else
+        {
+            game_scene->update(state, router);
+            break;
+        }
 
     case Scene::Pause:
         pause_scene->update(state, router);
         break;
-        
+    
+    case Scene::End:
+        end_scene->update(state, router);
+        break;
+
     default:
         std::cerr << "Euh y a un truc pas normal chef" << std::endl;
         break;
