@@ -28,7 +28,7 @@ public:
 
     void resetScore() { score = 0; }
 
-    void calculateDirectionAndBehavior(float dirX, float dirY);
+    void calculateBehavior(float dirX, float dirY);
 
     Direction getDirection() const { return direction; }
 
@@ -38,6 +38,8 @@ public:
     bool canMine() const;
 
     void update(float deltaTime);
+
+    void setDirection(Direction newDirection);
 private:
     float x, y;
     float speed;

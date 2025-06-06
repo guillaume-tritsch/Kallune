@@ -35,6 +35,7 @@ public:
     ~Game();
     Map map;
 
+    void reset();
     void update(float deltaTime, InputState input);
 
     float getPlayerX() const;

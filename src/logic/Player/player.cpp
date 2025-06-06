@@ -82,17 +82,13 @@ void Player::addScore(int points)
     score += points;
 }
 
-void Player::calculateDirectionAndBehavior(float dirX, float dirY)
+void Player::setDirection(Direction newDirection)
 {
-        if (dirX > 0.0f)
-            direction = Direction::EAST;
-        else if (dirX < 0.0f)
-            direction = Direction::WEST;
-        else if (dirY > 0.0f)
-            direction = Direction::SOUTH;
-        else if (dirY < 0.0f)
-            direction = Direction::NORTH;
+    direction = newDirection;
+}
 
+void Player::calculateBehavior(float dirX, float dirY)
+{
         if (dirX == 0.0f && dirY == 0.0f) {
             behavior = BehaviorType::IDLE;
         } else {

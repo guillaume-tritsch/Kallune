@@ -29,6 +29,32 @@ Game::Game()
     generateEntities(5, 3, 4);
 }
 
+void Game::reset()
+{
+    for (auto entity : entities) {
+        delete entity;
+    }
+    entities.clear();
+    occupiedTiles.clear();
+    
+    map = Map();
+    flowField = FlowField(map.getWidth(), map.getHeight());
+    
+    auto positionOpt = getRandomPlacablePosition();
+    if (positionOpt.has_value()) {
+        auto [x, y] = positionOpt.value();
+        occupiedTiles.insert({x, y});
+        player.~Player();
+        new (&player) Player(static_cast<float>(x), static_cast<float>(y), map);
+    } else {
+        player.~Player();
+        new (&player) Player(50.0f, 50.0f, map);
+    }
+    
+    updateFlowField();
+    generateEntities(5, 3, 4);
+}
+
 void Game::handlePlayerMovement(const InputState &inputState, float deltaTime)
 {
     float dirX = 0.0f;
@@ -52,9 +78,18 @@ void Game::handlePlayerMovement(const InputState &inputState, float deltaTime)
     }
 
     if (dirX == 0.0f && dirY == 0.0f) {
-        player.calculateDirectionAndBehavior(dirX, dirY);
+        player.calculateBehavior(dirX, dirY);
         return;
     }
+
+    if (dirX > 0.0f)
+        player.setDirection(Direction::EAST);
+    else if (dirX < 0.0f)
+        player.setDirection(Direction::WEST);
+    else if (dirY > 0.0f)
+        player.setDirection(Direction::SOUTH);
+    else if (dirY < 0.0f)
+        player.setDirection(Direction::NORTH);
 
     float nextX = player.getX() + dirX * player.getSpeed() * deltaTime;
     float nextY = player.getY() + dirY * player.getSpeed() * deltaTime;
@@ -80,11 +115,10 @@ void Game::handlePlayerMovement(const InputState &inputState, float deltaTime)
     }
 
     player.move(dirX, dirY, deltaTime);
-    player.calculateDirectionAndBehavior(dirX, dirY);
+    player.calculateBehavior(dirX, dirY);
 
     if (inputState.keyStates[GLFW_KEY_E] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_E] == GLFW_REPEAT)
     {
-        std::cout << "Player is trying to mine at: (" << player.getTileX() << ", " << player.getTileY() << ")" << std::endl;
         player.mine();
     }
 }

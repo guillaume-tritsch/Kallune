@@ -6,12 +6,11 @@ FlowField::FlowField(int width, int height)
     : width(width), height(height), field(width, std::vector<Cell>(height)) {}
 
 void FlowField::computeFlowField(int targetX, int targetY, Map& map) {
-    // Reset field
     for (int x = 0; x < width; ++x)
         for (int y = 0; y < height; ++y)
             field[x][y] = Cell();
 
-    using Node = std::pair<float, std::pair<int, int>>; // cost, (x, y)
+    using Node = std::pair<float, std::pair<int, int>>; 
     std::priority_queue<Node, std::vector<Node>, std::greater<Node>> open;
 
     field[targetX][targetY].cost = 0.0f;
@@ -39,8 +38,8 @@ void FlowField::computeFlowField(int targetX, int targetY, Map& map) {
             int ny = cy + dy[i];
             if (!inBounds(nx, ny)) continue;
 
-            float speed = speedMap[nx][ny]; // 1D access car getSpeedMap() retourne vector<float>
-            if (speed <= 0.0f) continue; // impassable
+            float speed = speedMap[nx][ny]; 
+            if (speed <= 0.0f) continue; 
 
             float moveCost = 1.0f / speed;
             float newCost = currCost + moveCost;
