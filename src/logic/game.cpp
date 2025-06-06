@@ -5,7 +5,6 @@
 #include <set>
 #include <optional>
 
-
 Game::Game()
     : map(), flowField(map.getWidth(), map.getHeight()), player(50.0f, 50.0f, map)
 {
@@ -13,12 +12,15 @@ Game::Game()
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
     auto positionOpt = getRandomPlacablePosition();
-    if (positionOpt.has_value()) {
+    if (positionOpt.has_value())
+    {
         auto [x, y] = positionOpt.value();
         occupiedTiles.insert({x, y});
         player.setPosition(static_cast<float>(x), static_cast<float>(y));
         std::cout << "Player placed at: (" << x << ", " << y << ")" << std::endl;
-    } else {
+    }
+    else
+    {
         std::cerr << "Erreur : impossible de placer le joueur (aucune case disponible)." << std::endl;
         player.setPosition(50.0f, 50.0f);
     }
@@ -27,21 +29,25 @@ Game::Game()
     generateEntities(5, 3, 4);
 }
 
-void Game::handlePlayerMovement(const InputState& inputState, float deltaTime)
+void Game::handlePlayerMovement(const InputState &inputState, float deltaTime)
 {
     float dirX = 0.0f;
     float dirY = 0.0f;
 
-    if (inputState.keyStates[GLFW_KEY_W] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_W] == GLFW_REPEAT) {
+    if (inputState.keyStates[GLFW_KEY_W] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_W] == GLFW_REPEAT)
+    {
         dirY += 1.0f;
     }
-    if (inputState.keyStates[GLFW_KEY_S] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_S] == GLFW_REPEAT) {
+    if (inputState.keyStates[GLFW_KEY_S] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_S] == GLFW_REPEAT)
+    {
         dirY -= 1.0f;
     }
-    if (inputState.keyStates[GLFW_KEY_A] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_A] == GLFW_REPEAT) {
+    if (inputState.keyStates[GLFW_KEY_A] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_A] == GLFW_REPEAT)
+    {
         dirX -= 1.0f;
     }
-    if (inputState.keyStates[GLFW_KEY_D] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_D] == GLFW_REPEAT) {
+    if (inputState.keyStates[GLFW_KEY_D] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_D] == GLFW_REPEAT)
+    {
         dirX += 1.0f;
     }
 
@@ -54,7 +60,12 @@ void Game::handlePlayerMovement(const InputState& inputState, float deltaTime)
     int tileX = static_cast<int>(nextX);
     int tileY = static_cast<int>(nextY);
 
-    if (map.isWalkable(tileX, tileY)) {
+    if (map.getMap()[tileX][tileY] == MapType::WATER)
+    {
+        player.kill();
+    }
+    else if (map.isWalkable(tileX, tileY))
+    {
         player.move(dirX, dirY, deltaTime);
     }
 }
@@ -62,7 +73,7 @@ void Game::handlePlayerMovement(const InputState& inputState, float deltaTime)
 void Game::update(float deltaTime, InputState inputState)
 {
     handlePlayerMovement(inputState, deltaTime); // ← Ajouté
-    
+
     updateFlowField();
 
     updateEntities(deltaTime);
@@ -82,16 +93,15 @@ std::vector<EntityInfo> Game::getEntitiesInfo() const
 {
     std::vector<EntityInfo> infos;
     infos.reserve(entities.size());
-    for (const auto& e : entities) {
+    for (const auto &e : entities)
+    {
         infos.emplace_back(EntityInfo{
             e->getX(),
             e->getY(),
             e->isAlive(),
             e->isAggressive(),
-            e->getType()
-        });
+            e->getType()});
     }
-
 
     return infos;
 }
@@ -106,21 +116,21 @@ void Game::generateEntities(int countWolf, int countBoar, int countDeer)
 {
     for (int i = 0; i < countWolf; ++i)
     {
-        Wolf* wolf = new Wolf(0, 0, &player, &flowField);  
+        Wolf *wolf = new Wolf(0, 0, &player, &flowField);
         placeEntityRandomly(wolf);
-        entities.push_back(wolf);  
+        entities.push_back(wolf);
     }
     for (int i = 0; i < countBoar; ++i)
     {
-        Boar* boar = new Boar(0, 0, &player, &flowField); 
+        Boar *boar = new Boar(0, 0, &player, &flowField);
         placeEntityRandomly(boar);
-        entities.push_back(boar);  
+        entities.push_back(boar);
     }
     for (int i = 0; i < countDeer; ++i)
     {
-        Deer* deer = new Deer(0, 0, &player, &flowField);  
+        Deer *deer = new Deer(0, 0, &player, &flowField);
         placeEntityRandomly(deer);
-        entities.push_back(deer); 
+        entities.push_back(deer);
     }
 }
 
@@ -132,27 +142,29 @@ Game::~Game()
     }
 }
 
-
 std::optional<std::pair<int, int>> Game::getRandomPlacablePosition()
 {
-    const auto& grid = map.getMap();
+    const auto &grid = map.getMap();
     int width = map.getWidth();
     int height = map.getHeight();
 
     std::vector<std::pair<int, int>> validPositions;
 
-    for (int y = 0; y < height; ++y) {
-        for (int x = 0; x < width; ++x) {
+    for (int y = 0; y < height; ++y)
+    {
+        for (int x = 0; x < width; ++x)
+        {
             MapType type = grid[y][x];
             if ((type == MapType::GRASS || type == MapType::SAND || type == MapType::FLOWER) &&
-                occupiedTiles.find({x, y}) == occupiedTiles.end()) 
+                occupiedTiles.find({x, y}) == occupiedTiles.end())
             {
                 validPositions.emplace_back(x, y);
             }
         }
     }
 
-    if (validPositions.empty()) {
+    if (validPositions.empty())
+    {
         return std::nullopt;
     }
 
@@ -163,10 +175,11 @@ std::optional<std::pair<int, int>> Game::getRandomPlacablePosition()
     return validPositions[dis(gen)];
 }
 
-void Game::placeEntityRandomly(Entity* entity)
+void Game::placeEntityRandomly(Entity *entity)
 {
     auto positionOpt = getRandomPlacablePosition();
-    if (!positionOpt.has_value()) {
+    if (!positionOpt.has_value())
+    {
         std::cerr << "Erreur : aucune case valide disponible pour placer l'entité." << std::endl;
         return;
     }
@@ -181,7 +194,6 @@ void Game::placeEntityRandomly(Entity* entity)
 
     entity->setPosition(posX, posY);
 }
-
 
 bool Game::isWalkableTile(int x, int y) const
 {
