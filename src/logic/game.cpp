@@ -83,20 +83,9 @@ void Game::handlePlayerMovement(const InputState &inputState, float deltaTime)
     player.calculateDirectionAndBehavior(dirX, dirY);
 }
 
-void Game::checkPause(InputState inputState)
-{
-    if (isEscapePress != (inputState.keyStates[GLFW_KEY_ESCAPE] == GLFW_PRESS) && inputState.keyStates[GLFW_KEY_ESCAPE] == GLFW_PRESS)
-    {
-        togglePause();
-    }
-    isEscapePress = inputState.keyStates[GLFW_KEY_ESCAPE] == GLFW_PRESS;
-}
-
 void Game::update(float deltaTime, InputState inputState)
 {
-    checkPause(inputState);
-
-    if (!isGamePaused && player.isAlive())
+    if (player.isAlive())
     {
         handlePlayerMovement(inputState, deltaTime);
 

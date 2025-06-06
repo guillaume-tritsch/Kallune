@@ -70,10 +70,6 @@ public:
         return player.getBehavior();
     }
 
-    void togglePause() { isGamePaused = !isGamePaused; }
-
-    bool isPaused() const { return isGamePaused; }
-    void checkPause(InputState inputState);
 
 private:
     FlowField flowField;
@@ -92,6 +88,4 @@ private:
 
     bool isWalkableTile(int x, int y) const;
 
-    bool isGamePaused = false;
-    bool isEscapePress = true;
 };
