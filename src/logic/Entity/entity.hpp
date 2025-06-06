@@ -36,7 +36,7 @@ protected:
     float speed = 1.5f;
     float health = 100.0f;
     float tileSize = 1.0f;
-    EntityType type {};
+    EntityType type;
     const FlowField* flowField = nullptr;
     BehaviorType behavior = BehaviorType::IDLE;
 

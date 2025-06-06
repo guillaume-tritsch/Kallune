@@ -13,6 +13,8 @@ Wolf::Wolf(float startX, float startY, const Player *player, const FlowField *fl
 Wolf::Wolf(float startX, float startY) : Entity(startX, startY)
 {
     speed = 2.5f; // Plus rapide que le sanglier
+        type = EntityType::WOLF;
+
 }
 
 void Wolf::decideBehavior(Player &player)
@@ -32,7 +34,7 @@ void Wolf::decideBehavior(Player &player)
     }
     else
     {
-                std::cout << "IDDDDDDLE: " << distanceSq << std::endl;
+        std::cout << "IDDDDDDLE: " << distanceSq << std::endl;
 
         behavior = BehaviorType::IDLE;
     }

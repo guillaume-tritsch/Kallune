@@ -13,6 +13,8 @@ Boar::Boar(float startX, float startY, const Player *player, const FlowField *fl
     this->player = player;
     this->flowField = flowField;
     speed = 1.2f;
+        type = EntityType::BOAR;
+
 }
 
 void Boar::decideBehavior(Player &player)

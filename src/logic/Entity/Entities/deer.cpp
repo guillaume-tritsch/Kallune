@@ -13,6 +13,8 @@ Deer::Deer(float startX, float startY, const Player *player, const FlowField *fl
     this->player = player;
     this->flowField = flowField;
     speed = 2.0f;
+        type = EntityType::DEER;
+
 }
 
 void Deer::decideBehavior(Player &player)

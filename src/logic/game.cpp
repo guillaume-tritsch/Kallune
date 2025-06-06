@@ -118,6 +118,7 @@ std::vector<EntityInfo> Game::getEntitiesInfo() const
     infos.reserve(entities.size());
     for (const auto &e : entities)
     {
+        std::cout << "Entity type is " << e->getType() << " at position (" << e->getX() << ", " << e->getY() << ")" << std::endl;
         infos.emplace_back(EntityInfo{
             e->getX(),
             e->getY(),
