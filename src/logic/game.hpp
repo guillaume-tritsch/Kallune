@@ -15,6 +15,8 @@
 #include <set>
 #include <utility>
 #include <optional>
+#include "utils/behavior.hpp"
+#include "utils/directions.hpp"
 
 struct EntityInfo
 {
@@ -22,6 +24,8 @@ struct EntityInfo
     bool isAlive;
     bool isAggressive;
     EntityType type;
+    Direction direction;
+    BehaviorType behavior;
 };
 
 class Game
@@ -54,6 +58,11 @@ public:
     void clearKeyStates()
     {
         keyStates.clear();
+    }
+
+    Direction getPlayerDirection() const
+    {
+        return player.getDirection();
     }
 
 private:

@@ -24,14 +24,14 @@ void Boar::decideBehavior(Player &player)
     if (distanceSq < 0.5f)
     {
         player.kill();
-    } else
-    if (distanceSq < pursuitRange)
+    }
+    else if (distanceSq < pursuitRange)
     {
-        behavior = BehaviorType::Attack;
+        behavior = BehaviorType::ATTACK;
     }
     else
     {
-        behavior = BehaviorType::Idle;
+        behavior = BehaviorType::IDLE;
     }
 }
 
@@ -44,7 +44,7 @@ void Boar::update(float deltaTime)
 
     switch (behavior)
     {
-    case BehaviorType::Attack:
+    case BehaviorType::ATTACK:
     {
         int tileX = getTileX();
         int tileY = getTileY();
@@ -60,16 +60,21 @@ void Boar::update(float deltaTime)
 
             x += dirX * speed * deltaTime;
             y += dirY * speed * deltaTime;
+
+            calculateDirection(x, y);
         }
         break;
     }
-    case BehaviorType::Idle:
+    case BehaviorType::IDLE:
     {
         x += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
         y += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+
+                calculateDirection(x, y);
+
         break;
     }
-    case BehaviorType::Flee:
+    case BehaviorType::FLEE:
     {
         break;
     }

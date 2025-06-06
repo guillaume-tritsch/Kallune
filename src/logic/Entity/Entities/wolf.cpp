@@ -27,14 +27,13 @@ void Wolf::decideBehavior(Player &player)
     }
     else if (distanceSq < pursuitRange)
     {
-        behavior = BehaviorType::Attack;
+        behavior = BehaviorType::ATTACK;
     }
     else
     {
-        behavior = BehaviorType::Idle;
+        behavior = BehaviorType::IDLE;
     }
-            return;
-
+    return;
 }
 
 void Wolf::update(float deltaTime)
@@ -46,7 +45,7 @@ void Wolf::update(float deltaTime)
 
     switch (behavior)
     {
-    case BehaviorType::Attack:
+    case BehaviorType::ATTACK:
     {
         int tileX = getTileX();
         int tileY = getTileY();
@@ -62,16 +61,19 @@ void Wolf::update(float deltaTime)
 
             x += dirX * speed * deltaTime;
             y += dirY * speed * deltaTime;
+
+            calculateDirection(x, y);
         }
         break;
     }
-    case BehaviorType::Idle:
+    case BehaviorType::IDLE:
     {
         x += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
         y += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+        calculateDirection(x, y);
         break;
     }
-    case BehaviorType::Flee:
+    case BehaviorType::FLEE:
     {
         break;
     }

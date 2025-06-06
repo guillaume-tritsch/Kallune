@@ -1,6 +1,8 @@
 #pragma once
 
 #include <logic/Map/map.hpp>
+#include "utils/directions.hpp"
+#include "utils/behavior.hpp"
 
 class Player {
 public:
@@ -25,12 +27,20 @@ public:
     void addScore(int points);
 
     void resetScore() { score = 0; }
+
+    void calculateDirectionAndBehavior(float dirX, float dirY);
+
+    Direction getDirection() const { return direction; }
+
 private:
-    float x, y;               // position en unités
-    float speed = 7.5f;       // vitesse en unités/seconde
+    float x, y;            
+    float speed = 20.f;     
     bool alive = true;
-    float tileSize = 1.0f;    // taille d’une case (utile pour getTileX/Y)
+    float tileSize = 1.0f;   
 
     int score = 0;
     Map map;
+
+    Direction direction = Direction::SOUTH; 
+    BehaviorType behavior = BehaviorType::IDLE;
 };

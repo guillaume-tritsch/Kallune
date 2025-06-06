@@ -1,6 +1,8 @@
 #include "player.hpp"
 #include <cmath>
 #include <logic/Map/map.hpp>
+#include "utils/directions.hpp"
+#include "utils/behavior.hpp"
 
 Player::Player(float startX, float startY, Map map)
     : map(std::move(map)), x(startX), y(startY), speed(2.5f), tileSize(1.0f), alive(true), score(0)
@@ -80,4 +82,22 @@ int Player::getScore() const
 void Player::addScore(int points)
 {
     score += points;
+}
+
+void Player::calculateDirectionAndBehavior(float dirX, float dirY)
+{
+        if (dirX > 0.0f)
+            direction = Direction::EAST;
+        else if (dirX < 0.0f)
+            direction = Direction::WEST;
+        else if (dirY > 0.0f)
+            direction = Direction::SOUTH;
+        else if (dirY < 0.0f)
+            direction = Direction::NORTH;
+
+        if (dirX == 0.0f && dirY == 0.0f) {
+            behavior = BehaviorType::IDLE;
+        } else {
+            behavior = BehaviorType::ATTACK;
+        }
 }

@@ -1,15 +1,9 @@
 #pragma once
 
 #include "utils/entityType.hpp"
-
-class Player;
-class FlowField;
-
-enum class BehaviorType {
-    Idle,
-    Attack,
-    Flee
-};
+#include "utils/behavior.hpp"
+#include "logic/Player/player.hpp"
+#include "logic/Flowfield/flowfield.hpp"
 
 class Entity {
 public:
@@ -34,6 +28,8 @@ public:
     void setPlayer(const Player* p);
     void setPosition(float newX, float newY);
 
+    BehaviorType getBehavior() const { return behavior; }
+    Direction getDirection() const;
     EntityType getType() const;
 protected:
     float x, y;
@@ -42,11 +38,13 @@ protected:
     float tileSize = 1.0f;
     EntityType type;
     const FlowField* flowField = nullptr;
-    BehaviorType behavior = BehaviorType::Idle;
+    BehaviorType behavior = BehaviorType::IDLE;
 
     virtual bool aggressive() const = 0;
     virtual bool coward() const = 0;
 
     const Player* player = nullptr;
+    Direction direction = Direction::NORTH;
 
+    void calculateDirection(float dirX, float dirY);
 };

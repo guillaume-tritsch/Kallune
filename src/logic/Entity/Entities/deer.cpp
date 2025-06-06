@@ -23,11 +23,11 @@ void Deer::decideBehavior(Player &player)
 
     if (distanceSq < fleeDistance)
     {
-        behavior = BehaviorType::Flee;
+        behavior = BehaviorType::FLEE;
     }
     else
     {
-        behavior = BehaviorType::Idle;
+        behavior = BehaviorType::IDLE;
     }
 }
 
@@ -40,11 +40,11 @@ void Deer::update(float deltaTime)
 
     switch (behavior)
     {
-    case BehaviorType::Attack:
-    case BehaviorType::Idle:
+    case BehaviorType::ATTACK:
+    case BehaviorType::IDLE:
             x += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
             y += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
-    case BehaviorType::Flee:
+    case BehaviorType::FLEE:
         int tileX = getTileX();
         int tileY = getTileY();
         float dirX = 0.0f, dirY = 0.0f;
@@ -59,6 +59,9 @@ void Deer::update(float deltaTime)
 
             x += dirX * speed * deltaTime;
             y += dirY * speed * deltaTime;
+
+                    calculateDirection(x, y);
+
         }
 
         break;

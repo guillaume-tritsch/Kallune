@@ -1,4 +1,5 @@
 #include "entity.hpp"
+#include "utils/directions.hpp"
 #include <cmath>
 
 Entity::Entity(float startX, float startY) : x(startX), y(startY) {}
@@ -36,15 +37,35 @@ void Entity::takeDamage(float dmg)
         health = 0.0f;
 }
 
-void Entity::setPlayer(const Player* p) {
+void Entity::setPlayer(const Player *p)
+{
     player = p;
 }
 
-void Entity::setPosition(float newX, float newY) {
-        x = newX;
-        y = newY;
-    }
+void Entity::setPosition(float newX, float newY)
+{
+    x = newX;
+    y = newY;
+}
 
-EntityType Entity::getType() const {
+EntityType Entity::getType() const
+{
     return type;
+}
+
+void Entity::calculateDirection(float dirX, float dirY)
+{
+        if (dirX > 0.0f)
+            direction = Direction::EAST;
+        else if (dirX < 0.0f)
+            direction = Direction::WEST;
+        else if (dirY > 0.0f)
+            direction = Direction::SOUTH;
+        else if (dirY < 0.0f)
+            direction = Direction::NORTH;
+}
+
+Direction Entity::getDirection() const
+{
+    return direction;
 }
