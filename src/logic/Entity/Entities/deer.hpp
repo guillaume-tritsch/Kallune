@@ -17,5 +17,5 @@ private:
     bool aggressive() const override { return false; }
     bool coward() const override { return true; }
 
-    float fleeDistance = 3.0f;
+    float fleeDistance = 15.0f;
 };

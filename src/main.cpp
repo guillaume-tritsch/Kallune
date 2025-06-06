@@ -28,7 +28,7 @@ int main()
         lastFrameTime = currentFrameTime;
 
         input.update(&router);
-        if (router.currentScene != Scene::Pause)
+        if (router.currentScene == Scene::Playing)
         {
             game->update(deltaTime, input.state);
         }

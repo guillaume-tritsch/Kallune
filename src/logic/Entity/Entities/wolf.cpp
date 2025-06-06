@@ -29,12 +29,12 @@ void Wolf::decideBehavior(Player &player)
     }
     else if (distanceSq < pursuitRange)
     {
-        std::cout << "ATK: " << distanceSq << std::endl;
+        // std::cout << "ATK: " << distanceSq << std::endl;
         behavior = BehaviorType::ATTACK;
     }
     else
     {
-        std::cout << "IDDDDDDLE: " << distanceSq << std::endl;
+        // std::cout << "IDDDDDDLE: " << distanceSq << std::endl;
 
         behavior = BehaviorType::IDLE;
     }
@@ -67,15 +67,15 @@ void Wolf::update(float deltaTime)
             x += dirX * speed * deltaTime;
             y += dirY * speed * deltaTime;
 
-            calculateDirection(x, y);
+            calculateDirection(dirX, dirY);
         }
         break;
     }
     case BehaviorType::IDLE:
     {
-        x += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
-        y += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
-        calculateDirection(x, y);
+        // x += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+        // y += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+        calculateDirection(0, 0);
         break;
     }
     case BehaviorType::FLEE:

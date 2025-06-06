@@ -24,7 +24,7 @@ GameScene::GameScene()
 	}
 
 	// Badger
-	badger = new Character(2.7f, 2.7f);
+	badger = new Character(1.2f, 1.2f);
 	badger->addAnimation(BehaviorType::IDLE, Direction::NORTH, "critters/badger/critter_badger_SW_idle.png",  22, 1, 9);
 	badger->addAnimation(BehaviorType::IDLE, Direction::SOUTH, "critters/badger/critter_badger_NE_idle.png",  22, 1, 9);
 	badger->addAnimation(BehaviorType::IDLE, Direction::EAST, "critters/badger/critter_badger_SE_idle.png",  22, 1, 9);
@@ -35,18 +35,18 @@ GameScene::GameScene()
 	badger->addAnimation(BehaviorType::MOVE, Direction::WEST, "critters/badger/critter_badger_NW_walk.png",  9, 1, 15);
 
 	// Wolf
-	wolf = new Character(2.7f, 2.7f);
+	wolf = new Character(2.0f, 2.0f);
 	wolf->addAnimation(BehaviorType::IDLE, Direction::NORTH, "critters/wolf/wolf-idle-SW.png",  4, 1, 1);
 	wolf->addAnimation(BehaviorType::IDLE, Direction::SOUTH, "critters/wolf/wolf-idle-NE.png",  4, 1, 1);
 	wolf->addAnimation(BehaviorType::IDLE, Direction::EAST, "critters/wolf/wolf-idle-SE.png",  4, 1, 1);
 	wolf->addAnimation(BehaviorType::IDLE, Direction::WEST, "critters/wolf/wolf-idle-NW.png",  4, 1, 1);
-	wolf->addAnimation(BehaviorType::MOVE, Direction::NORTH, "critters/wolf/wolf-run-SW.png",  8, 1, 8);
-	wolf->addAnimation(BehaviorType::MOVE, Direction::SOUTH, "critters/wolf/wolf-run-NE.png",  8, 1, 8);
-	wolf->addAnimation(BehaviorType::MOVE, Direction::EAST, "critters/wolf/wolf-run-SE.png",  8, 1, 8);
-	wolf->addAnimation(BehaviorType::MOVE, Direction::WEST, "critters/wolf/wolf-run-NW.png",  8, 1, 8);
+	wolf->addAnimation(BehaviorType::MOVE, Direction::NORTH, "critters/wolf/wolf-run-SW.png",  8, 1, 4);
+	wolf->addAnimation(BehaviorType::MOVE, Direction::SOUTH, "critters/wolf/wolf-run-NE.png",  8, 1, 4);
+	wolf->addAnimation(BehaviorType::MOVE, Direction::EAST, "critters/wolf/wolf-run-SE.png",  8, 1, 4);
+	wolf->addAnimation(BehaviorType::MOVE, Direction::WEST, "critters/wolf/wolf-run-NW.png",  8, 1, 4);
 
 	// Boar
-	boar = new Character(2.7f, 2.7f);
+	boar = new Character(1.0f, 0.8f);
 	boar->addAnimation(BehaviorType::IDLE, Direction::NORTH, "critters/boar/critter_boar_SW_idle_strip.png",  7, 1, 1);
 	boar->addAnimation(BehaviorType::IDLE, Direction::SOUTH, "critters/boar/critter_boar_NE_idle_strip.png",  7, 1, 1);
 	boar->addAnimation(BehaviorType::IDLE, Direction::EAST, "critters/boar/critter_boar_SE_idle_strip.png",  7, 1, 1);
@@ -57,7 +57,7 @@ GameScene::GameScene()
 	boar->addAnimation(BehaviorType::MOVE, Direction::WEST, "critters/boar/critter_boar_NW_run_strip.png",  4, 1, 8);
 
 	// Stag
-	stag = new Character(2.7f, 2.7f);
+	stag = new Character(1.0f, 1.4f);
 	stag->addAnimation(BehaviorType::IDLE, Direction::NORTH, "critters/stag/critter_stag_SW_idle.png",  24, 1, 1);
 	stag->addAnimation(BehaviorType::IDLE, Direction::SOUTH, "critters/stag/critter_stag_NE_idle.png",  24, 1, 1);
 	stag->addAnimation(BehaviorType::IDLE, Direction::EAST, "critters/stag/critter_stag_SE_idle.png",  24, 1, 1);
@@ -83,7 +83,6 @@ void GameScene::update(InputState inputState, Router* router) {
 
 void GameScene::draw(double deltaTime, Game game)
 {
-
 	int MAP_WIDTH = game.map.getWidth();
 	int MAP_HEIGHT = game.map.getHeight();
 
@@ -101,9 +100,8 @@ void GameScene::draw(double deltaTime, Game game)
 	glDisable(GL_DEPTH_TEST);
 	glDepthMask(GL_FALSE);
 
-
 	GameEngine.mvMatrixStack.pushMatrix();
-	GameEngine.mvMatrixStack.addHomothety(Vector3D(1.0f, 1.0f, 1.0f));
+	// GameEngine.mvMatrixStack.addHomothety(Vector3D(0.1f, 0.1f, 0.1f));
 	//std::cout << -game.getPlayerX() << "x" << game.getPlayerY() << "y" << std::endl;
 	float player_x = game.getPlayerX();
 	float player_y = game.getPlayerY();
@@ -197,10 +195,15 @@ void GameScene::draw(double deltaTime, Game game)
 	for (const auto &entity : game.getEntitiesInfo())
 	{
 		GameEngine.mvMatrixStack.pushMatrix();
-		float iso_x_entities = (entity.x - entity.y) * 0.50f;
-		float iso_y_entities = (entity.x + entity.y) * 0.25f;
+		float posY = entity.y ;
+		float posX = entity.x - 100;
 
-		GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x_entities, iso_y_entities +0.25, 0.0f));
+		float iso_x_entities = (posX + posY) * 0.50f;
+		float iso_y_entities = (posY - posX) * 0.25f;
+		
+		std::cout << posX << " x " << posY << "   -   " << iso_x_entities << " x " << iso_y_entities << std::endl;
+
+		GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x_entities, iso_y_entities, 0.0f));
 		GameEngine.updateMvMatrix();
 
 		if (entity.type == EntityType::BOAR)
@@ -209,11 +212,10 @@ void GameScene::draw(double deltaTime, Game game)
 		}
 		else if (entity.type == EntityType::DEER)
 		{
-			stag->draw(deltaTime, entity.behavior == BehaviorType::IDLE ? BehaviorType::IDLE : BehaviorType::MOVE, entity.direction);
+			stag->draw(deltaTime, BehaviorType::MOVE, entity.direction);
 		}
 		else if (entity.type == EntityType::WOLF)
 		{
-			std::cout << (entity.behavior == BehaviorType::IDLE ? "BehaviorType::IDLE" : "BehaviorType::MOVE") << std::endl;
 			wolf->draw(deltaTime, entity.behavior == BehaviorType::IDLE ? BehaviorType::IDLE : BehaviorType::MOVE, entity.direction);
 		}
 		GameEngine.mvMatrixStack.popMatrix();
@@ -225,7 +227,7 @@ void GameScene::draw(double deltaTime, Game game)
 
 	// Draw player
 	GameEngine.mvMatrixStack.pushMatrix();
-	GameEngine.mvMatrixStack.addHomothety(Vector3D(0.5f, 0.5f, 0.5f));
+	// GameEngine.mvMatrixStack.addHomothety(Vector3D(0.5f, 0.5f, 0.5f));
 	GameEngine.mvMatrixStack.addTranslation(Vector3D(0.0f, 0.0f, 0.0f));
 	// GameEngine.mvMatrixStack.addTranslation(Vector3D(-1.5f, -1.5f, 0.0f));
 	GameEngine.updateMvMatrix();
@@ -239,14 +241,14 @@ void GameScene::draw(double deltaTime, Game game)
 	GameEngine.mvMatrixStack.addTranslation(Vector3D(8.0f - 1.0f, 4.5f - 1.0f, 0.0f));
 	GameEngine.updateMvMatrix();
 	switch(state.pauseButton) {
-            case ButtonState::HOVER:
-                pauseButtonHover->draw();
-                break;
-            default:
-                pauseButton->draw();
-                break;
-        }
+		case ButtonState::HOVER:
+			pauseButtonHover->draw();
+			break;
+		default:
+			pauseButton->draw();
+			break;
+	}
 	GameEngine.mvMatrixStack.popMatrix();
 
-	std::cout << "Number of flowers: " << nbr_fleurs << std::endl;
+	// std::cout << "Number of flowers: " << nbr_fleurs << std::endl;
 }
