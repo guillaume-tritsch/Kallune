@@ -100,6 +100,7 @@ Graphics::Graphics()
     menu_scene = new MenuScene();
     settings_scene = new SettingsScene();
     end_scene = new EndScene();
+    pause_scene = new PauseScene();
 
     GameEngine.activateTexturing(true);
 
@@ -137,6 +138,9 @@ void Graphics::render(double deltaTime, Router* router, InputState inputState, G
         break;
     case Scene::End:
         end_scene->draw();
+        break;
+    case Scene::Pause:
+        pause_scene->draw();
         break;
     }
 
@@ -187,9 +191,13 @@ void Graphics::update(Game game, InputState state, Router* router)
         break;
 
     case Scene::Playing:
-        //game_scene->update(state, router, game);
+        game_scene->update(state, router);
         break;
 
+    case Scene::Pause:
+        pause_scene->update(state, router);
+        break;
+        
     default:
         std::cerr << "Euh y a un truc pas normal chef" << std::endl;
         break;

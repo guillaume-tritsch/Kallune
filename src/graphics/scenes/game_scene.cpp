@@ -10,6 +10,9 @@ GLBI_Engine GameEngine;
 
 std::vector<Sprite *> tileset;
 
+Sprite *pauseButton{};
+Sprite *pauseButtonHover{};
+
 GameScene::GameScene()
 {
 
@@ -63,7 +66,20 @@ GameScene::GameScene()
 	stag->addAnimation(BehaviorType::MOVE, Direction::SOUTH, "critters/stag/critter_stag_NE_run.png",  10, 1, 8);
 	stag->addAnimation(BehaviorType::MOVE, Direction::EAST, "critters/stag/critter_stag_SE_run.png",  10, 1, 8);
 	stag->addAnimation(BehaviorType::MOVE, Direction::WEST, "critters/stag/critter_stag_NW_run.png",  10, 1, 8);
+
+	pauseButton = new Sprite("pause/pause-button.png", 0.99f, 0.99f);
+	pauseButtonHover = new Sprite("pause/pause-button-hover.png", 0.99f, 0.99f);
 }
+
+void GameScene::update(InputState inputState, Router* router) {
+    state.update(inputState);
+
+    if(state.pauseButton == ButtonState::ACTIVE) {
+        router->goTo(Scene::Pause);
+    }
+
+}
+
 
 void GameScene::draw(double deltaTime, Game game)
 {
@@ -84,6 +100,7 @@ void GameScene::draw(double deltaTime, Game game)
 
 	glDisable(GL_DEPTH_TEST);
 	glDepthMask(GL_FALSE);
+
 
 	GameEngine.mvMatrixStack.pushMatrix();
 	GameEngine.mvMatrixStack.addHomothety(Vector3D(1.0f, 1.0f, 1.0f));
@@ -203,8 +220,7 @@ void GameScene::draw(double deltaTime, Game game)
 	GameEngine.mvMatrixStack.popMatrix();
 	GameEngine.mvMatrixStack.popMatrix();
 
-
-
+	// Draw player
 	GameEngine.mvMatrixStack.pushMatrix();
 	GameEngine.mvMatrixStack.addHomothety(Vector3D(0.5f, 0.5f, 0.5f));
 	GameEngine.mvMatrixStack.addTranslation(Vector3D(0.0f, 0.0f, 0.0f));
@@ -212,7 +228,21 @@ void GameScene::draw(double deltaTime, Game game)
 	GameEngine.updateMvMatrix();
 	// badger->update(deltaTime);
 	// badger->draw();
-	badger->draw(deltaTime, game.getPlayerBehavior() == BehaviorType::IDLE ? BehaviorType::IDLE : BehaviorType::MOVE, game.getPlayerDirection());
+	badger->draw(deltaTime, game.getPlayerBehavior(), game.getPlayerDirection());
+	GameEngine.mvMatrixStack.popMatrix();
+
+	// Draw pause button
+	GameEngine.mvMatrixStack.pushMatrix();
+	GameEngine.mvMatrixStack.addTranslation(Vector3D(8.0f - 1.0f, 4.5f - 1.0f, 0.0f));
+	GameEngine.updateMvMatrix();
+	switch(state.pauseButton) {
+            case ButtonState::HOVER:
+                pauseButtonHover->draw();
+                break;
+            default:
+                pauseButton->draw();
+                break;
+        }
 	GameEngine.mvMatrixStack.popMatrix();
 
 }

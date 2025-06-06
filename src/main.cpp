@@ -8,16 +8,18 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-int main() {
+int main()
+{
 
-    Router          router {Router()};
-    Game            game {Game()};
-    Graphics        graphics {Graphics()};
-    Input           input {Input(graphics.window)};
+    Router router{Router()};
+    Game game{Game()};
+    Graphics graphics{Graphics()};
+    Input input{Input(graphics.window)};
 
     double lastFrameTime = glfwGetTime();
 
-    while (!graphics.shouldClose()) {
+    while (!graphics.shouldClose())
+    {
 
         // Calculate time delta between frames
         double currentFrameTime = glfwGetTime();
@@ -25,7 +27,10 @@ int main() {
         lastFrameTime = currentFrameTime;
 
         input.update(&router);
-        game.update(deltaTime, input.state); 
+        if (router.currentScene != Scene::Pause)
+        {
+            game.update(deltaTime, input.state);
+        }
         graphics.update(game, input.state, &router);
         graphics.render(deltaTime, &router, input.state, game);
     }
