@@ -7,7 +7,7 @@
 class Player
 {
 public:
-    Player(float startX, float startY, Map map);
+    Player(float startX, float startY, Map& map);
 
     void move(float dirX, float dirY, float deltaTime);
     void takeDamage(float amount);
@@ -34,6 +34,10 @@ public:
 
     BehaviorType getBehavior() const { return behavior; }
 
+    bool mine();  
+    bool canMine() const;
+
+    void update(float deltaTime);
 private:
     float x, y;
     float speed;
@@ -41,8 +45,11 @@ private:
     float tileSize = 1.0f;
 
     int score = 0;
-    Map map;
+    Map& map;
 
     Direction direction = Direction::SOUTH;
     BehaviorType behavior = BehaviorType::IDLE;
+
+    float miningCooldown = 0.0f;          // Temps avant de pouvoir miner à nouveau
+    const float maxMiningCooldown = 0.8f; // 1 seconde entre chaque minage
 };

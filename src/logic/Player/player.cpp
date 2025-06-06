@@ -4,8 +4,8 @@
 #include "utils/directions.hpp"
 #include "utils/behavior.hpp"
 
-Player::Player(float startX, float startY, Map map)
-    : map(std::move(map)), x(startX), y(startY), speed(5.f), tileSize(1.0f), alive(true), score(0)
+Player::Player(float startX, float startY, Map& map)
+    : map(map), x(startX), y(startY), speed(5.f), tileSize(1.0f), alive(true), score(0)
 {
 }
 
@@ -98,4 +98,46 @@ void Player::calculateDirectionAndBehavior(float dirX, float dirY)
         } else {
             behavior = BehaviorType::MOVE;
         }
+}
+
+bool Player::canMine() const {
+    return miningCooldown <= 0.0f && alive;
+}
+
+bool Player::mine() {
+    if (!canMine()) {
+        return false;
+    }
+    std::cout << "Player is mining at: (" << getTileX() << ", " << getTileY() << ")" << std::endl;
+    int targetX = getTileX();
+    int targetY = getTileY();
+    
+    switch (direction) {
+        case Direction::NORTH: targetY -= 1; break;
+        case Direction::SOUTH: targetY += 1; break;
+        case Direction::EAST:  targetX += 1; break;
+        case Direction::WEST:  targetX -= 1; break;
+    }
+    
+    std::cout << "Target tile for mining: (" << targetX << ", " << targetY << ")" << std::endl;
+
+    if (map.getMap()[targetX][targetY] == MapType::WALL) {
+        map.changeTile(targetX, targetY, MapType::GRASS);
+
+        std::cout << "PlAAAAAAAAAAAH" << score << std::endl;
+        miningCooldown = maxMiningCooldown;
+        
+        return true;
+    }
+    
+    return false;
+}
+
+void Player::update(float deltaTime) {
+    if (miningCooldown > 0.0f) {
+        miningCooldown -= deltaTime;
+        if (miningCooldown < 0.0f) {
+            miningCooldown = 0.0f;
+        }
+    }
 }

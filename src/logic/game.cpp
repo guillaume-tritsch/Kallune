@@ -62,7 +62,6 @@ void Game::handlePlayerMovement(const InputState &inputState, float deltaTime)
     int tileX = static_cast<int>(nextX);
     int tileY = static_cast<int>(nextY);
 
-        
     int tileXOffset = static_cast<int>(nextX + (dirX < 0 ? -0.2f : 0.2f));
     int tileYOffset = static_cast<int>(nextY + (dirY < 0 ? -0.2f : 0.2f));
 
@@ -70,19 +69,24 @@ void Game::handlePlayerMovement(const InputState &inputState, float deltaTime)
     {
         player.kill();
     }
-    
+
     if (!map.isWalkable(tileXOffset, tileY))
     {
         dirX = 0.0f;
-
     }
     if (!map.isWalkable(tileX, tileYOffset))
     {
         dirY = 0.0f;
     }
-    
+
     player.move(dirX, dirY, deltaTime);
     player.calculateDirectionAndBehavior(dirX, dirY);
+
+    if (inputState.keyStates[GLFW_KEY_E] == GLFW_PRESS || inputState.keyStates[GLFW_KEY_E] == GLFW_REPEAT)
+    {
+        std::cout << "Player is trying to mine at: (" << player.getTileX() << ", " << player.getTileY() << ")" << std::endl;
+        player.mine();
+    }
 }
 
 void Game::update(float deltaTime, InputState inputState)
@@ -91,6 +95,7 @@ void Game::update(float deltaTime, InputState inputState)
     {
         handlePlayerMovement(inputState, deltaTime);
 
+        player.update(deltaTime);
         updateFlowField();
 
         updateEntities(deltaTime);

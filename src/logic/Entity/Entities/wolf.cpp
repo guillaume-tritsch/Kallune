@@ -27,10 +27,13 @@ void Wolf::decideBehavior(Player &player)
     }
     else if (distanceSq < pursuitRange)
     {
+        std::cout << "ATK: " << distanceSq << std::endl;
         behavior = BehaviorType::ATTACK;
     }
     else
     {
+                std::cout << "IDDDDDDLE: " << distanceSq << std::endl;
+
         behavior = BehaviorType::IDLE;
     }
     return;

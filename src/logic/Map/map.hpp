@@ -21,6 +21,8 @@ public:
     void removeFlower(int tileX, int tileY);
     const vector<vector<MapType>>& getMap() const { return map; }
     bool isWalkable(int tileX, int tileY);
+
+    void changeTile(int tileX, int tileY, MapType newType);
 private:
     vector<vector<MapType>> map;
     int width;

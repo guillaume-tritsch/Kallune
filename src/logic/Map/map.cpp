@@ -55,3 +55,9 @@ void Map::removeFlower(int tileX, int tileY) {
             map[tileX][tileY] = MapType::GRASS; 
         }
     }
+
+void Map::changeTile(int tileX, int tileY, MapType newType) {
+    if (tileX < 0 || tileY < 0 || tileX >= width || tileY >= height)
+        return;
+    map[tileX][tileY] = newType;
+}
