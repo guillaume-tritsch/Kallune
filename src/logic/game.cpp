@@ -78,10 +78,11 @@ void Game::handlePlayerMovement(const InputState &inputState, float deltaTime)
 
 void Game::checkPause(InputState inputState)
 {
-    if (inputState.keyStates[GLFW_KEY_ESCAPE] == GLFW_PRESS)
+    if (isEscapePress != (inputState.keyStates[GLFW_KEY_ESCAPE] == GLFW_PRESS) && inputState.keyStates[GLFW_KEY_ESCAPE] == GLFW_PRESS)
     {
         togglePause();
     }
+    isEscapePress = inputState.keyStates[GLFW_KEY_ESCAPE] == GLFW_PRESS;
 }
 
 void Game::update(float deltaTime, InputState inputState)
