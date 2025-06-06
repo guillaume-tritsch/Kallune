@@ -13,17 +13,17 @@ void Input::keyCallback(GLFWwindow *window, int key, int scancode, int action, i
     const char* keyName = glfwGetKeyName(key, scancode);
     const char* actionName = nullptr;
 
-    switch (action) {
-        case GLFW_PRESS: actionName = "PRESS"; break;
-        case GLFW_RELEASE: actionName = "RELEASE"; break;
-        case GLFW_REPEAT: actionName = "REPEAT"; break;
-        default: actionName = "UNKNOWN"; break;
-    }
+    // switch (action) {
+    //     case GLFW_PRESS: actionName = "PRESS"; break;
+    //     case GLFW_RELEASE: actionName = "RELEASE"; break;
+    //     case GLFW_REPEAT: actionName = "REPEAT"; break;
+    //     default: actionName = "UNKNOWN"; break;
+    // }
 
-    if (keyName)
-        std::cout << keyName << " (" << key << ") > " << actionName << std::endl;
-    else
-        std::cout << key << " > " << actionName << std::endl;
+    // if (keyName)
+    //     std::cout << keyName << " (" << key << ") > " << actionName << std::endl;
+    // else
+    //     std::cout << key << " > " << actionName << std::endl;
         
     if (input) {
         input->state.keyStates[key] = action;
