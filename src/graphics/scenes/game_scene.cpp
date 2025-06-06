@@ -149,6 +149,10 @@ void GameScene::draw(double deltaTime, Game game)
 			{
 				tileType = 2;
 			}
+			else if (carte_inverted[y][x] == MapType::SOLID_WALL)
+			{
+				tileType = 12;
+			}
 			else
 			{
 				tileType = 3;
@@ -165,6 +169,16 @@ void GameScene::draw(double deltaTime, Game game)
 
 			GameEngine.mvMatrixStack.popMatrix();
 			if (carte_inverted[y][x] == MapType::WALL)
+			{
+				GameEngine.mvMatrixStack.pushMatrix();
+				GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y +0.25f, 0.0f));
+				GameEngine.updateMvMatrix();
+
+				tileset[tileType]->draw();
+
+				GameEngine.mvMatrixStack.popMatrix();
+			}
+			else if (carte_inverted[y][x] == MapType::SOLID_WALL)
 			{
 				GameEngine.mvMatrixStack.pushMatrix();
 				GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y +0.25f, 0.0f));
