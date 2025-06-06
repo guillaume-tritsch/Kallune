@@ -27,7 +27,7 @@ public:
     void resetScore() { score = 0; }
 private:
     float x, y;               // position en unités
-    float speed = 2.5f;       // vitesse en unités/seconde
+    float speed = 7.5f;       // vitesse en unités/seconde
     bool alive = true;
     float tileSize = 1.0f;    // taille d’une case (utile pour getTileX/Y)
 
