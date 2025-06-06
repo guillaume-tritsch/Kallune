@@ -5,6 +5,17 @@ EndScene::EndScene()
     logoSprite = new Sprite("end/kallune-logo.png", 2.09f, 2.09f);
     texteSprite = new Sprite("end/game-over-text.png", 4.51f, 1.13f);
     buttonSprite = new Sprite("end/return-button.png", 3.86f, 0.99f);
+    hoverButtonSprite = new Sprite("end/return_bouton_hover.png", 3.86f, 0.99f);
+}
+
+void EndScene::update(InputState inputState, Router *router)
+{
+    state.update(inputState);
+
+    if (state.exitButton == ButtonState::ACTIVE)
+    {
+        router->goTo(Scene::Menu);
+    }
 }
 
 void EndScene::draw()
@@ -31,6 +42,14 @@ void EndScene::draw()
     GameEngine.mvMatrixStack.pushMatrix();
     GameEngine.mvMatrixStack.addTranslation(Vector3D(0.0f, -3.0f, 0.0f));
     GameEngine.updateMvMatrix();
-    buttonSprite->draw();
+    switch (state.exitButton)
+    {
+    case ButtonState::HOVER:
+        hoverButtonSprite->draw();
+        break;
+    default:
+        buttonSprite->draw();
+        break;
+    }
     GameEngine.mvMatrixStack.popMatrix();
 }

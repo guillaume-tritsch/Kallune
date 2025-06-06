@@ -109,6 +109,7 @@ void GameScene::draw(double deltaTime, Game game)
 	float player_y = game.getPlayerY();
 	float iso_x_offset = (-player_x-player_y) * 0.50f;
 	float iso_y_offset = (-player_y + player_x) * 0.25f;
+	int nbr_fleurs = 0;
 	// std::cout << game.getPlayerX() << "x" << game.getPlayerY() << "y" << std::endl;
 	GameEngine.mvMatrixStack.addTranslation(Vector3D(50.0f, -25.0f, 0.0f));
 	GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x_offset, iso_y_offset, 0.0f));
@@ -121,6 +122,7 @@ void GameScene::draw(double deltaTime, Game game)
 
 		for (int x = start_x; x <= end_x; ++x)
 		{
+			
 			int y = layer - x;
 			if (y < 0 || y >= MAP_HEIGHT)
 				continue;
@@ -141,6 +143,7 @@ void GameScene::draw(double deltaTime, Game game)
 			}
 			else if (carte_inverted[y][x] == MapType::FLOWER)
 			{
+				nbr_fleurs++;
 				tileType = 4;
 			}
 
@@ -245,4 +248,5 @@ void GameScene::draw(double deltaTime, Game game)
         }
 	GameEngine.mvMatrixStack.popMatrix();
 
+	std::cout << "Number of flowers: " << nbr_fleurs << std::endl;
 }

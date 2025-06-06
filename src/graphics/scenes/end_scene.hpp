@@ -7,6 +7,10 @@
 #include "tools/basic_mesh.hpp"
 
 #include "graphics/elements/animatedSprite.hpp"
+#include "input/scenes/pause_state.hpp"
+#include "utils/scene.hpp"
+#include "utils/router.hpp"
+#include "input/scenes/end_state.hpp"
 
 using namespace glbasimac;
 
@@ -24,10 +28,15 @@ public:
     EndScene();
     ~EndScene() = default;
 
+    void update(InputState inputState, Router *router);
+
     void draw();
 
 private:
     Sprite *logoSprite{};
     Sprite *texteSprite{};
     Sprite *buttonSprite{};
+    Sprite *hoverButtonSprite{};
+
+    EndState state{EndState()};
 };
