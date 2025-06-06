@@ -22,10 +22,8 @@ void Player::move(float dirX, float dirY, float deltaTime)
 
     int tileX = getTileX();
     int tileY = getTileY();
-    if (tileX < 0 || tileY < 0) {
-        return;
-    }
-    if (tileX >= 0 && tileY >= 0) {
+    if (tileX >= 0 && tileY >= 0 && tileX < map.getWidth() && tileY < map.getHeight()) {
+        std::cout << "Player moved to tile: (" << tileX << ", " << tileY << " and there is " << (map.getMap()[tileX][tileY]== MapType::FLOWER) << std::endl;
         if (map.getMap()[tileX][tileY] == MapType::FLOWER) { 
             addScore(1);
             map.removeFlower(tileX, tileY);

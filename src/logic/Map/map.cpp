@@ -30,7 +30,7 @@ float Map::getSpeed(MapType type) const
     case MapType::WALL:
         return 0.0f;
     case MapType::WATER:
-        return 0.0f;
+        return 0.3f;
     case MapType::SAND:
         return 0.75f;
     case MapType::SOLID_WALL:

@@ -58,7 +58,7 @@ void GameScene::draw(double deltaTime, Game game)
 	float player_y = game.getPlayerY();
 	float iso_x_offset = (-player_x-player_y) * 0.50f;
 	float iso_y_offset = (-player_y + player_x) * 0.25f;
-	std::cout << game.getPlayerX() << "x" << game.getPlayerY() << "y" << std::endl;
+	// std::cout << game.getPlayerX() << "x" << game.getPlayerY() << "y" << std::endl;
 	GameEngine.mvMatrixStack.addTranslation(Vector3D(50.0f, -25.0f, 0.0f));
 	GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x_offset, iso_y_offset, 0.0f));
 
