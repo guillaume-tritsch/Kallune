@@ -96,7 +96,7 @@ void Game::update(float deltaTime, InputState inputState)
 {
     checkPause(inputState);
 
-    if (!isGamePaused)
+    if (!isGamePaused && player.isAlive())
     {
         handlePlayerMovement(inputState, deltaTime);
 
