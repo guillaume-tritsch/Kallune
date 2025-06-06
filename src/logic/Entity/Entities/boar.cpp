@@ -63,16 +63,16 @@ void Boar::update(float deltaTime)
             x += dirX * speed * deltaTime;
             y += dirY * speed * deltaTime;
 
-            calculateDirection(x, y);
+            calculateDirection(dirX, dirY);
         }
         break;
     }
     case BehaviorType::IDLE:
     {
-        x += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
-        y += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+        // x += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+        // y += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
 
-                calculateDirection(x, y);
+        calculateDirection(0, 0);
 
         break;
     }

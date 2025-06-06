@@ -44,8 +44,9 @@ void Deer::update(float deltaTime)
     {
     case BehaviorType::ATTACK:
     case BehaviorType::IDLE:
-            x += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
-            y += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+            // x += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+            // y += ((rand() % 100 < 50) ? 1 : -1) * speed * deltaTime;
+            calculateDirection(0, 0);
     case BehaviorType::FLEE:
         int tileX = getTileX();
         int tileY = getTileY();
@@ -62,7 +63,7 @@ void Deer::update(float deltaTime)
             x += dirX * speed * deltaTime;
             y += dirY * speed * deltaTime;
 
-                    calculateDirection(x, y);
+            calculateDirection(dirX, dirY);
 
         }
 
