@@ -197,7 +197,7 @@ void Graphics::update(Game game, InputState state, Router *router)
         }
         else
         {
-            game_scene->update(state, router);
+            game_scene->update(state, router, game);
             break;
         }
 

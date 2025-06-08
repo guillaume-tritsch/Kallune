@@ -9,10 +9,26 @@ MapDisplay::MapDisplay()
 		ss << "tileset/tile_" << std::setw(3) << std::setfill('0') << i << ".png";
 		tileset.push_back(new Sprite(ss.str(), 1.0f, 1.0f));
 	}
+
+	const siv::PerlinNoise::seed_type seed = 123456u;
+
+	const siv::PerlinNoise perlin{ seed };
+	
+	for (int y = 0; y < 100; ++y)
+	{
+		std::vector<double> noiseMapRow;
+		for (int x = 0; x < 100; ++x)
+		{
+			const double noise = perlin.octave2D_01((x * 0.01), (y * 0.01), 7);
+			noiseMapRow.push_back(noise);
+		}
+		noiseMap.push_back(noiseMapRow);
+	}
 }
 
-void MapDisplay::update() {
-   
+void MapDisplay::update(Game game) {
+	// Update the noise map based on the player's position
+	noiseMap[100 - game.getPlayerX()][game.getPlayerY()] = 0;
 }
 
 void MapDisplay::draw(double deltaTime, Game game)
@@ -51,7 +67,19 @@ void MapDisplay::draw(double deltaTime, Game game)
 			}
 			else if (carte_inverted[y][x] == MapType::GRASS)
 			{
-				tileType = 23;
+				const double noise {noiseMap[y][x]};
+				if(noise > 0.75) {
+					tileType = 22;
+				} 
+				else if (noise > 0.5) {
+					tileType = 21;
+				}
+				else if (noise > 0.25) {
+					tileType = 23;
+				} 
+				else {
+					tileType = 24;
+				}
 			}
 			else if (carte_inverted[y][x] == MapType::SAND)
 			{
@@ -85,26 +113,34 @@ void MapDisplay::draw(double deltaTime, Game game)
 
 			tileset[tileType]->draw();
 
-			GameEngine.mvMatrixStack.popMatrix();
-			if (carte_inverted[y][x] == MapType::WALL)
-			{
-				GameEngine.mvMatrixStack.pushMatrix();
-				GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y +0.25f, 0.0f));
-				GameEngine.updateMvMatrix();
-
-				tileset[tileType]->draw();
-
-				GameEngine.mvMatrixStack.popMatrix();
+			const double noise {noiseMap[y][x] / 2};
+			int height {};
+			if(noise > 0.85) {
+				height = 4;
+			} 
+			else if (noise > 0.5) {
+				height = 3;
 			}
-			else if (carte_inverted[y][x] == MapType::SOLID_WALL)
+			else if (noise > 0.25) {
+				height = 2;
+			} 
+			else {
+				height = 1;
+			}
+
+			GameEngine.mvMatrixStack.popMatrix();
+			if (carte_inverted[y][x] == MapType::SOLID_WALL || carte_inverted[y][x] == MapType::WALL)
 			{
-				GameEngine.mvMatrixStack.pushMatrix();
-				GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y +0.25f, 0.0f));
-				GameEngine.updateMvMatrix();
+				for (int i = 0; i < height; ++i)
+				{
+					GameEngine.mvMatrixStack.pushMatrix();
+					GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y + 0.25f * (i + 1), 0.0f));
+					GameEngine.updateMvMatrix();
 
-				tileset[tileType]->draw();
+					tileset[tileType]->draw();
 
-				GameEngine.mvMatrixStack.popMatrix();
+					GameEngine.mvMatrixStack.popMatrix();
+				}
 			}
 			else if (carte_inverted[y][x] == MapType::FLOWER)
 			{
