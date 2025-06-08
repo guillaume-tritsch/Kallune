@@ -12,13 +12,12 @@
 #include "input/scenes/playing_state.hpp"
 #include "utils/scene.hpp"
 #include "utils/router.hpp"
+#include "graphics/elements/map-display.hpp"
 
 using namespace glbasimac;
 
 /* OpenGL Engine */
 extern GLBI_Engine GameEngine;
-extern double mouseX, mouseY;
-extern double worldX, worldY;
 
 extern int WINDOW_WIDTH, WINDOW_HEIGHT;
 extern float viewWidth, viewHeight;
@@ -32,6 +31,8 @@ public:
     void update(InputState inputState, Router *router);
 
     private:
+        MapDisplay mapDisplay {};
+
         Character* badger {};
         Character* wolf {};
         Character* stag {};
