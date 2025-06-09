@@ -32,7 +32,7 @@ int main()
         {
             game->update(deltaTime, input.state);
         }
-        graphics.update(*game, input.state, &router);
+        graphics.update(deltaTime, *game, input.state, &router);
         graphics.render(deltaTime, &router, input.state, *game);
     }
 

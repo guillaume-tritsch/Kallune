@@ -116,13 +116,13 @@ bool Player::mine() {
     
     std::cout << "Target tile for mining: (" << targetX << ", " << targetY << ")" << std::endl;
 
-    if (map.getMap()[targetX][targetY] == MapType::WALL) {
-        map.changeTile(targetX, targetY, MapType::GRASS);
-
-        std::cout << "PlAAAAAAAAAAAH" << score << std::endl;
-        miningCooldown = maxMiningCooldown;
-        
-        return true;
+    if (targetX >= 0 && targetY >= 0 && targetX < map.getWidth() && targetY < map.getHeight()) {
+        if (map.getMap()[targetX][targetY] == MapType::WALL) {
+            map.changeTile(targetX, targetY, MapType::GRASS);
+            miningCooldown = maxMiningCooldown;
+            
+            return true;
+        }
     }
     
     return false;

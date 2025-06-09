@@ -177,8 +177,9 @@ void Graphics::render(double deltaTime, Router *router, InputState inputState, G
     }
 }
 
-void Graphics::update(Game game, InputState state, Router *router)
+void Graphics::update(double deltaTime, Game game, InputState state, Router *router)
 {
+    // std::cout << "deltaTime :" << deltaTime << std::endl; 
     switch (router->currentScene)
     {
     case Scene::Menu:
@@ -197,7 +198,7 @@ void Graphics::update(Game game, InputState state, Router *router)
         }
         else
         {
-            game_scene->update(state, router, game);
+            game_scene->update(deltaTime, state, router, game);
             break;
         }
 

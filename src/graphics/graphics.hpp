@@ -20,7 +20,7 @@ public:
     ~Graphics() = default;
 
     // Update game state 
-    void update(Game game, InputState inputState, Router* router);
+    void update(double deltaTime, Game game, InputState inputState, Router* router);
 
     // Render the current frame
     void render(double deltaTime, Router* router, InputState inputState, Game game);

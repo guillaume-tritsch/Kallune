@@ -28,7 +28,7 @@ public:
     GameScene();
     ~GameScene() = default;
     void draw(double deltaTime, Game game);
-    void update(InputState inputState, Router *router, Game game);
+    void update(double deltaTime,InputState inputState, Router *router, Game game);
 
     private:
         MapDisplay mapDisplay {};

@@ -16,7 +16,7 @@ public:
     MapDisplay();
     ~MapDisplay() = default;
 
-    void update(Game game);
+    void update(double deltaTime, Game game);
     void draw(double deltaTime, Game game);
 
 private:

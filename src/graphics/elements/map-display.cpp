@@ -26,9 +26,26 @@ MapDisplay::MapDisplay()
 	}
 }
 
-void MapDisplay::update(Game game) {
+void MapDisplay::update(double deltaTime, Game game) {
 	// Update the noise map based on the player's position
-	noiseMap[100 - game.getPlayerX()][game.getPlayerY()] = 0;
+	int nx = 100 - game.getPlayerX();
+	int ny = game.getPlayerY();
+	if (nx >= 0 && nx < static_cast<int>(noiseMap.size()) &&
+		ny >= 0 && ny < static_cast<int>(noiseMap[nx].size()))
+	{
+		noiseMap[nx][ny] -= 1.25 * deltaTime;
+	}
+
+	for (const auto &entity : game.getEntitiesInfo())
+	{
+		int nx = 100 - entity.x;
+		int ny = entity.y;
+		if (nx >= 0 && nx < static_cast<int>(noiseMap.size()) &&
+			ny >= 0 && ny < static_cast<int>(noiseMap[nx].size()))
+		{
+			noiseMap[nx][ny] -= 1.25 * deltaTime;
+		}
+	}
 }
 
 void MapDisplay::draw(double deltaTime, Game game)
@@ -56,6 +73,8 @@ void MapDisplay::draw(double deltaTime, Game game)
 		{
 			
 			int y = layer - x;
+			const double noise {noiseMap[y][x]};
+
 			if (y < 0 || y >= MAP_HEIGHT)
 				continue;
 
@@ -67,17 +86,13 @@ void MapDisplay::draw(double deltaTime, Game game)
 			}
 			else if (carte_inverted[y][x] == MapType::GRASS)
 			{
-				const double noise {noiseMap[y][x]};
-				if(noise > 0.75) {
-					tileType = 22;
-				} 
-				else if (noise > 0.5) {
-					tileType = 21;
-				}
-				else if (noise > 0.25) {
+				if(noise > 0.66) {
 					tileType = 23;
 				} 
-				else {
+				else if (noise > 0.33) {
+					tileType = 22;
+				}
+				else{
 					tileType = 24;
 				}
 			}
@@ -148,7 +163,18 @@ void MapDisplay::draw(double deltaTime, Game game)
 				GameEngine.mvMatrixStack.addTranslation(Vector3D(iso_x, iso_y + 0.25f, 0.0f));
 				GameEngine.updateMvMatrix();
 
-				tileset[44]->draw();
+				if(noise > 0.75) {
+					tileset[44]->draw();
+				} 
+				else if (noise > 0.5) {
+					tileset[45]->draw();
+				}
+				else if (noise > 0.25) {
+					tileset[46]->draw();
+				} 
+				else {
+					tileset[47]->draw();
+				}
 
 				GameEngine.mvMatrixStack.popMatrix();
 			}

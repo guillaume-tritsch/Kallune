@@ -63,10 +63,10 @@ GameScene::GameScene()
 	pauseButtonHover = new Sprite("pause/pause-button-hover.png", 0.99f, 0.99f);
 }
 
-void GameScene::update(InputState inputState, Router* router, Game game) {
+void GameScene::update(double deltaTime, InputState inputState, Router* router, Game game) {
     state.update(inputState);
 
-	mapDisplay.update(game);
+	mapDisplay.update(deltaTime, game);
 
     if(state.pauseButton == ButtonState::ACTIVE) {
         router->goTo(Scene::Pause);
