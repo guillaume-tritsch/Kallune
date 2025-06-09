@@ -127,8 +127,7 @@ void MapDisplay::draw(double deltaTime, Game game)
 			GameEngine.updateMvMatrix();
 
 			tileset[tileType]->draw();
-
-			const double noise {noiseMap[y][x] / 2};
+			
 			int height {};
 			if(noise > 0.85) {
 				height = 4;
