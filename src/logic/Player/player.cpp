@@ -15,9 +15,11 @@ void Player::move(float dirX, float dirY, float deltaTime)
     if (length > 0.0f) {
         dirX /= length;
         dirY /= length;
+
+        const float tileSpeed {map.getSpeed(map.getMap()[getTileX()][getTileY()])};
         
-        x += dirX * speed * map.getSpeed(map.getMap()[getTileX()][getTileY()]) * deltaTime;
-        y += dirY * speed * map.getSpeed(map.getMap()[getTileX()][getTileY()]) * deltaTime;
+        x += dirX * speed * tileSpeed * deltaTime;
+        y += dirY * speed * tileSpeed * deltaTime;
     }
 
     int tileX = getTileX();

@@ -82,19 +82,31 @@ void MapDisplay::draw(double deltaTime, Game game)
 
 			if (carte_inverted[y][x] == MapType::WATER)
 			{
-				tileType = 92;
+				const CornerType cornerType = getCornerType(carte_inverted, x, y);
+				// Use a map to associate CornerType with tileType
+				static const std::unordered_map<CornerType, int> cornerTileMap = {
+					{TOP, 105},
+					{BOTTOM, 108},
+					{LEFT, 106},
+					{RIGHT, 107},
+					{TOP_LEFT, 109},
+					{TOP_RIGHT, 112},
+					{BOTTOM_LEFT, 111},
+					{BOTTOM_RIGHT, 110},
+					{SURROUNDED, 113},
+					{NORMAL, 104}
+				};
+
+				tileType = cornerTileMap.at(cornerType);
 			}
 			else if (carte_inverted[y][x] == MapType::GRASS)
 			{
-				if(noise > 0.66) {
-					tileType = 23;
-				} 
-				else if (noise > 0.33) {
-					tileType = 22;
-				}
-				else{
-					tileType = 24;
-				}
+				const std::vector<int> grassTiles = { 24, 24, 24, 24, 22, 22, 22, 22, 23, 23, 23, 23, 29, 30, 31, 32, 33, 34, 35, 36 };
+				// Map noise [0,1] to grassTiles indices equally
+				size_t numTiles = grassTiles.size();
+				size_t idx = static_cast<size_t>(noise * numTiles);
+				if (idx >= numTiles) idx = numTiles - 1;
+				tileType = grassTiles[idx];
 			}
 			else if (carte_inverted[y][x] == MapType::SAND)
 			{
@@ -108,11 +120,31 @@ void MapDisplay::draw(double deltaTime, Game game)
 
 			else if (carte_inverted[y][x] == MapType::WALL)
 			{
-				tileType = 2;
+				const CornerType cornerType = getCornerType(carte_inverted, x, y);
+				// Use a map to associate CornerType with tileType
+				static const std::unordered_map<CornerType, int> cornerTileMap = {
+					{TOP, 5},
+					{BOTTOM, 9},
+					{LEFT, 9},
+					{RIGHT, 9},
+					{TOP_LEFT, 5},
+					{TOP_RIGHT, 2},
+					{BOTTOM_LEFT, 0},
+					{BOTTOM_RIGHT, 4},
+					{SURROUNDED, 8},
+					{NORMAL, 9}
+				};
+
+				tileType = cornerTileMap.at(cornerType);
 			}
 			else if (carte_inverted[y][x] == MapType::SOLID_WALL)
 			{
-				tileType = 12;
+				const std::vector<int> solidTiles = { 11, 12, 13, 14, 15, 16 };
+				// Map noise [0,1] to solidTiles indices equally
+				size_t numTiles = solidTiles.size();
+				size_t idx = static_cast<size_t>(noise * numTiles);
+				if (idx >= numTiles) idx = numTiles - 1;
+				tileType = solidTiles[idx];
 			}
 			else
 			{
@@ -127,7 +159,7 @@ void MapDisplay::draw(double deltaTime, Game game)
 			GameEngine.updateMvMatrix();
 
 			tileset[tileType]->draw();
-			
+
 			int height {};
 			if(noise > 0.85) {
 				height = 4;

@@ -6,13 +6,14 @@
 #include "tools/basic_mesh.hpp"
 #include <string>
 #include <stb_image.h>
+#include "renderable.hpp"
 
-class Sprite {
+class Sprite : public Renderable {
     public:
         Sprite(const std::string& filename, float sizex = 1.0f, float sizez = 1.0f);
         ~Sprite();
 
-        void draw();
+        void draw() override;
         StandardMesh* getMesh();
         glbasimac::GLBI_Texture* getTexture();
     

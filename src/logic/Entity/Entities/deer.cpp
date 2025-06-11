@@ -59,8 +59,8 @@ void Deer::update(float deltaTime)
             dirX /= length;
             dirY /= length;
 
-            x += dirX * speed * deltaTime;
-            y += dirY * speed * deltaTime;
+            x -= dirX * speed * deltaTime;
+            y -= dirY * speed * deltaTime;
 
             calculateDirection(dirX, dirY);
 

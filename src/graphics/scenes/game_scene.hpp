@@ -6,13 +6,14 @@
 #include "glbasimac/glbi_texture.hpp"
 #include "tools/basic_mesh.hpp"
 #include "logic/game.hpp"
-#include "graphics/elements/character.hpp"
 
-#include "graphics/elements/sprite.hpp"
 #include "input/scenes/playing_state.hpp"
 #include "utils/scene.hpp"
 #include "utils/router.hpp"
+#include "graphics/elements/sprite.hpp"
+#include "graphics/elements/character.hpp"
 #include "graphics/elements/map-display.hpp"
+#include "graphics/elements/renderQueue.hpp"
 
 using namespace glbasimac;
 
@@ -42,4 +43,6 @@ public:
         Sprite *pauseButtonHover {};
 
         PlayingState state{PlayingState()};
+
+        RenderQueue renderQueue {};
 };
